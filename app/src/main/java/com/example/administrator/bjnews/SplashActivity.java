@@ -1,6 +1,7 @@
 package com.example.administrator.bjnews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -60,7 +61,13 @@ public class SplashActivity extends Activity {
         /*当动画播放完成的时候回调这方法*/
         @Override
         public void onAnimationEnd(Animation animation) {
-            Toast.makeText(SplashActivity.this,"动画播放完成",Toast.LENGTH_LONG).show();
+            //Toast.makeText(SplashActivity.this,"动画播放完成",Toast.LENGTH_LONG).show();
+            Toast.makeText(SplashActivity.this,"动画完成，出现引导页面",Toast.LENGTH_LONG).show();
+            // 跳转到引导页面
+            Intent intent = new Intent(SplashActivity.this,GuideActivity.class);
+            startActivity(intent);
+            // 关闭启动(动画)页面
+            finish();
         }
 
         /*当动画重复播放的时候回调这个方法*/
