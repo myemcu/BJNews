@@ -44,12 +44,21 @@ public class GuideActivity extends Activity{
         * *****************************************************************************************/
 
         // 3 准备数据
-        int[] ids = {R.drawable.guide_1,R.drawable.guide_2,R.drawable.guide_3}; // 定义ViewPager图片数组
-        imageViews = new ArrayList<>();                                         // 创建imageViews集合对象
+        int[] ids = {R.drawable.guide_1,R.drawable.guide_2,R.drawable.guide_3};         // 定义ViewPager图片数组
+        imageViews = new ArrayList<>();                                                 // 创建imageViews集合对象
         for (int i=0;i<ids.length;i++) {
-            ImageView imageView = new ImageView(this);                          // 创建imageView对象
-            imageView.setBackgroundResource(ids[i]);                            // 设置imageView背景
-            imageViews.add(imageView);                                          // 加入到集合
+            ImageView imageView = new ImageView(this);                                  // 创建imageView对象
+            imageView.setBackgroundResource(ids[i]);                                    // 设置imageView背景
+            imageViews.add(imageView);                                                  // 加入到集合
+            // 添加3个灰点(因为每个页面都有一个灰色点，故对3个灰色点的操作应放于此处)
+            ImageView normal_point = new ImageView(this);
+            normal_point.setImageResource(R.drawable.normal_point);                     // 添加一个灰色点
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(30,30);    // 线性布局高宽为10(dp值为XML中的3倍)
+            if (i!=0) {
+                params.leftMargin=30;                                                   // 除第一个点外，左边距均为30
+            }
+            normal_point.setLayoutParams(params);                                       // 设置灰点间距
+            ll_point_group.addView(normal_point);                                       // 添加至线性布局
         }
 
         // 4 设置适配器

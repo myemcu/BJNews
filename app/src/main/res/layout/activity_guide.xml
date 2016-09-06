@@ -26,14 +26,27 @@
         android:visibility="gone"
         />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:id="@+id/ll_point_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- 浮在上面的红点用相对布局 -->
+    <RelativeLayout
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
-        />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/ll_point_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <ImageView
+            android:id="@+id/iv_red_point"
+            android:background="@drawable/red_point"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>
