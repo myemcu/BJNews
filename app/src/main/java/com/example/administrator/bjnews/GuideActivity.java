@@ -2,6 +2,7 @@ package com.example.administrator.bjnews;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.util.DebugUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.example.administrator.bjnews.utils.DensityUtil;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,8 @@ public class GuideActivity extends Activity{
     private ImageView iv_red_point;             // 实例化红点
     private int marginLeft;                     // 总间距
 
+    private int widthDip = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,10 @@ public class GuideActivity extends Activity{
         ll_point_group  = (LinearLayout) findViewById(R.id.ll_point_group);     // 线性布局
 
         iv_red_point = (ImageView) findViewById(R.id.iv_red_point);             // 红点实例化
+
+        // 从模拟器适配到真机(即：使模拟器与真机之间实现像素同步)
+        widthDip = DensityUtil.dip2px(this,10);                                 // Dip转像素宽px
+        Log.i(TAG,"widthDip=="+widthDip);
 
         /*
         * ViewPager使用：
@@ -62,9 +71,9 @@ public class GuideActivity extends Activity{
             // 添加3个灰点(因为每个页面都有一个灰色点，故对3个灰色点的操作应放于此处)
             ImageView normal_point = new ImageView(this);
             normal_point.setImageResource(R.drawable.normal_point);                     // 添加一个灰色点
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,10);    // 线性布局高宽为10(dp值为XML中的3倍)
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthDip,widthDip);    // 线性布局高宽为10(dp值为XML中的3倍)
             if (i!=0) {
-                params.leftMargin=10;                                                   // 除第一个点外，左边距均为30
+                params.leftMargin=widthDip;                                                   // 除第一个点外，左边距均为30
             }
             normal_point.setLayoutParams(params);                                       // 设置灰点间距
             ll_point_group.addView(normal_point);                                       // 添加至线性布局
@@ -94,7 +103,7 @@ public class GuideActivity extends Activity{
             // 红点移动的距离 = (页面序号 + 页面偏移百分比) * 点间距
             int slideLeft = (int) (position+positionOffset)*marginLeft;
 
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(10,10); // 红点的父布局为相对布局(红点的宽高均为10)
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(widthDip,widthDip); // 红点的父布局为相对布局(红点的宽高均为10)
             params.leftMargin=slideLeft;
             iv_red_point.setLayoutParams(params);
         }
