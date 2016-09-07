@@ -1,6 +1,7 @@
 package com.example.administrator.bjnews;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.util.DebugUtils;
 import android.support.v4.view.PagerAdapter;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.DensityUtil;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.ArrayList;
 public class GuideActivity extends Activity{
 
     private static final String TAG = GuideActivity.class.getSimpleName();
+    public static  String IS_START_MAIN = "isStartmain";
+
     // 实例化所对应的XML控件
     private ViewPager viewpager_guide;          // ViewPager-ID
     private Button btn_start_main;
@@ -36,6 +40,7 @@ public class GuideActivity extends Activity{
     private int marginLeft;                     // 总间距
 
     private int widthDip = 0;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +95,20 @@ public class GuideActivity extends Activity{
         // 2 监听页面百分比
         viewpager_guide.addOnPageChangeListener(new MyOnPageChangeListener());
 
+        /*----------------------------------启动按钮点击事件----------------------------------------*/
+
+        btn_start_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1 保存软件参数(根据调用创建其方法)
+                CacheUtil.putBoolean(GuideActivity.this,IS_START_MAIN,true); // 上下文，启动标志，启动值
+                // 2 启动主页面
+                Intent intent = new Intent(GuideActivity.this,MainActivity.class);
+                startActivity(intent);
+                // 3 关闭引导页面
+                finish();
+            }
+        });
     }
 
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -109,9 +128,14 @@ public class GuideActivity extends Activity{
         }
 
         @Override
-        // 页面选中回调
+        // 页面选中回调(页面被选中时的处理)
         public void onPageSelected(int position) {
-
+            if (position==imageViews.size()-1) {    // 如果是最后一页
+                btn_start_main.setVisibility(View.VISIBLE); // 显示
+            }
+            else {
+                btn_start_main.setVisibility(View.GONE);    // 隐藏
+            }
         }
 
         @Override

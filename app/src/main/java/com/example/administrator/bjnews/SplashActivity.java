@@ -11,6 +11,8 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.administrator.bjnews.utils.CacheUtil;
+
 public class SplashActivity extends Activity {
 
     private RelativeLayout rl_splash_root;  // 定义相对布局对象
@@ -58,14 +60,27 @@ public class SplashActivity extends Activity {
 
         }
 
-        /*当动画播放完成的时候回调这方法*/
+        /*动画播放完*/
         @Override
         public void onAnimationEnd(Animation animation) {
+
+            // 读取软件保存参数
+            boolean isStartmain = CacheUtil.getBoolean(SplashActivity.this,GuideActivity.IS_START_MAIN);
+
+            if (isStartmain) { // 根据软件保存参数，判断是直接进主页还是引导页
+                //  启动主页面
+                Intent intent = new Intent(SplashActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+            else {
+                // 跳转到引导页面
+                Intent intent = new Intent(SplashActivity.this,GuideActivity.class);
+                startActivity(intent);
+            }
+
             //Toast.makeText(SplashActivity.this,"动画播放完成",Toast.LENGTH_LONG).show();
-            Toast.makeText(SplashActivity.this,"动画完成，出现引导页面",Toast.LENGTH_LONG).show();
-            // 跳转到引导页面
-            Intent intent = new Intent(SplashActivity.this,GuideActivity.class);
-            startActivity(intent);
+            //Toast.makeText(SplashActivity.this,"动画完成，出现引导页面",Toast.LENGTH_LONG).show();
+
             // 关闭启动(动画)页面
             finish();
         }
