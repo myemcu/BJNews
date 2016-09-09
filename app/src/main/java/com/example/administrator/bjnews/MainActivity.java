@@ -54,7 +54,7 @@ public class MainActivity extends SlidingFragmentActivity{
         FragmentManager fm = getSupportFragmentManager();                   // 创建Fragment管理器对象(得到FragmentManager)
         FragmentTransaction ft = fm.beginTransaction();                     // 创建Fragment传输对象(开启事务)
         ft.replace(R.id.fl_leftmenu,new LeftMenuFragment(), LEFTMENU_TAG);  // Ctrl+Alt+C抽取String(替换Fragment)
-        ft.replace(R.id.fl_content,new ContentFragment(), MAIN_TAG);        // 用replace(把老的删除再add，优化性能)而不用add(像图片轮播那种，一个图片就是一个Fragment，故用add)
+        ft.replace(R.id.fl_main,new ContentFragment(), MAIN_TAG);           // 用replace(把老的删除再add，优化性能)而不用add(像图片轮播那种，一个图片就是一个Fragment，故用add)
         ft.commit();                                                        // 事物提交
     }
 }
