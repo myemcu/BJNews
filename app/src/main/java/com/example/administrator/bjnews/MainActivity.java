@@ -1,16 +1,12 @@
 package com.example.administrator.bjnews;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.util.DebugUtils;
-import android.view.Gravity;
-import android.widget.TextView;
 
 
-import com.example.administrator.bjnews.base.fragment.ContentFragment;
-import com.example.administrator.bjnews.base.fragment.LeftMenuFragment;
+import com.example.administrator.bjnews.fragment.ContentFragment;
+import com.example.administrator.bjnews.fragment.LeftMenuFragment;
 import com.example.administrator.bjnews.utils.DensityUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;

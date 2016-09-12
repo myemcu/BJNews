@@ -1,4 +1,4 @@
-package com.example.administrator.bjnews.base.fragment;
+package com.example.administrator.bjnews.fragment;
 
 import android.graphics.Color;
 import android.util.Log;

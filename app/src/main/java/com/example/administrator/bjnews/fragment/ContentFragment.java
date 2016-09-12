@@ -1,12 +1,10 @@
-package com.example.administrator.bjnews.base.fragment;
+package com.example.administrator.bjnews.fragment;
 
-import android.graphics.Color;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BaseFragment;
@@ -22,8 +20,8 @@ import org.xutils.x;
  */
 public class ContentFragment extends BaseFragment{
 
-    @ViewInject(R.id.fl_content)
-    private FrameLayout fl_content;
+    @ViewInject(R.id.vp_content)
+    private ViewPager vp_content;
 
     @ViewInject(R.id.rg_bottom_tag)
     private RadioGroup rg_bottom_tag;
