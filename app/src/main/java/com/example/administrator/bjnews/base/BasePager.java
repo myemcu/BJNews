@@ -10,7 +10,7 @@ import com.example.administrator.bjnews.R;
 
 /**
  * Created by Administrator on 2016/9/12 0012.
- * 公共类/基类
+ * 公共页/基类
  */
 public class BasePager {
 

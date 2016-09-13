@@ -16,6 +16,7 @@ import com.example.administrator.bjnews.pager.HomePager;
 import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.pager.SettingPager;
 import com.example.administrator.bjnews.pager.SmartServicePager;
+import com.example.administrator.bjnews.view.NoScrollViewPager;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 public class ContentFragment extends BaseFragment{
 
     @ViewInject(R.id.vp_content)
-    private ViewPager vp_content;
+    private NoScrollViewPager vp_content;
 
     @ViewInject(R.id.rg_bottom_tag)
     private RadioGroup rg_bottom_tag;
@@ -57,22 +58,60 @@ public class ContentFragment extends BaseFragment{
         super.initData();
         Log.i(TAG,"主页数据初始化完成..");
 
-        rg_bottom_tag.check(R.id.rb_home);  // 默认选中首页
-
-        /*ViewPage的使用：
+        /*ViewPager的使用：
         *               1 在xml中定义
         *               2 在java中实例化
         *               3 准备数据(集合)
         *               4 设置适配器*/
 
-        basePagers = new ArrayList<>();                     // 创建集合对象
-        basePagers.add(new HomePager(context));             // 首页
-        basePagers.add(new NewsCenterPager(context));       // 新闻中心
-        basePagers.add(new SmartServicePager(context));     // 智慧服务
-        basePagers.add(new GovaffairPager(context));        // 政要指南
-        basePagers.add(new SettingPager(context));          // 设置
+        basePagers = new ArrayList<>();                         // 创建集合对象
+        basePagers.add(new HomePager(context));                 // 首页
+        basePagers.add(new NewsCenterPager(context));           // 新闻中心
+        basePagers.add(new SmartServicePager(context));         // 智慧服务
+        basePagers.add(new GovaffairPager(context));            // 政要指南
+        basePagers.add(new SettingPager(context));              // 设置
 
-        vp_content.setAdapter(new ContentFragmentAdapter());
+        vp_content.setAdapter(new ContentFragmentAdapter());    // 设置ViewPager适配器
+
+        rg_bottom_tag.check(R.id.rb_home);                      // 默认选中首页
+
+        // 设置RadioGroup状态监听
+        rg_bottom_tag.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
+
+    }
+
+    private class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener {
+
+        // 根据所选的RadioButton，切换到指定ViewPager，如：vp_content.setCurrentItem(0);
+        // false：关闭动画效果
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId) {
+
+                case R.id.rb_home:          // 首页
+                        vp_content.setCurrentItem(0,false);
+                     break;
+
+                case R.id.rb_newscenter:    // 新闻中心
+                        vp_content.setCurrentItem(1,false);
+                    break;
+
+                case R.id.rb_smartservices: // 智慧服务
+                        vp_content.setCurrentItem(2,false);
+                    break;
+
+                case R.id.rb_govaffair:     // 政要指南
+                        vp_content.setCurrentItem(3,false);
+                    break;
+
+                case R.id.rb_setting:       // 设置
+                        vp_content.setCurrentItem(4,false);
+                    break;
+
+                default:break;
+            }
+        }
     }
 
     class ContentFragmentAdapter extends PagerAdapter {
@@ -109,4 +148,5 @@ public class ContentFragment extends BaseFragment{
             container.removeView((View) object);
         }
     }
+
 }

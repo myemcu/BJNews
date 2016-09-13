@@ -27,13 +27,6 @@ public class MainActivity extends SlidingFragmentActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /*TextView txt = new TextView(this);
-        txt.setText("欢迎来到主页面——北京新闻客户端");
-        txt.setGravity(Gravity.CENTER);
-        txt.setTextSize(20);
-        txt.setTextColor(0xcd0000cd);
-        setContentView(txt);*/
-
         setContentView(R.layout.content);                                   // 设置主页面(帧布局，常与Fragment配合使用)
         setBehindContentView(R.layout.leftmenu);                            // 设置侧滑菜单页面
 
