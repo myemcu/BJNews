@@ -18,7 +18,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 public class MainActivity extends SlidingFragmentActivity{
 
 
-    private SlidingMenu SlidingMenu;                                        // 定义侧滑菜单对象
+    public SlidingMenu SlidingMenu;                                        // 定义侧滑菜单对象
 
     public static final String LEFTMENU_TAG = "leftmenu_tag";                 // static意思是不需要实例化而直接调用
     public static final String MAIN_TAG = "main_tag";

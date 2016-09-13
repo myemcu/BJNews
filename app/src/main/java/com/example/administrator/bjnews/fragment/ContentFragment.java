@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
+import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BaseFragment;
 import com.example.administrator.bjnews.base.BasePager;
@@ -17,6 +18,7 @@ import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.pager.SettingPager;
 import com.example.administrator.bjnews.pager.SmartServicePager;
 import com.example.administrator.bjnews.view.NoScrollViewPager;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -81,6 +83,7 @@ public class ContentFragment extends BaseFragment{
         // 监听页面的改变
         vp_content.addOnPageChangeListener(new MyOnPageChangeListene());
         basePagers.get(0).initData();   // 默认选择显示首页与加载首页数据
+        isEnableSlidingMenu(false);     // 默认首页无侧滑菜单
     }
 
     private class MyOnPageChangeListene implements ViewPager.OnPageChangeListener {
@@ -115,26 +118,45 @@ public class ContentFragment extends BaseFragment{
 
                 case R.id.rb_home:          // 首页
                         vp_content.setCurrentItem(0,false);
+                        isEnableSlidingMenu(false);
                      break;
 
                 case R.id.rb_newscenter:    // 新闻中心
                         vp_content.setCurrentItem(1,false);
+                        isEnableSlidingMenu(true);
                     break;
 
                 case R.id.rb_smartservices: // 智慧服务
                         vp_content.setCurrentItem(2,false);
+                        isEnableSlidingMenu(false);
                     break;
 
                 case R.id.rb_govaffair:     // 政要指南
                         vp_content.setCurrentItem(3,false);
+                        isEnableSlidingMenu(false);
                     break;
 
                 case R.id.rb_setting:       // 设置
                         vp_content.setCurrentItem(4,false);
+                        isEnableSlidingMenu(false);
                     break;
 
                 default:break;
             }
+        }
+    }
+
+    // 是否显示侧滑菜单
+    private void isEnableSlidingMenu(boolean isEnableSlidingMenu) {
+
+        MainActivity mainActivity = (MainActivity) context;
+        SlidingMenu slidingMenu = mainActivity.getSlidingMenu();
+
+        if (isEnableSlidingMenu) {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        }
+        else {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         }
     }
 
