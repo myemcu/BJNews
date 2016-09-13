@@ -78,6 +78,30 @@ public class ContentFragment extends BaseFragment{
         // 设置RadioGroup状态监听
         rg_bottom_tag.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
 
+        // 监听页面的改变
+        vp_content.addOnPageChangeListener(new MyOnPageChangeListene());
+        basePagers.get(0).initData();   // 默认选择显示首页与加载首页数据
+    }
+
+    private class MyOnPageChangeListene implements ViewPager.OnPageChangeListener {
+
+        @Override
+        // 页面滑动
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        // 所选页面
+        public void onPageSelected(int position) {
+            basePagers.get(position).initData();    // 获取指定页面的初始化数据
+        }
+
+        @Override
+        // 页面滑动状态切换
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 
     private class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener {
@@ -136,7 +160,12 @@ public class ContentFragment extends BaseFragment{
 
             BasePager basePager = basePagers.get(position);
             View rootView = basePager.rootView;
-            basePager.initData();   // 调各个页面的initData();
+
+            // 注释掉这个是为了处理错误的数据预加载(e.g:选择某RadioButton，出现下一个页面数据)
+            // 带来的新问题是ViewPager切换不动了。
+            // basePager.initData();   // 调各个页面的initData();
+            // 解决之道：监听页面的改变
+
             container.addView(rootView);
 
             return rootView;
@@ -148,5 +177,6 @@ public class ContentFragment extends BaseFragment{
             container.removeView((View) object);
         }
     }
+
 
 }
