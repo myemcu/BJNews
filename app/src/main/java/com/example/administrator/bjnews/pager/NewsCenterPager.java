@@ -7,7 +7,9 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import com.example.administrator.bjnews.base.BasePager;
+import com.example.administrator.bjnews.bean.NewsCenterBean;
 import com.example.administrator.bjnews.utils.Url;
+import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -47,7 +49,7 @@ public class NewsCenterPager extends BasePager {
 
         url = Url.NEWSCENTER_URL;
 
-        // 联网请求数据
+        // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
         GetDataFromNet();
     }
 
@@ -58,6 +60,7 @@ public class NewsCenterPager extends BasePager {
             @Override
             public void onSuccess(String result) {                      // 请求成功
                 Log.i(TAG,"联网请求成功=="+result);
+                processData(result); // 解析请求结果json
             }
 
             @Override
@@ -75,5 +78,14 @@ public class NewsCenterPager extends BasePager {
                 Log.i(TAG,"完成。");
             }
         });
+    }
+
+    // Json的解析与显示
+    private void processData(String json) {
+        // 手工解析(Android-API)与第三方库解析(Gson，FastJson等)
+        // Gson解析：1.创建Bean对象(CopyJson数据，Alt+Insert（FormatGson）);
+        //          2.Gson-API
+        NewsCenterBean newsCenterBean = new Gson().fromJson(json,NewsCenterBean.class);
+        Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
     }
 }

@@ -1,5 +1,7 @@
 package com.example.administrator.bjnews.utils;
 
+// http://192.168.1.100:8080/zhbj/categories.json
+
 /**
  * Created by Administrator on 2016/9/14 0014.
  * 配置联网请求链接
