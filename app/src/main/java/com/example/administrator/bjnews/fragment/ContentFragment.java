@@ -75,8 +75,8 @@ public class ContentFragment extends BaseFragment{
 
         vp_content.setAdapter(new ContentFragmentAdapter());    // 设置ViewPager适配器
 
-        rg_bottom_tag.check(R.id.rb_home);                      // 默认选中首页
-
+        // 默认选中首页
+        rg_bottom_tag.check(R.id.rb_home);
         // 设置RadioGroup状态监听
         rg_bottom_tag.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
 
