@@ -12,7 +12,7 @@ public class MyApplication extends Application{
     public void onCreate() {
         super.onCreate();
 
-        x.Ext.init(this);
+        x.Ext.init(this);       // 初始化xUtils3(使用其联网请求功能)
         x.Ext.setDebug(true);
     }
 }

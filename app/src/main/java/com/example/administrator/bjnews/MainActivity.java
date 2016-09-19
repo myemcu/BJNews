@@ -46,4 +46,11 @@ public class MainActivity extends SlidingFragmentActivity{
         ft.replace(R.id.fl_main,new ContentFragment(), MAIN_TAG);           // 用replace(把老的删除再add，优化性能)而不用add(像图片轮播那种，一个图片就是一个Fragment，故用add)
         ft.commit();                                                        // 事物提交
     }
+
+    // 得到左侧菜单(通过获取对应Tag，从而获得对应Fragment)
+    public LeftMenuFragment getLeftMenuFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        LeftMenuFragment leftMenuFragment = (LeftMenuFragment) fm.findFragmentByTag(LEFTMENU_TAG);
+        return leftMenuFragment;
+    }
 }

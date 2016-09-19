@@ -6,14 +6,18 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean;
+import com.example.administrator.bjnews.fragment.LeftMenuFragment;
 import com.example.administrator.bjnews.utils.Url;
 import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/9/12 0012.
@@ -24,6 +28,7 @@ public class NewsCenterPager extends BasePager {
     private static final String TAG = NewsCenterPager.class.getSimpleName();
     private TextView txt;
     private String url;
+    private List<NewsCenterBean.DataBean> leftMenuData; // 左侧菜单的对应数据
 
     public NewsCenterPager(Context context) {
         super(context);
@@ -49,17 +54,19 @@ public class NewsCenterPager extends BasePager {
 
         url = Url.NEWSCENTER_URL;
 
-        // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
-        GetDataFromNet();
+        GetDataFromNet();               // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
     }
 
+    // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
     private void GetDataFromNet() {
         RequestParams params = new RequestParams(url); // 联网请求
         x.http().get(params, new Callback.CommonCallback<String>() {
 
             @Override
             public void onSuccess(String result) {                      // 请求成功
+
                 Log.i(TAG,"联网请求成功=="+result);
+
                 processData(result); // 解析请求结果json
             }
 
@@ -87,5 +94,16 @@ public class NewsCenterPager extends BasePager {
         //          2.Gson-API
         NewsCenterBean newsCenterBean = new Gson().fromJson(json,NewsCenterBean.class);
         Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
+
+        /*将解析后的所有数据，传递给左侧菜单。*/
+
+        // newsCenterBean为解析后的数据对象
+
+        // 获取所有解析数据给左侧菜单对象
+        leftMenuData = newsCenterBean.getData();
+        // 准备逐级传递
+        MainActivity mainActivity = (MainActivity) context;                         // 获取MainActivity上下文
+        LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();     // 获取其上下文中的LeftMenuFragment
+        leftMenuFragment.setData(leftMenuData);                                     // 在LeftMenuFragment中显示数据
     }
 }
