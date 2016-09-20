@@ -9,8 +9,13 @@ import android.widget.TextView;
 
 import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.base.BasePager;
+import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean;
 import com.example.administrator.bjnews.fragment.LeftMenuFragment;
+import com.example.administrator.bjnews.menudetail.InteractMenuDetailPager;
+import com.example.administrator.bjnews.menudetail.NewsMenuDetailPager;
+import com.example.administrator.bjnews.menudetail.PhotosMenuDetailPager;
+import com.example.administrator.bjnews.menudetail.TopicMenuDetailPager;
 import com.example.administrator.bjnews.utils.Url;
 import com.google.gson.Gson;
 
@@ -18,6 +23,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +35,8 @@ public class NewsCenterPager extends BasePager {
     private static final String TAG = NewsCenterPager.class.getSimpleName();
     private TextView txt;
     private String url;
-    private List<NewsCenterBean.DataBean> leftMenuData; // 左侧菜单的对应数据
+    private List<NewsCenterBean.DataBean>  leftMenuData;        // 左侧菜单的对应数据
+    private ArrayList<MenuDetailBasePager> detailBasePagers;    // 左侧菜单的对应页面(视图)
 
     public NewsCenterPager(Context context) {
         super(context);
@@ -104,9 +111,33 @@ public class NewsCenterPager extends BasePager {
 
         // 获取所有解析数据给左侧菜单对象
         leftMenuData = newsCenterBean.getData();
+
         // 准备逐级传递
         MainActivity mainActivity = (MainActivity) context;                         // 获取MainActivity上下文
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();     // 获取其上下文中的LeftMenuFragment
-        leftMenuFragment.setData(leftMenuData);                                     // 在LeftMenuFragment中显示数据
+
+        // 添加“新闻、专题、组图、菜单”这四个详情页面
+        detailBasePagers = new ArrayList<>();
+        detailBasePagers.add(new NewsMenuDetailPager(context));         // 新闻
+        detailBasePagers.add(new TopicMenuDetailPager(context));        // 专题
+        detailBasePagers.add(new PhotosMenuDetailPager(context));       // 组图
+        detailBasePagers.add(new InteractMenuDetailPager(context));     // 菜单
+
+        // 在LeftMenuFragment中显示数据(只能是先特价页面，再显示数据，不然程序要崩)
+        leftMenuFragment.setData(leftMenuData);
+    }
+
+    // 根据位置切换到对应的菜单详情页面(menudetail)
+    public void switchPager(int selectPosition) {
+
+        // 设置标题
+        tv_title.setText(leftMenuData.get(selectPosition).getTitle());
+
+        MenuDetailBasePager detailBasePager = detailBasePagers.get(selectPosition);
+        View rootView = detailBasePager.rootView;
+        // 初始化数据
+        detailBasePager.initData();
+        fl_base_content.removeAllViews();
+        fl_base_content.addView(rootView);
     }
 }

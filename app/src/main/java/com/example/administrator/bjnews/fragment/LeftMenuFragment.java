@@ -15,6 +15,7 @@ import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BaseFragment;
 import com.example.administrator.bjnews.bean.NewsCenterBean;
+import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.utils.DensityUtil;
 
 import java.util.List;
@@ -53,10 +54,19 @@ public class LeftMenuFragment extends BaseFragment{
                 // 2.收起左侧菜单
                 MainActivity mainactivity = (MainActivity) context;
                 mainactivity.getSlidingMenu().toggle();     // 自动开关切换
-
+                // 3.点击切换到对应页面
+                switchPager(seclectPosition);
             }
         });
         return listView;
+    }
+
+    // 切换到对应页面
+    private void switchPager(int seclectPosition) {
+        MainActivity mainactivity = (MainActivity) context;
+        ContentFragment contentFragment = mainactivity.getContentFragment();
+        NewsCenterPager newsCenterPager = contentFragment.getNewsCenterPager();
+        newsCenterPager.switchPager(seclectPosition);
     }
 
     @Override
@@ -77,6 +87,8 @@ public class LeftMenuFragment extends BaseFragment{
 
         adapter = new LeftMenuAdapter();
         listView.setAdapter(adapter);
+
+        switchPager(seclectPosition);
     }
 
     private class LeftMenuAdapter extends BaseAdapter {

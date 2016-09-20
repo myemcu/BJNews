@@ -86,6 +86,11 @@ public class ContentFragment extends BaseFragment{
         isEnableSlidingMenu(false);     // 默认首页无侧滑菜单
     }
 
+    // 得到新闻中心
+    public NewsCenterPager getNewsCenterPager() {
+        return (NewsCenterPager) basePagers.get(1);
+    }
+
     private class MyOnPageChangeListene implements ViewPager.OnPageChangeListener {
 
         @Override

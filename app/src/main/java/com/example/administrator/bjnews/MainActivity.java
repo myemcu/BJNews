@@ -47,10 +47,17 @@ public class MainActivity extends SlidingFragmentActivity{
         ft.commit();                                                        // 事物提交
     }
 
-    // 得到左侧菜单(通过获取对应Tag，从而获得对应Fragment)
+    // 得到左侧菜单Fragment(通过获取对应Tag，从而获得对应Fragment)
     public LeftMenuFragment getLeftMenuFragment() {
         FragmentManager fm = getSupportFragmentManager();
         LeftMenuFragment leftMenuFragment = (LeftMenuFragment) fm.findFragmentByTag(LEFTMENU_TAG);
         return leftMenuFragment;
+    }
+
+    // 得到正文Fragment(通过获取对应Tag，从而获得对应Fragment)
+    public ContentFragment getContentFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        ContentFragment contentFragment = (ContentFragment) fm.findFragmentByTag(MAIN_TAG);
+        return contentFragment;
     }
 }
