@@ -5,11 +5,13 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BaseFragment;
 import com.example.administrator.bjnews.bean.NewsCenterBean;
@@ -27,6 +29,10 @@ public class LeftMenuFragment extends BaseFragment{
     private static final String TAG = LeftMenuFragment.class.getSimpleName();
     private List<NewsCenterBean.DataBean> leftMenuData; // 左侧菜单的数据
     private ListView listView;
+    public TextView txt;
+
+    private int seclectPosition;    // 被点击的item位置
+    private LeftMenuAdapter adapter;
 
     @Override
     public View initView() {
@@ -37,22 +43,40 @@ public class LeftMenuFragment extends BaseFragment{
         listView.setCacheColorHint(Color.TRANSPARENT);              // 设置透明(防止在低版本中的按下变色)
         listView.setSelector(android.R.color.transparent);          // 选择器透明(当选择某条的时候，无颜色变化)
 
+        // 设置列表项点击事件(1.点击项高亮，2.收起左侧菜单，3.切换到对应页面(新闻，专题，组图，互动))
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // 1.点击项高亮
+                seclectPosition=position;           // 记录点击位置
+                adapter.notifyDataSetChanged();     // 数据刷新
+                // 2.收起左侧菜单
+                MainActivity mainactivity = (MainActivity) context;
+                mainactivity.getSlidingMenu().toggle();     // 自动开关切换
 
+            }
+        });
         return listView;
     }
 
     @Override
     public void initData() {
         super.initData();
-        Log.i(TAG,"侧滑菜单数据初始化完成..");
+//        Log.i(TAG,"侧滑菜单数据初始化完成..");
+        // 设置显示侧滑按钮
+
     }
 
     public void setData(List<NewsCenterBean.DataBean> Data) {
+
         this.leftMenuData=Data;     // 将从形参中传递进来的数据赋值到本Fragment中的对象leftMenuData
+
         for (int i=0; i<leftMenuData.size(); i++) {
             System.out.println(leftMenuData.get(i).getTitle()+"-----------");
         }
-        listView.setAdapter(new LeftMenuAdapter());
+
+        adapter = new LeftMenuAdapter();
+        listView.setAdapter(adapter);
     }
 
     private class LeftMenuAdapter extends BaseAdapter {
@@ -74,7 +98,17 @@ public class LeftMenuFragment extends BaseFragment{
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            TextView txt = (TextView) View.inflate(context, R.layout.item_leftmenu,null);  // 文本几乎不耗资源，故不作优化
+            // 文本几乎不耗资源，故不作优化
+            txt = (TextView) View.inflate(context, R.layout.item_leftmenu,null);
+            txt.setText(leftMenuData.get(position).getTitle()); // 必须联网
+
+            /*if (seclectPosition==position) {
+                txt.setEnabled(true);
+            }else {
+                txt.setEnabled(false);
+            }*/
+
+            txt.setEnabled(seclectPosition==position);  // 与上边效果一样(所选位置高亮)
 
             return txt;
         }

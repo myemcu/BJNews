@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.administrator.bjnews.MainActivity;
@@ -37,6 +38,8 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
+
+        ib_menu.setVisibility(View.VISIBLE);    // 显示侧滑按钮
 
         System.out.println("新闻中心的数据被初始化了....");
 

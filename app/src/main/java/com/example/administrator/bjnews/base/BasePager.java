@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 
 /**
@@ -36,6 +37,16 @@ public class BasePager {
         tv_title = (TextView) view.findViewById(R.id.tv_title);                     // 标题栏文字
         ib_menu = (ImageButton) view.findViewById(R.id.ib_menu);                    // 标题栏图片按钮
         fl_base_content = (FrameLayout) view.findViewById(R.id.fl_base_content);    // 帧布局
+
+        // 图标按钮启动左侧菜单
+        ib_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 2.收起左侧菜单
+                MainActivity mainactivity = (MainActivity) context;
+                mainactivity.getSlidingMenu().toggle();     // 自动开关切换
+            }
+        });
 
         return view;
     }
