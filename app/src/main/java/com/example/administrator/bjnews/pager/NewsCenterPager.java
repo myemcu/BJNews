@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
-import com.example.administrator.bjnews.bean.NewsCenterBean;
+//import com.example.administrator.bjnews.bean.NewsCenterBean;
+import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 import com.example.administrator.bjnews.fragment.LeftMenuFragment;
 import com.example.administrator.bjnews.menudetail.InteractMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.NewsMenuDetailPager;
@@ -35,7 +36,7 @@ public class NewsCenterPager extends BasePager {
     private static final String TAG = NewsCenterPager.class.getSimpleName();
     private TextView txt;
     private String url;
-    private List<NewsCenterBean.DataBean>  leftMenuData;        // 左侧菜单的对应数据
+    private List<NewsCenterBean_Hand.NewsCenterBean_Data>  leftMenuData;        // 左侧菜单的对应数据
     private ArrayList<MenuDetailBasePager> detailBasePagers;    // 左侧菜单的对应页面(视图)
 
     public NewsCenterPager(Context context) {
@@ -99,18 +100,19 @@ public class NewsCenterPager extends BasePager {
 
     // Json的解析与显示
     private void processData(String json) {
-        // 手工解析(Android-API)与第三方库解析(Gson，FastJson等)
+
+        // 手动解析： 1.创建Bean对象(难点)
+        //           2.使用系统API
+
+        NewsCenterBean_Hand newsCenterBean = new Gson().fromJson(json,NewsCenterBean_Hand.class); // Gson解析
+        Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
+        leftMenuData = newsCenterBean.getData(); // 获取所有解析数据给左侧菜单对象，newsCenterBean为解析后的数据对象
+
         // Gson解析：1.创建Bean对象(CopyJson数据，Alt+Insert（FormatGson）);
         //          2.Gson-API
-        NewsCenterBean newsCenterBean = new Gson().fromJson(json,NewsCenterBean.class);
-        Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
-
-        /*将解析后的所有数据，传递给左侧菜单。*/
-
-        // newsCenterBean为解析后的数据对象
-
-        // 获取所有解析数据给左侧菜单对象
-        leftMenuData = newsCenterBean.getData();
+//        NewsCenterBean newsCenterBean = new Gson().fromJson(json,NewsCenterBean.class); // Gson解析
+//        Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
+//        leftMenuData = newsCenterBean.getData(); // 获取所有解析数据给左侧菜单对象，newsCenterBean为解析后的数据对象
 
         // 准备逐级传递
         MainActivity mainActivity = (MainActivity) context;                         // 获取MainActivity上下文

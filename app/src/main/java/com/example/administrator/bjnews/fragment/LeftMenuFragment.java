@@ -14,7 +14,8 @@ import android.widget.TextView;
 import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BaseFragment;
-import com.example.administrator.bjnews.bean.NewsCenterBean;
+//import com.example.administrator.bjnews.bean.NewsCenterBean;
+import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.utils.DensityUtil;
 
@@ -28,7 +29,7 @@ import java.util.List;
 public class LeftMenuFragment extends BaseFragment{
 
     private static final String TAG = LeftMenuFragment.class.getSimpleName();
-    private List<NewsCenterBean.DataBean> leftMenuData; // 左侧菜单的数据
+    private List<NewsCenterBean_Hand.NewsCenterBean_Data> leftMenuData; // 左侧菜单的数据
     private ListView listView;
     public TextView txt;
 
@@ -77,7 +78,7 @@ public class LeftMenuFragment extends BaseFragment{
 
     }
 
-    public void setData(List<NewsCenterBean.DataBean> Data) {
+    public void setData(List<NewsCenterBean_Hand.NewsCenterBean_Data> Data) {
 
         this.leftMenuData=Data;     // 将从形参中传递进来的数据赋值到本Fragment中的对象leftMenuData
 
