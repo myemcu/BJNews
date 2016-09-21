@@ -19,7 +19,11 @@ import com.example.administrator.bjnews.menudetail.PhotosMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.TopicMenuDetailPager;
 import com.example.administrator.bjnews.utils.Url;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -104,7 +108,7 @@ public class NewsCenterPager extends BasePager {
         // 手动解析： 1.创建Bean对象(难点)
         //           2.使用系统API
 
-        NewsCenterBean_Hand newsCenterBean = new Gson().fromJson(json,NewsCenterBean_Hand.class); // Gson解析
+        NewsCenterBean_Hand newsCenterBean = paseJson(json);//new Gson().fromJson(json,NewsCenterBean_Hand.class); // Gson解析
         Log.i(TAG,newsCenterBean.getData().get(0).getChildren().get(1).getTitle()+"--------------");
         leftMenuData = newsCenterBean.getData(); // 获取所有解析数据给左侧菜单对象，newsCenterBean为解析后的数据对象
 
@@ -127,6 +131,72 @@ public class NewsCenterPager extends BasePager {
 
         // 在LeftMenuFragment中显示数据(只能是先特价页面，再显示数据，不然程序要崩)
         leftMenuFragment.setData(leftMenuData);
+    }
+
+    // 手动解析(Android-API)Json
+    // 解析目的：使之变为Bean对象所需要的数据格式
+    private NewsCenterBean_Hand paseJson(String json) { // 捕获异常(Ctrl+Alt+t)
+
+        NewsCenterBean_Hand newscenterbean_hand = new NewsCenterBean_Hand();
+
+        // 1 转换为Json对象
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+
+            int retcode = jsonObject.optInt("retcode"); // 使用optInt，即使有错，也不会崩溃。
+            newscenterbean_hand.setRetcode(retcode);
+
+            JSONArray data = jsonObject.optJSONArray("data");
+            if (data != null && data.length()>0) {  // List是个接口，只能new其子类
+                List<NewsCenterBean_Hand.NewsCenterBean_Data> dataBean = new ArrayList<>();
+                newscenterbean_hand.setData(dataBean);
+                for (int i =0; i<data.length(); i++) {
+                   JSONObject jsonObject1 = (JSONObject) data.get(i);   // 得到从dat0~dat最后
+                    if (jsonObject1 != null) {
+                        NewsCenterBean_Hand.NewsCenterBean_Data newsCenterData = new NewsCenterBean_Hand.NewsCenterBean_Data();
+                        int id = jsonObject1.optInt("id");
+                        newsCenterData.setId(id);
+                        String title = jsonObject1.optString("title");
+                        newsCenterData.setTitle(title);
+                        int type = jsonObject1.optInt("type");
+                        newsCenterData.setType(type);
+                        String url = jsonObject1.optString("url");
+                        newsCenterData.setUrl(url);
+                        String url1 = jsonObject1.optString("url1");
+                        newsCenterData.setUrl(url1);
+                        String dayurl = jsonObject1.optString("dayurl");
+                        newsCenterData.setDayurl(dayurl);
+                        String excurl = jsonObject1.optString("excurl");
+                        newsCenterData.setExcurl(excurl);
+                        String weekurl = jsonObject1.optString("weekurl");
+                        newsCenterData.setWeekurl(weekurl);
+                        dataBean.add(newsCenterData);
+
+                        JSONArray childrenData = jsonObject1.optJSONArray("children");
+                        if (childrenData != null && childrenData.length()>0) {
+                            List<NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data> children = new ArrayList<>(); // 泛型前边已经定了，这里可以不写了。
+                            newsCenterData.setChildren(children);
+                            for (int j=0; j<childrenData.length(); j++) {
+                                JSONObject childrenJson = (JSONObject) childrenData.get(j);
+                                if (childrenJson != null) {
+                                    NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data childrenData1 = new NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data();
+                                    childrenData1.setId(childrenJson.optInt("id"));
+                                    childrenData1.setTitle(childrenJson.optString("title"));
+                                    childrenData1.setType(childrenJson.optInt("type"));
+                                    childrenData1.setUrl(childrenJson.optString("url"));
+                                    children.add(childrenData1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return newscenterbean_hand;
     }
 
     // 根据位置切换到对应的菜单详情页面(menudetail)
