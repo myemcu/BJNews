@@ -2,6 +2,7 @@ package com.example.administrator.bjnews.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.example.administrator.bjnews.menudetail.InteractMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.NewsMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.PhotosMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.TopicMenuDetailPager;
+import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.Url;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -69,7 +71,13 @@ public class NewsCenterPager extends BasePager {
 
         url = Url.NEWSCENTER_URL;
 
-        GetDataFromNet();               // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
+        /*优先显示本地缓存信息*/
+        String saveJson = CacheUtil.getString(context,url); // 获取数据缓存
+        if (!TextUtils.isEmpty(saveJson)) { // 如果非空才解析
+            processData(saveJson);
+        }
+
+        GetDataFromNet();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
     }
 
     // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
@@ -81,6 +89,9 @@ public class NewsCenterPager extends BasePager {
             public void onSuccess(String result) {                      // 请求成功
 
                 Log.i(TAG,"联网请求成功=="+result);
+
+                // 请求成功后，设置数据缓存
+                CacheUtil.putString(context,url,result);
 
                 processData(result); // 解析请求结果json
             }
