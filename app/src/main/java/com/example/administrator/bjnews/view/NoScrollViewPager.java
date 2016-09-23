@@ -19,4 +19,9 @@ public class NoScrollViewPager extends ViewPager{
     public boolean onTouchEvent(MotionEvent ev) {
         return true;
     }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {  // 使ViewPager最后一页不再滑动
+        return false;
+    }
 }
