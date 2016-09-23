@@ -133,12 +133,12 @@ public class NewsCenterPager extends BasePager {
         MainActivity mainActivity = (MainActivity) context;                         // 获取MainActivity上下文
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();     // 获取其上下文中的LeftMenuFragment
 
-        // 添加“新闻、专题、组图、菜单”这四个详情页面
+        // 添加“新闻、专题、组图、菜单”这四个ViewPager
         detailBasePagers = new ArrayList<>();
-        detailBasePagers.add(new NewsMenuDetailPager(context));         // 新闻
-        detailBasePagers.add(new TopicMenuDetailPager(context));        // 专题
-        detailBasePagers.add(new PhotosMenuDetailPager(context));       // 组图
-        detailBasePagers.add(new InteractMenuDetailPager(context));     // 菜单
+        detailBasePagers.add(new NewsMenuDetailPager(context,leftMenuData.get(0))); // 新闻，NewsMenuDetailPager是一个ViewPager，这里先获取data[0]根数据——”新闻“(而getChildren()是在该类的构造器中)
+        detailBasePagers.add(new TopicMenuDetailPager(context));                    // 专题
+        detailBasePagers.add(new PhotosMenuDetailPager(context));                   // 组图
+        detailBasePagers.add(new InteractMenuDetailPager(context));                 // 菜单
 
         // 在LeftMenuFragment中显示数据(只能是先特价页面，再显示数据，不然程序要崩)
         leftMenuFragment.setData(leftMenuData);
