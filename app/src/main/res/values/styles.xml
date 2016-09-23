@@ -1,6 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -19,5 +20,33 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/bottom_tag_textcolor_selector</item>
     </style>
+
+    <!--<style name="StyledIndicators" parent="@android:style/Theme.Light">
+
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+
+    </style>
+
+    <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
+        &lt;!&ndash;<item name="android:background">@drawable/custom_tab_indicator</item>&ndash;&gt;
+        &lt;!&ndash;<item name="android:textAppearance">@style/CustomTabPageIndicator.Text</item>&ndash;&gt;
+        <item name="android:textColor">#FF555555</item>
+        <item name="android:textSize">16sp</item>
+        &lt;!&ndash;<item name="android:divider">@drawable/custom_tab_indicator_divider</item>&ndash;&gt;
+        <item name="android:dividerPadding">10dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">8dp</item>
+    </style>-->
+
+    <!--<style name="StyledIndicators" parent="@android:style/Theme.Light">
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
+        <item name="vpiLinePageIndicatorStyle">@style/CustomLinePageIndicator</item>
+        <item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>
+        <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
+        <item name="vpiUnderlinePageIndicatorStyle">@style/CustomUnderlinePageIndicator</item>
+    </style>-->
 
 </resources>

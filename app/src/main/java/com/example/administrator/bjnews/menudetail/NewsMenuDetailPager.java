@@ -13,6 +13,8 @@ import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 
+import com.viewpagerindicator.TabPageIndicator;
+
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -31,6 +33,9 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
 
     // 左侧菜单对应的新闻详情页面-的-页签页面集合
     private ArrayList<MenuDetailBasePager> detailBasePagers;
+
+    @ViewInject(R.id.tabpage_indicator)
+    private TabPageIndicator tabpage_indicator;
 
     // 实例化完成后，ViewPager的布局搞定
     @ViewInject(R.id.vp_news_menu_detailpager)
@@ -76,11 +81,19 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
 
         // (4) 适配：整合(页面、数据)
         vp_news_menu_detailpager.setAdapter(new NewsMenuDetailPagerAdapter());
+
+        // 关联ViewPager，使Indicator得以显示
+        tabpage_indicator.setViewPager(vp_news_menu_detailpager);
     }
 //==========================================================================================
     private class NewsMenuDetailPagerAdapter extends PagerAdapter {
 
-        @Override
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return childrenDatas.get(position).getTitle();
+    }
+
+    @Override
         public int getCount() {
             return detailBasePagers.size(); // 集合大小
         }

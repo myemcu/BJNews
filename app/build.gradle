@@ -24,6 +24,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.0'
     compile project(':SlidingMenu_library')
-    compile project(':xutils3')
+    compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
+    compile project(':ViewPagerIndicator_library')
 }
