@@ -3,6 +3,7 @@ package com.example.administrator.bjnews;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Window;
 
 
 import com.example.administrator.bjnews.fragment.ContentFragment;
@@ -25,6 +26,7 @@ public class MainActivity extends SlidingFragmentActivity{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);  // 设置隐藏标题
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.content);                                   // 设置主页面(帧布局，常与Fragment配合使用)
