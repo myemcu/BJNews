@@ -21,6 +21,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -279,5 +280,12 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         public int getIndex() {
             return mIndex;
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        //阻止父层View截获Touch事件(解决左右反复滑动指示器时，偶尔弹出侧边栏的Bug)
+        getParent().requestDisallowInterceptTouchEvent(true);
+        return super.dispatchTouchEvent(ev);
     }
 }

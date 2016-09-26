@@ -9,12 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
+import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
@@ -66,6 +69,13 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
         return view;
     }
 
+    // 指示器右边图片按钮">"的点击事件
+    @Event(value = R.id.ib_next_tab)
+    private void nextTab(View view) {
+        // 切换到下一ViewPager页面
+        vp_news_menu_detailpager.setCurrentItem(vp_news_menu_detailpager.getCurrentItem()+1);
+    }
+
     @Override
     public void initData() {    // 数据
         super.initData();
@@ -84,6 +94,45 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
 
         // 关联ViewPager，使Indicator得以显示
         tabpage_indicator.setViewPager(vp_news_menu_detailpager);
+
+        // 使用TabPageIndicator实现vp页面监听
+        tabpage_indicator.setOnPageChangeListener(new MyOnPageChangeListener());
+    }
+
+    // 是否显示侧滑菜单
+    private void isEnableSlidingMenu(boolean isEnableSlidingMenu) {
+
+        MainActivity mainActivity = (MainActivity) context;
+        SlidingMenu slidingMenu = mainActivity.getSlidingMenu();
+
+        if (isEnableSlidingMenu) {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        }
+        else {
+            slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
+        }
+    }
+
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {  // 相关代码在ContentFragment中
+            if (position==0) {  // 开启侧滑
+                isEnableSlidingMenu(true);
+            }else {             // 关闭侧滑
+                isEnableSlidingMenu(false);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 //==========================================================================================
     private class NewsMenuDetailPagerAdapter extends PagerAdapter {
@@ -119,4 +168,5 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
             container.removeView((View) object);
         }
     }
+
 }

@@ -22,6 +22,7 @@
 
         <activity android:name=".GuideActivity"/>
 
+        <!--采用开源项目的主题-->
         <activity android:name=".MainActivity"
                   android:theme="@style/Theme.PageIndicatorDefaults"/>
 
