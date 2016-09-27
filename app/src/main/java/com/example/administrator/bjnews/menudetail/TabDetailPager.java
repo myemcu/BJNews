@@ -19,6 +19,7 @@ import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 import com.example.administrator.bjnews.bean.TabDetailPagerBean;
 import com.example.administrator.bjnews.utils.CacheUtil;
+import com.example.administrator.bjnews.utils.DensityUtil;
 import com.example.administrator.bjnews.utils.Url;
 import com.google.gson.Gson;
 
@@ -37,6 +38,7 @@ import java.util.List;
 public class TabDetailPager extends MenuDetailBasePager {
 
     private  String url;
+    private int prePosition;                // 上一个红点的高亮位置
 
     @ViewInject(R.id.vp_tabdetail_pager)    // 页签详情页面ViewPager
     private ViewPager vp_tabdetail_pager;
@@ -103,6 +105,58 @@ public class TabDetailPager extends MenuDetailBasePager {
 
         // 设置适配器
         vp_tabdetail_pager.setAdapter(new MyPagerAdapter());
+
+        ll_point_group.removeAllViews();    // 布局请显示
+
+        // 添加顶部新闻图片的红点
+        for (int i=0;i<topnews.size();i++) {
+            ImageView point = new ImageView(context);
+            point.setBackgroundResource(R.drawable.point_selector);
+            // 设置布局大小(宽，高)
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DensityUtil.dip2px(context,6),DensityUtil.dip2px(context,6));
+            point.setLayoutParams(params);
+            if (i==0) {
+                point.setEnabled(true); // 高亮显示
+            }else {
+                point.setEnabled(false);
+                params.leftMargin = DensityUtil.dip2px(context,8); // 间距
+            }
+            // 将红点添加到线性布局中
+            ll_point_group.addView(point);
+        }
+
+        // 监听ViewPager页面状态
+        vp_tabdetail_pager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+        // 更新图片标题
+        tv_title.setText(topnews.get(prePosition).getTitle()); // 设置标题
+    }
+
+    private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+
+        @Override   // 滚动
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            tv_title.setText(topnews.get(position).getTitle()); // 设置标题
+
+            // 把上一次设置为默认
+            ll_point_group.getChildAt(prePosition).setEnabled(false);
+
+            // 设置当前高亮
+            ll_point_group.getChildAt(position).setEnabled(true);
+
+            // 记录位置
+            prePosition=position;
+        }
+
+        @Override   // 选择
+        public void onPageSelected(int position) {
+
+        }
+
+        @Override   // 状态
+        public void onPageScrollStateChanged(int state) {
+
+        }
     }
 
     private class MyPagerAdapter extends PagerAdapter {
@@ -172,4 +226,5 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
         });
     }
+
 }
