@@ -76,6 +76,13 @@ public class TabDetailPager extends MenuDetailBasePager {
 
         View view = View.inflate(context, R.layout.tabdetail_pager,null);
         x.view().inject(this,view);
+
+        View topnewsview = View.inflate(context, R.layout.topnews,null);
+        x.view().inject(this,topnewsview);
+
+        // 添加头
+        lv_tabdetail_pager.addHeaderView(topnewsview);
+
         return view;
     }
 
