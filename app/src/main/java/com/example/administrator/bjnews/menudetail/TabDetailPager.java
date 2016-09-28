@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -58,6 +60,9 @@ public class TabDetailPager extends MenuDetailBasePager {
 
     // 顶部新闻对应的数据
     private List<TabDetailPagerBean.DataBean.TopnewsBean> topnews;
+    // 下方新闻列表数据
+    private List<TabDetailPagerBean.DataBean.NewsBean> newsList;
+    private TabDetailPagerBean.DataBean.NewsBean newsData;
 
 
     // 构造器
@@ -107,6 +112,73 @@ public class TabDetailPager extends MenuDetailBasePager {
         // 设置适配器
         vp_tabdetail_pager.setAdapter(new MyPagerAdapter());
 
+        // 添加红点
+        addRedPoint();
+
+        // 更新图片标题
+        tv_title.setText(topnews.get(prePosition).getTitle()); // 设置标题
+
+        // 监听ViewPager页面状态
+        vp_tabdetail_pager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+        /*设置动图下方的ListView适配器*/
+        newsList = tabDetailPagerBean.getData().getNews();          // 准备数据
+        lv_tabdetail_pager.setAdapter(new TabDetailPagerAdapter()); // 开始适配
+    }
+
+//==================================================================================================
+
+    private class TabDetailPagerAdapter extends BaseAdapter {//BaseAdapter就是自定义Adapter
+
+        @Override
+        public int getCount() {
+            return newsList.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            ViewHolder viewHolder;
+
+            if (convertView==null) {// 若没有转换视图
+                convertView=View.inflate(context,R.layout.item_tabdetail_pager,null);   // 就new一个
+                viewHolder=new ViewHolder();
+                viewHolder.iv_icon  = (ImageView) convertView.findViewById(R.id.iv_icon);
+                viewHolder.tv_title = (TextView)  convertView.findViewById(R.id.tv_title);
+                viewHolder.tv_time  = (TextView)  convertView.findViewById(R.id.tv_time);
+                convertView.setTag(viewHolder);
+            }else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            // 根据位置得到数据
+            newsData = newsList.get(position);
+            viewHolder.tv_title.setText(newsData.getTitle());
+            viewHolder.tv_time.setText(newsData.getPubdate());
+            x.image().bind(viewHolder.iv_icon,newsData.getListimage());
+
+            return convertView;
+        }
+    }
+
+    static class ViewHolder {// 静态类用于直接new
+        ImageView iv_icon;
+        TextView tv_title;
+        TextView tv_time;
+    }
+
+    private void addRedPoint() {
+
         ll_point_group.removeAllViews();    // 布局清显示
 
         // 添加顶部新闻图片的红点
@@ -125,12 +197,6 @@ public class TabDetailPager extends MenuDetailBasePager {
             // 将红点添加到线性布局中
             ll_point_group.addView(point);
         }
-
-        // 监听ViewPager页面状态
-        vp_tabdetail_pager.addOnPageChangeListener(new MyOnPageChangeListener());
-
-        // 更新图片标题
-        tv_title.setText(topnews.get(prePosition).getTitle()); // 设置标题
     }
 
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
@@ -227,4 +293,6 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
         });
     }
+
+
 }
