@@ -21,6 +21,7 @@ import com.example.administrator.bjnews.bean.TabDetailPagerBean;
 import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.DensityUtil;
 import com.example.administrator.bjnews.utils.Url;
+import com.example.administrator.bjnews.view.HorizontalScrollViewPager;
 import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
@@ -41,7 +42,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private int prePosition;                // 上一个红点的高亮位置
 
     @ViewInject(R.id.vp_tabdetail_pager)    // 页签详情页面ViewPager
-    private ViewPager vp_tabdetail_pager;
+    private HorizontalScrollViewPager vp_tabdetail_pager;
 
     @ViewInject(R.id.tv_title)              // 标题
     private TextView tv_title;
@@ -106,7 +107,7 @@ public class TabDetailPager extends MenuDetailBasePager {
         // 设置适配器
         vp_tabdetail_pager.setAdapter(new MyPagerAdapter());
 
-        ll_point_group.removeAllViews();    // 布局请显示
+        ll_point_group.removeAllViews();    // 布局清显示
 
         // 添加顶部新闻图片的红点
         for (int i=0;i<topnews.size();i++) {
@@ -226,5 +227,4 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
         });
     }
-
 }

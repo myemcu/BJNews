@@ -9,7 +9,7 @@
         android:layout_height="180dp"
         tools:ignore="UselessParent"> <!--AS让加的-->
 
-        <android.support.v4.view.ViewPager
+        <com.example.administrator.bjnews.view.HorizontalScrollViewPager
                 android:id="@+id/vp_tabdetail_pager"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"/>
