@@ -24,6 +24,7 @@ import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.DensityUtil;
 import com.example.administrator.bjnews.utils.Url;
 import com.example.administrator.bjnews.view.HorizontalScrollViewPager;
+import com.example.administrator.bjnews.view.RefreshListView;
 import com.google.gson.Gson;
 
 import org.xutils.common.Callback;
@@ -53,7 +54,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private LinearLayout ll_point_group;
 
     @ViewInject(R.id.lv_tabdetail_pager)    // ListView列表
-    private ListView lv_tabdetail_pager;
+    private RefreshListView lv_tabdetail_pager;
 
     private final NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data childrenDatas;
     private static final String TAG = TabDetailPager.class.getSimpleName();

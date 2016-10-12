@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <!--下拉刷新始-->
+    <LinearLayout
+        android:id="@+id/ll_pulldown_refresh"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" tools:ignore="UselessParent">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:id="@+id/iv_header_arrow"
+                android:layout_gravity="center"
+                android:src="@drawable/common_listview_headview_red_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription"/>
+
+            <ProgressBar
+                android:visibility="gone"
+                android:id="@+id/pb_header_status"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/custom_progress"/>
+        </FrameLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_header_status"
+                android:text="下拉刷新..."
+                android:textColor="#ff0000"
+                android:textSize="18sp" tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:id="@+id/tv_header_time"
+                android:text="刷新时间：2016-10-11"
+                android:textColor="#55000000"
+                android:textSize="14sp" tools:ignore="HardcodedText"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!--下拉刷新终-->
+
+</LinearLayout>

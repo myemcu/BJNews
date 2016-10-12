@@ -5,7 +5,7 @@
               android:layout_height="match_parent">
 
     <!--cacheColorHint:兼容低版本-->
-    <ListView
+    <com.example.administrator.bjnews.view.RefreshListView
         android:id="@+id/lv_tabdetail_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
