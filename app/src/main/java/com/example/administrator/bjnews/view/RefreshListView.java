@@ -1,8 +1,18 @@
+/**
+ * 完整的下拉刷新效果实现：
+ * 1. 下拉时，当出现箭头朝下时，是为：下拉刷新
+ * 2. 当滑动到箭头朝上时(未松手)，提示:松手刷新
+ * 3. 松手时，提示：正在刷新(箭头变圈圈)
+ * */
+
 package com.example.administrator.bjnews.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -10,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.administrator.bjnews.R;
+import com.example.administrator.bjnews.utils.LogUtil;
 
 /**
  * Created by Administrator on 2016/10/11 0011.
@@ -18,7 +29,7 @@ import com.example.administrator.bjnews.R;
 
 public class RefreshListView extends ListView{
 
-    private LinearLayout headerView;    // 自定义一个视图(包含下拉刷新控件和顶部轮播图)
+    private LinearLayout headerView;    // 自定义一个视图(包含下拉刷新控件和顶部轮播图，使其成为一个整体)
 
     private View ll_pulldown_refresh;   // 下拉刷新控件
     private ImageView iv_header_arrow;
@@ -26,12 +37,33 @@ public class RefreshListView extends ListView{
     private TextView tv_header_status;
     private TextView tv_header_time;
 
-    private int refreshHeight; // 下拉刷新控件的高
+    private int refreshHeight;  // 下拉刷新控件的高
+    private View topnewsview;   // 顶部轮播图
+
+    public static final int PULLDOWN_REFRESH = 0;	    // 下拉状态
+    public static final int RELEASE_REFRESH  = 1;		// 松手状态
+    public static final int REFRESHING       = 2;		// 刷新状态
+    private int currentState = PULLDOWN_REFRESH ;		// 当前状态(下拉刷新)
+
 
     public RefreshListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         initHeaderView(context);    // 初始化下拉刷新视图
+        initAnimation();            // 下拉时的箭头动画
+    }
+
+    private Animation up;           // 箭头朝上
+    private Animation down;         // 箭头朝下
+
+    // 初始化动画
+    private void initAnimation() {
+        up=new RotateAnimation(0,-180,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+        up.setDuration(500);    // 500ms
+        up.setFillAfter(true);  // 停留后的状态
+
+        down=new RotateAnimation(-180,-360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+        down.setDuration(500);    // 500ms
+        down.setFillAfter(true);  // 停留后的状态
     }
 
     // 初始化下拉刷新视图
@@ -45,17 +77,134 @@ public class RefreshListView extends ListView{
         tv_header_status = (TextView) headerView.findViewById(R.id.tv_header_status);       // 上方文字
         tv_header_time = (TextView) headerView.findViewById(R.id.tv_header_time);           // 下方文字
 
-//        View.setPading(0,-控件高度,0,0);	// 完全隐藏
-//        View.setPading(0,0,0,0);			// 完全显示
-//        View.setPading(0, 控件高度,0,0);	// 两倍显示
-
         ll_pulldown_refresh.measure(0,0);                           // 调用系统方法测量
         refreshHeight = ll_pulldown_refresh.getMeasuredHeight();    // 获取测量值
         ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);       // 隐藏显示(默认)
 //        ll_pulldown_refresh.setPadding(0,0,0,0);                    // 完整显示
 //        ll_pulldown_refresh.setPadding(0,refreshHeight,0,0);        // 两倍显示
 
-        // 以头的方式加载进入
+        // 以头的方式添加下拉刷新列表
         addHeaderView(headerView);
+    }
+
+    private float startY;   // 下拉时的起始(纵)坐标
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {   // 重写该方法，以保证下拉时能看到效果
+
+        switch (ev.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                                        startY=ev.getY();   // 记录起始坐标
+                                        break;
+
+            case MotionEvent.ACTION_MOVE:
+                                        float endY=ev.getY();           // 记录结束值
+                                        float distancey=endY-startY;    // 计算偏移量
+
+                                        // 判断顶部轮播图是否完全显示
+                                        boolean isDisplayTopNews = isDisplayTopNews();
+                                        if (!isDisplayTopNews) { // 没完全显示
+                                          break;
+                                        }
+
+                                        // 动态显示下拉刷新
+                                        if (distancey>0) {
+                                            int padingTop = (int) (-refreshHeight+distancey);
+
+                                            if (padingTop>0 && currentState!=RELEASE_REFRESH) { // 松手刷新
+                                                currentState=RELEASE_REFRESH;
+                                                LogUtil.e("手势下拉...");
+                                                // 更新状态
+                                                refreshHeaderStatus();
+                                            }else if (padingTop<0 && currentState!=PULLDOWN_REFRESH) { // 下拉刷新
+                                                currentState=PULLDOWN_REFRESH;
+                                                LogUtil.e("进入下拉刷新状态...");
+                                                // 更新状态
+                                                refreshHeaderStatus();
+                                            }
+
+                                            ll_pulldown_refresh.setPadding(0,padingTop,0,0);
+                                        }
+                                        break;
+
+            case MotionEvent.ACTION_UP:
+                                        startY=0;
+                                        if (currentState==PULLDOWN_REFRESH) {   // 隐藏
+                                            ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);
+                                        }else if (currentState==RELEASE_REFRESH) {
+                                            // 修改成正在刷新
+                                            currentState=REFRESHING;
+                                            ll_pulldown_refresh.setPadding(10,10,10,10); // 完全显示(没有这句，会影响下拉松手后的显示效果)
+                                            refreshHeaderStatus();
+                                            // 回调接口
+                                        }
+                                        break;
+        }
+
+        return super.onTouchEvent(ev);
+    }
+
+    // 状态更新
+    private void refreshHeaderStatus() {
+        switch (currentState) {
+            case PULLDOWN_REFRESH:  // 进入下拉刷新状态
+                                    iv_header_arrow.startAnimation(down); // 箭头朝下
+                                    iv_header_arrow.setVisibility(View.VISIBLE);
+                                    pb_header_status.setVisibility(View.GONE);
+                                    tv_header_status.setText("下拉刷新...");
+                                    break;
+
+            case RELEASE_REFRESH:   // 手势下拉
+                                    iv_header_arrow.startAnimation(up); // 箭头朝上
+                                    tv_header_status.setText("松手刷新...");
+                                    break;
+
+            case REFRESHING:        // 正在刷新
+                                    iv_header_arrow.clearAnimation(); // 停止动画
+                                    pb_header_status.setVisibility(View.VISIBLE);
+                                    iv_header_arrow.setVisibility(View.GONE);
+                                    tv_header_status.setText("正在刷新...");
+                                    break;
+        }
+    }
+
+    // 判断顶部轮播图是否完全显示
+    // 原理：当ListView在屏幕上的Y坐标(定值) <= 顶部轮播图在Y轴坐标(动值)的时候，即为完全显示(应对加载更多时候的Bug)。
+    // 作用：解决加载更多时候的Bug
+
+    private float mListViewOnScreenY = -1; // 记录ListView在屏幕上的坐标，默认为-1
+
+    private boolean isDisplayTopNews() {
+
+        int[] location = new int[2];
+
+        // 得到ListView在屏幕上的坐标
+        if (mListViewOnScreenY==-1) {
+            this.getLocationOnScreen(location);
+            mListViewOnScreenY=location[1];
+        }
+
+        // 得到顶部轮播图在屏幕上的坐标
+        topnewsview.getLocationOnScreen(location);
+        float mtopnewsViewOnScreeny=location[1];
+
+        /*if (mListViewOnScreenY<=mtopnewsViewOnScreeny) {
+            return true;
+        }else {
+            return false;
+        }*/
+
+        return mListViewOnScreenY<=mtopnewsViewOnScreeny;    // 默认显示
+    }
+
+    // 添加顶部轮播图，使其与下拉刷新控件refresh_header整合成一个整体
+    public void addTopNewsView(View topnewsview) {
+        this.topnewsview=topnewsview;
+
+        if (topnewsview != null) {
+            headerView.addView(topnewsview);
+        }
+
     }
 }

@@ -61,4 +61,6 @@
     </LinearLayout>
     <!--下拉刷新终-->
 
+    <!--顶部轮播图加载到此处，java中实现-->
+
 </LinearLayout>

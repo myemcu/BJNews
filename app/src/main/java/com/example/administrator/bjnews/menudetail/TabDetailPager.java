@@ -53,7 +53,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     @ViewInject(R.id.ll_point_group)        // 线性布局(水平)装红点用
     private LinearLayout ll_point_group;
 
-    @ViewInject(R.id.lv_tabdetail_pager)    // ListView列表
+    @ViewInject(R.id.lv_tabdetail_pager)    // 下拉刷新列表(在该列表中还要添加顶部轮播图，其后实现)
     private RefreshListView lv_tabdetail_pager;
 
     private final NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data childrenDatas;
@@ -81,8 +81,11 @@ public class TabDetailPager extends MenuDetailBasePager {
         View topnewsview = View.inflate(context, R.layout.topnews,null);
         x.view().inject(this,topnewsview);
 
-        // 添加头
-        lv_tabdetail_pager.addHeaderView(topnewsview);
+        // 添加头(顶部轮播图)
+        // lv_tabdetail_pager.addHeaderView(topnewsview);
+
+        // 向下拉刷新列表"lv_tabdetail_pager"中添加顶部轮播图，使其整合成一个整体
+        lv_tabdetail_pager.addTopNewsView(topnewsview);
 
         return view;
     }
