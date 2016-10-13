@@ -87,6 +87,14 @@ public class TabDetailPager extends MenuDetailBasePager {
         // 向下拉刷新列表"lv_tabdetail_pager"中添加顶部轮播图，使其整合成一个整体
         lv_tabdetail_pager.addTopNewsView(topnewsview);
 
+        // 设置刷新的监听
+        lv_tabdetail_pager.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
+            @Override
+            public void onPullDownRefresh() {
+                getDataFromNet();
+            }
+        });
+
         return view;
     }
 
@@ -280,17 +288,22 @@ public class TabDetailPager extends MenuDetailBasePager {
     // 每个状态的日志都要打
     private void getDataFromNet() {
         RequestParams params = new RequestParams(url);      // 请求url
+
+        //params.setConnectTimeout(4000); //4s超时时间
+
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.i(TAG,"onSuccess=="+result);
                 CacheUtil.putString(context,url,result);    // 缓存数据
                 processData(result);                        // 开始解析数据
+                lv_tabdetail_pager.OnRefreshFinish(true);   // 更新刷新的时间
             }
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 Log.i(TAG,"Throwable=="+ex.getMessage());
+                lv_tabdetail_pager.OnRefreshFinish(false);
             }
 
             @Override

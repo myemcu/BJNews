@@ -22,6 +22,9 @@ import android.widget.TextView;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.utils.LogUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by Administrator on 2016/10/11 0011.
  * 自定义用于下拉刷新的ListView
@@ -138,6 +141,9 @@ public class RefreshListView extends ListView{
                                             ll_pulldown_refresh.setPadding(10,10,10,10); // 完全显示(没有这句，会影响下拉松手后的显示效果)
                                             refreshHeaderStatus();
                                             // 回调接口
+                                            if (mOnRereshListener!=null) {
+                                                mOnRereshListener.onPullDownRefresh();
+                                            }
                                         }
                                         break;
         }
@@ -207,4 +213,45 @@ public class RefreshListView extends ListView{
         }
 
     }
+
+    // 下拉刷新完成，把状态设置为默认(这里真机与模拟器有差异，真机即使在断网情况下，会隐藏下拉刷新，模拟器会一直显示圈圈)
+    // 而最终实现效果是，联网后，可显示系统时间。
+    public void OnRefreshFinish(boolean isSuccess) {
+
+        /*currentState = PULLDOWN_REFRESH;
+        pb_header_status.setVisibility(View.GONE);
+        iv_header_arrow.setVisibility(View.VISIBLE);
+        ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);*/
+
+        if (isSuccess) {
+            // 写在这里是为了适合真机效果(有网显示系统时间，松手后下拉刷新效果消失，无网则一直圈圈)
+            currentState = PULLDOWN_REFRESH;
+            pb_header_status.setVisibility(View.GONE);
+            iv_header_arrow.setVisibility(View.VISIBLE);
+            ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);
+
+            // 更新刷新时间
+            tv_header_time.setText("上次更新时间"+getSystemTime());
+        }
+
+    }
+
+    // 得到系统时间
+    private String getSystemTime() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(new Date());
+    }
+
+    // 自定义接口，回调的时候联网请求
+    public interface OnRefreshListener {
+        public void onPullDownRefresh();	// 下拉刷新时，回调该方法
+    }
+
+    private OnRefreshListener mOnRereshListener;
+
+    // 设置刷新的监听：下拉刷新和加载更多
+    public void setOnRefreshListener(OnRefreshListener l) {
+        mOnRereshListener=l;
+    }
+
 }
