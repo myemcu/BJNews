@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
@@ -91,7 +92,13 @@ public class TabDetailPager extends MenuDetailBasePager {
         lv_tabdetail_pager.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
             @Override
             public void onPullDownRefresh() {
+                Toast.makeText(context,"下拉刷新，被回调",Toast.LENGTH_LONG).show();
                 getDataFromNet();
+            }
+
+            @Override
+            public void onLoadMore() {
+                Toast.makeText(context,"加载更多，被回调",Toast.LENGTH_LONG).show();
             }
         });
 

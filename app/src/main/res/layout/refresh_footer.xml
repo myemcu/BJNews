@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="horizontal"
+              android:gravity="center"
+              android:padding="5dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/pb_footer_status"
+        android:visibility="visible"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateDrawable="@drawable/custom_progress"/>
+
+    <TextView
+        android:id="@+id/tv_footer_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="上拉，加载更多..."
+        android:textColor="#ff0000"
+        android:textSize="25sp"
+        tools:ignore="HardcodedText,RtlHardcoded"/>
+
+</LinearLayout>

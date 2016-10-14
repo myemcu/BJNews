@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,7 +41,10 @@ public class RefreshListView extends ListView{
     private TextView tv_header_status;
     private TextView tv_header_time;
 
-    private int refreshHeight;  // 下拉刷新控件的高
+    private int refreshHeight;          // 下拉刷新视图的高
+    private int footervHeight;          // 上拉加载视图的高
+    private boolean isLoadMore=false;   // 是否加载更多
+
     private View topnewsview;   // 顶部轮播图
 
     public static final int PULLDOWN_REFRESH = 0;	    // 下拉状态
@@ -49,14 +53,58 @@ public class RefreshListView extends ListView{
     private int currentState = PULLDOWN_REFRESH ;		// 当前状态(下拉刷新)
 
 
-    public RefreshListView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initHeaderView(context);    // 初始化下拉刷新视图
-        initAnimation();            // 下拉时的箭头动画
-    }
-
     private Animation up;           // 箭头朝上
     private Animation down;         // 箭头朝下
+
+    private View refresh_footer_view; // 上拉加载
+
+    public RefreshListView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        initHeaderView(context);    // 初始化“下拉刷新”视图(代码中创建xml)
+        initAnimation();            // 下拉时的箭头动画
+        initFootView(context);      // 初始化“上拉加载更多”视图(代码中创建xml)
+    }
+
+    // 上拉加载初始化
+    private void initFootView(Context context) {
+        refresh_footer_view=View.inflate(context,R.layout.refresh_footer,null);
+        refresh_footer_view.measure(0,0);                       // 传0代表调它一下，即：调用测量
+        footervHeight=refresh_footer_view.getMeasuredHeight();  // 得到上拉加载视图的高
+
+//        refresh_footer_view.setPadding(5,5,5,5);              // 完全显示(android:padding="5dp")
+        refresh_footer_view.setPadding(5,5-footervHeight,5,5);  // 隐藏
+
+        addFooterView(refresh_footer_view);                     // 添加
+
+        // 设置滚动监听(滑到底部即最后一条时，出现加载更多)
+        setOnScrollListener(new MyOnScrollListener());
+    }
+
+    private class MyOnScrollListener implements OnScrollListener {
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            // 当静止或惯性滑动到最后一个时
+            if (scrollState==SCROLL_STATE_IDLE || scrollState==SCROLL_STATE_FLING) {
+                if (getLastVisiblePosition()==getCount()-1) {
+                    // 加载更多
+                    isLoadMore=true;
+                    // 显示加载更多的视图
+                    refresh_footer_view.setPadding(5,5,5,5);
+                    // 回调接口
+                    if (mOnRereshListener != null) {
+                        mOnRereshListener.onLoadMore();
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        }
+    }
+
 
     // 初始化动画
     private void initAnimation() {
@@ -214,10 +262,11 @@ public class RefreshListView extends ListView{
 
     }
 
-    // 下拉刷新完成，把状态设置为默认(这里真机与模拟器有差异，真机即使在断网情况下，会隐藏下拉刷新，模拟器会一直显示圈圈)
+    // 下拉刷新完成，把状态设置为默认
     // 而最终实现效果是，联网后，可显示系统时间。
     public void OnRefreshFinish(boolean isSuccess) {
 
+        //(若写在这里，则真机与模拟器有差异，真机即使在断网情况下，会隐藏下拉刷新，模拟器会一直显示圈圈)
         /*currentState = PULLDOWN_REFRESH;
         pb_header_status.setVisibility(View.GONE);
         iv_header_arrow.setVisibility(View.VISIBLE);
@@ -245,6 +294,7 @@ public class RefreshListView extends ListView{
     // 自定义接口，回调的时候联网请求
     public interface OnRefreshListener {
         public void onPullDownRefresh();	// 下拉刷新时，回调该方法
+        public void onLoadMore();           // 当加载更多时，回调该方法
     }
 
     private OnRefreshListener mOnRereshListener;
@@ -253,5 +303,6 @@ public class RefreshListView extends ListView{
     public void setOnRefreshListener(OnRefreshListener l) {
         mOnRereshListener=l;
     }
+
 
 }
