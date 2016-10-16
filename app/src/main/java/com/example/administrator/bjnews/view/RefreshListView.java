@@ -91,9 +91,9 @@ public class RefreshListView extends ListView{
                     isLoadMore=true;
                     // 显示加载更多的视图
                     refresh_footer_view.setPadding(5,5,5,5);
-                    // 回调接口
+                    // 回调接口(改思想相当于跨文件的方法调用)
                     if (mOnRereshListener != null) {
-                        mOnRereshListener.onLoadMore();
+                        mOnRereshListener.onLoadMore();//
                     }
                 }
             }
@@ -153,7 +153,7 @@ public class RefreshListView extends ListView{
                                         float endY=ev.getY();           // 记录结束值
                                         float distancey=endY-startY;    // 计算偏移量
 
-                                        // 判断顶部轮播图是否完全显示
+                                        // 判断顶部轮播图是否完全显示(若注释掉，则会在猛地下滑过程中产生瞬间回到顶部的Bug)
                                         boolean isDisplayTopNews = isDisplayTopNews();
                                         if (!isDisplayTopNews) { // 没完全显示
                                           break;
@@ -265,22 +265,21 @@ public class RefreshListView extends ListView{
     // 下拉刷新完成，把状态设置为默认
     // 而最终实现效果是，联网后，可显示系统时间。
     public void OnRefreshFinish(boolean isSuccess) {
-
-        //(若写在这里，则真机与模拟器有差异，真机即使在断网情况下，会隐藏下拉刷新，模拟器会一直显示圈圈)
-        /*currentState = PULLDOWN_REFRESH;
-        pb_header_status.setVisibility(View.GONE);
-        iv_header_arrow.setVisibility(View.VISIBLE);
-        ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);*/
-
-        if (isSuccess) {
-            // 写在这里是为了适合真机效果(有网显示系统时间，松手后下拉刷新效果消失，无网则一直圈圈)
+        if (isLoadMore) {
+            // 加载更多
+            isLoadMore=false;
+            refresh_footer_view.setPadding(0,-footervHeight,0,0);   // 隐藏
+        }else {
+            /** 写在这里是为了适合真机效果(有网显示系统时间，松手后下拉刷新效果消失，无网则一直圈圈)*/
             currentState = PULLDOWN_REFRESH;
             pb_header_status.setVisibility(View.GONE);
             iv_header_arrow.setVisibility(View.VISIBLE);
             ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);
 
-            // 更新刷新时间
-            tv_header_time.setText("上次更新时间"+getSystemTime());
+            if (isSuccess) {
+                // 更新刷新时间
+                tv_header_time.setText("上次更新时间"+getSystemTime());
+            }
         }
 
     }
@@ -297,9 +296,10 @@ public class RefreshListView extends ListView{
         public void onLoadMore();           // 当加载更多时，回调该方法
     }
 
+    // 定义接口变量
     private OnRefreshListener mOnRereshListener;
 
-    // 设置刷新的监听：下拉刷新和加载更多
+    // 设置刷新的监听：下拉刷新和加载更多(接通TabDetailPager.java中的setOnRefreshListener(L92))
     public void setOnRefreshListener(OnRefreshListener l) {
         mOnRereshListener=l;
     }

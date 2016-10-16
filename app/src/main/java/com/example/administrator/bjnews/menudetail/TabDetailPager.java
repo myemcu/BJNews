@@ -23,6 +23,7 @@ import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
 import com.example.administrator.bjnews.bean.TabDetailPagerBean;
 import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.DensityUtil;
+import com.example.administrator.bjnews.utils.LogUtil;
 import com.example.administrator.bjnews.utils.Url;
 import com.example.administrator.bjnews.view.HorizontalScrollViewPager;
 import com.example.administrator.bjnews.view.RefreshListView;
@@ -57,6 +58,8 @@ public class TabDetailPager extends MenuDetailBasePager {
     @ViewInject(R.id.lv_tabdetail_pager)    // 下拉刷新列表(在该列表中还要添加顶部轮播图，其后实现)
     private RefreshListView lv_tabdetail_pager;
 
+    private String moreUrl;                 // 用于加载更多的链接
+
     private final NewsCenterBean_Hand.NewsCenterBean_Data.Children_Data childrenDatas;
     private static final String TAG = TabDetailPager.class.getSimpleName();
 
@@ -65,6 +68,9 @@ public class TabDetailPager extends MenuDetailBasePager {
     // 下方新闻列表数据
     private List<TabDetailPagerBean.DataBean.NewsBean> newsList;
     private TabDetailPagerBean.DataBean.NewsBean newsData;
+
+    private boolean isLoadMore; // 是否已经加载更多
+    private TabDetailPagerAdapter adapter;
 
 
     // 构造器
@@ -98,11 +104,55 @@ public class TabDetailPager extends MenuDetailBasePager {
 
             @Override
             public void onLoadMore() {
-                Toast.makeText(context,"加载更多，被回调",Toast.LENGTH_LONG).show();
+//                Toast.makeText(context,"加载更多，被回调",Toast.LENGTH_LONG).show();
+                if (TextUtils.isEmpty(moreUrl)) {
+                    // 没有更多
+                    Toast.makeText(context,"没有更多数据",Toast.LENGTH_LONG).show();
+                    lv_tabdetail_pager.OnRefreshFinish(false);
+                    isLoadMore=false;
+                }else {
+                    // 加载更多
+                    getMoreDataFromNet();
+                }
             }
         });
 
         return view;
+    }
+
+    // 加载更多
+    private void getMoreDataFromNet() {
+        RequestParams params = new RequestParams(moreUrl);      // 请求url
+
+        //params.setConnectTimeout(4000); //4s超时时间
+
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.i(TAG,"onSuccess=="+result);
+//                CacheUtil.putString(context,url,result);    // 缓存数据
+                isLoadMore=true;
+                processData(result);                        // 开始解析数据
+
+                lv_tabdetail_pager.OnRefreshFinish(true);   // 更新刷新的时间
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                Log.i(TAG,"Throwable=="+ex.getMessage());
+                lv_tabdetail_pager.OnRefreshFinish(false);
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+                Log.i(TAG,"CancelledException=="+cex.getMessage());
+            }
+
+            @Override
+            public void onFinished() {
+                Log.i(TAG,"==onFinished!==");
+            }
+        });
     }
 
     @Override
@@ -128,28 +178,52 @@ public class TabDetailPager extends MenuDetailBasePager {
         // 开HiJson，将IE中的内容(北京的Json信息)全选复制进来后，再点击"格式化Json字符串"
 
         TabDetailPagerBean tabDetailPagerBean = paseJson(json); // 解析到Bean
+        String more = tabDetailPagerBean.getData().getMore();   // 加载更多的链接
+        if (TextUtils.isEmpty(more)) {
+            moreUrl="";
+        }else {
+            moreUrl=Url.BASE_URL+more;
+        }
+        LogUtil.e("moreUrl==="+moreUrl);// 调试时，输入processData进行跟踪(开服务器)
+
         Log.i(TAG,"解析测试==");
         Log.i(TAG,"解析news[0]成功=="+tabDetailPagerBean.getData().getNews().get(0).getTitle());
         Log.i(TAG,"解析Title成功=="+tabDetailPagerBean.getData().getTitle());
 
-        // 获取顶部新闻的数据
-        topnews = tabDetailPagerBean.getData().getTopnews();
 
-        // 设置适配器
-        vp_tabdetail_pager.setAdapter(new MyPagerAdapter());
+        if (!isLoadMore) {
+            // 之前默认
+            // 获取顶部新闻的数据
+            topnews = tabDetailPagerBean.getData().getTopnews();
 
-        // 添加红点
-        addRedPoint();
+            // 设置适配器
+            vp_tabdetail_pager.setAdapter(new MyPagerAdapter());
 
-        // 更新图片标题
-        tv_title.setText(topnews.get(prePosition).getTitle()); // 设置标题
+            // 添加红点
+            addRedPoint();
 
-        // 监听ViewPager页面状态
-        vp_tabdetail_pager.addOnPageChangeListener(new MyOnPageChangeListener());
+            // 更新图片标题
+            tv_title.setText(topnews.get(prePosition).getTitle()); // 设置标题
 
-        /*设置动图下方的ListView适配器*/
-        newsList = tabDetailPagerBean.getData().getNews();          // 准备数据
-        lv_tabdetail_pager.setAdapter(new TabDetailPagerAdapter()); // 开始适配
+            // 监听ViewPager页面状态
+            vp_tabdetail_pager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+            /*设置动图下方的ListView适配器*/
+            newsList = tabDetailPagerBean.getData().getNews();          // 准备数据
+            adapter = new TabDetailPagerAdapter();
+            lv_tabdetail_pager.setAdapter(adapter); // 开始适配
+
+        }else {
+            isLoadMore=false;
+            // 加载更多
+            // 新加的数据(非老数据)
+            // List<TabDetailPagerBean.DataBean.NewsBean> newsList = tabDetailPagerBean.getData().getNews();   // 准备数据(直接赋值就覆盖了)
+            newsList.addAll(tabDetailPagerBean.getData().getNews());
+            // 刷新适配器
+            adapter.notifyDataSetChanged();
+        }
+
+
     }
 
 //==================================================================================================
