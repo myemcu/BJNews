@@ -26,8 +26,11 @@ import com.example.administrator.bjnews.utils.DensityUtil;
 import com.example.administrator.bjnews.utils.LogUtil;
 import com.example.administrator.bjnews.utils.Url;
 import com.example.administrator.bjnews.view.HorizontalScrollViewPager;
-import com.example.administrator.bjnews.view.RefreshListView;
+
 import com.google.gson.Gson;
+
+//import com.example.administrator.bjnews.view.RefreshListView;
+import com.myemcu.refreshlistview_lib.RefreshListView;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -92,6 +95,7 @@ public class TabDetailPager extends MenuDetailBasePager {
         // lv_tabdetail_pager.addHeaderView(topnewsview);
 
         // 向下拉刷新列表"lv_tabdetail_pager"中添加顶部轮播图，使其整合成一个整体
+        // 如果注掉，将不添加顶部轮播图
         lv_tabdetail_pager.addTopNewsView(topnewsview);
 
         // 设置刷新的监听
@@ -124,7 +128,7 @@ public class TabDetailPager extends MenuDetailBasePager {
     private void getMoreDataFromNet() {
         RequestParams params = new RequestParams(moreUrl);      // 请求url
 
-        //params.setConnectTimeout(4000); //4s超时时间
+        params.setConnectTimeout(2000); //2s断网超时时间
 
         x.http().get(params, new Callback.CommonCallback<String>() {
             @Override

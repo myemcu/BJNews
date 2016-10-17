@@ -1,11 +1,11 @@
+package com.myemcu.refreshlistview_lib;
+
 /**
  * 完整的下拉刷新效果实现：
  * 1. 下拉时，当出现箭头朝下时，是为：下拉刷新
  * 2. 当滑动到箭头朝上时(未松手)，提示:松手刷新
  * 3. 松手时，提示：正在刷新(箭头变圈圈)
  * */
-
-package com.example.administrator.bjnews.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -20,8 +20,26 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.administrator.bjnews.R;
-import com.example.administrator.bjnews.utils.LogUtil;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+//package com.example.administrator.bjnews.view;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.AbsListView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+//import com.example.administrator.bjnews.R;
+//import com.example.administrator.bjnews.utils.LogUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +49,7 @@ import java.util.Date;
  * 自定义用于下拉刷新的ListView
  */
 
-public class RefreshListView extends ListView{
+public class RefreshListView extends ListView {
 
     private LinearLayout headerView;    // 自定义一个视图(包含下拉刷新控件和顶部轮播图，使其成为一个整体)
 
@@ -146,54 +164,54 @@ public class RefreshListView extends ListView{
         switch (ev.getAction()) {
 
             case MotionEvent.ACTION_DOWN:
-                                        startY=ev.getY();   // 记录起始坐标
-                                        break;
+                startY=ev.getY();   // 记录起始坐标
+                break;
 
             case MotionEvent.ACTION_MOVE:
-                                        float endY=ev.getY();           // 记录结束值
-                                        float distancey=endY-startY;    // 计算偏移量
+                float endY=ev.getY();           // 记录结束值
+                float distancey=endY-startY;    // 计算偏移量
 
-                                        // 判断顶部轮播图是否完全显示(若注释掉，则会在猛地下滑过程中产生瞬间回到顶部的Bug)
-                                        boolean isDisplayTopNews = isDisplayTopNews();
-                                        if (!isDisplayTopNews) { // 没完全显示
-                                          break;
-                                        }
+                // 判断顶部轮播图是否完全显示(若注释掉，则会在猛地下滑过程中产生瞬间回到顶部的Bug)
+                boolean isDisplayTopNews = isDisplayTopNews();
+                if (!isDisplayTopNews) { // 没完全显示
+                    break;
+                }
 
-                                        // 动态显示下拉刷新
-                                        if (distancey>0) {
-                                            int padingTop = (int) (-refreshHeight+distancey);
+                // 动态显示下拉刷新
+                if (distancey>0) {
+                    int padingTop = (int) (-refreshHeight+distancey);
 
-                                            if (padingTop>0 && currentState!=RELEASE_REFRESH) { // 松手刷新
-                                                currentState=RELEASE_REFRESH;
-                                                LogUtil.e("手势下拉...");
-                                                // 更新状态
-                                                refreshHeaderStatus();
-                                            }else if (padingTop<0 && currentState!=PULLDOWN_REFRESH) { // 下拉刷新
-                                                currentState=PULLDOWN_REFRESH;
-                                                LogUtil.e("进入下拉刷新状态...");
-                                                // 更新状态
-                                                refreshHeaderStatus();
-                                            }
+                    if (padingTop>0 && currentState!=RELEASE_REFRESH) { // 松手刷新
+                        currentState=RELEASE_REFRESH;
+                        LogUtil.e("手势下拉...");
+                        // 更新状态
+                        refreshHeaderStatus();
+                    }else if (padingTop<0 && currentState!=PULLDOWN_REFRESH) { // 下拉刷新
+                        currentState=PULLDOWN_REFRESH;
+                        LogUtil.e("进入下拉刷新状态...");
+                        // 更新状态
+                        refreshHeaderStatus();
+                    }
 
-                                            ll_pulldown_refresh.setPadding(0,padingTop,0,0);
-                                        }
-                                        break;
+                    ll_pulldown_refresh.setPadding(0,padingTop,0,0);
+                }
+                break;
 
             case MotionEvent.ACTION_UP:
-                                        startY=0;
-                                        if (currentState==PULLDOWN_REFRESH) {   // 隐藏
-                                            ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);
-                                        }else if (currentState==RELEASE_REFRESH) {
-                                            // 修改成正在刷新
-                                            currentState=REFRESHING;
-                                            ll_pulldown_refresh.setPadding(10,10,10,10); // 完全显示(没有这句，会影响下拉松手后的显示效果)
-                                            refreshHeaderStatus();
-                                            // 回调接口
-                                            if (mOnRereshListener!=null) {
-                                                mOnRereshListener.onPullDownRefresh();
-                                            }
-                                        }
-                                        break;
+                startY=0;
+                if (currentState==PULLDOWN_REFRESH) {   // 隐藏
+                    ll_pulldown_refresh.setPadding(0,-refreshHeight,0,0);
+                }else if (currentState==RELEASE_REFRESH) {
+                    // 修改成正在刷新
+                    currentState=REFRESHING;
+                    ll_pulldown_refresh.setPadding(10,10,10,10); // 完全显示(没有这句，会影响下拉松手后的显示效果)
+                    refreshHeaderStatus();
+                    // 回调接口
+                    if (mOnRereshListener!=null) {
+                        mOnRereshListener.onPullDownRefresh();
+                    }
+                }
+                break;
         }
 
         return super.onTouchEvent(ev);
@@ -203,23 +221,23 @@ public class RefreshListView extends ListView{
     private void refreshHeaderStatus() {
         switch (currentState) {
             case PULLDOWN_REFRESH:  // 进入下拉刷新状态
-                                    iv_header_arrow.startAnimation(down); // 箭头朝下
-                                    iv_header_arrow.setVisibility(View.VISIBLE);
-                                    pb_header_status.setVisibility(View.GONE);
-                                    tv_header_status.setText("下拉刷新...");
-                                    break;
+                iv_header_arrow.startAnimation(down); // 箭头朝下
+                iv_header_arrow.setVisibility(View.VISIBLE);
+                pb_header_status.setVisibility(View.GONE);
+                tv_header_status.setText("下拉刷新...");
+                break;
 
             case RELEASE_REFRESH:   // 手势下拉
-                                    iv_header_arrow.startAnimation(up); // 箭头朝上
-                                    tv_header_status.setText("松手刷新...");
-                                    break;
+                iv_header_arrow.startAnimation(up); // 箭头朝上
+                tv_header_status.setText("松手刷新...");
+                break;
 
             case REFRESHING:        // 正在刷新
-                                    iv_header_arrow.clearAnimation(); // 停止动画
-                                    pb_header_status.setVisibility(View.VISIBLE);
-                                    iv_header_arrow.setVisibility(View.GONE);
-                                    tv_header_status.setText("正在刷新...");
-                                    break;
+                iv_header_arrow.clearAnimation(); // 停止动画
+                pb_header_status.setVisibility(View.VISIBLE);
+                iv_header_arrow.setVisibility(View.GONE);
+                tv_header_status.setText("正在刷新...");
+                break;
         }
     }
 
@@ -231,17 +249,18 @@ public class RefreshListView extends ListView{
 
     private boolean isDisplayTopNews() {
 
-        int[] location = new int[2];
+        if (topnewsview != null) {
+            int[] location = new int[2];
 
-        // 得到ListView在屏幕上的坐标
-        if (mListViewOnScreenY==-1) {
-            this.getLocationOnScreen(location);
-            mListViewOnScreenY=location[1];
-        }
+            // 得到ListView在屏幕上的坐标
+            if (mListViewOnScreenY==-1) {
+                this.getLocationOnScreen(location);
+                mListViewOnScreenY=location[1];
+            }
 
-        // 得到顶部轮播图在屏幕上的坐标
-        topnewsview.getLocationOnScreen(location);
-        float mtopnewsViewOnScreeny=location[1];
+            // 得到顶部轮播图在屏幕上的坐标
+            topnewsview.getLocationOnScreen(location);
+            float mtopnewsViewOnScreeny=location[1];
 
         /*if (mListViewOnScreenY<=mtopnewsViewOnScreeny) {
             return true;
@@ -249,7 +268,10 @@ public class RefreshListView extends ListView{
             return false;
         }*/
 
-        return mListViewOnScreenY<=mtopnewsViewOnScreeny;    // 默认显示
+            return mListViewOnScreenY<=mtopnewsViewOnScreeny;    // 默认显示
+        }
+
+        return true;
     }
 
     // 添加顶部轮播图，使其与下拉刷新控件refresh_header整合成一个整体
@@ -304,5 +326,5 @@ public class RefreshListView extends ListView{
         mOnRereshListener=l;
     }
 
-
 }
+

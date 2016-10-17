@@ -5,11 +5,10 @@
               android:layout_height="match_parent">
 
     <!--cacheColorHint:兼容低版本-->
-    <com.example.administrator.bjnews.view.RefreshListView
+    <com.myemcu.refreshlistview_lib.RefreshListView
         android:id="@+id/lv_tabdetail_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cacheColorHint="@android:color/transparent"
-    />
+        android:cacheColorHint="@android:color/transparent"/>
 
 </LinearLayout>
