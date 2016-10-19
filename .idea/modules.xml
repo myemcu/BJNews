@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Android-PullToRefresh_sample/Android-PullToRefresh_sample.iml" filepath="$PROJECT_DIR$/Android-PullToRefresh_sample/Android-PullToRefresh_sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/BJNews.iml" filepath="$PROJECT_DIR$/BJNews.iml" />
       <module fileurl="file://$PROJECT_DIR$/RefreshListView_Sample/RefreshListView_Sample.iml" filepath="$PROJECT_DIR$/RefreshListView_Sample/RefreshListView_Sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/RefreshListView_lib/RefreshListView_lib.iml" filepath="$PROJECT_DIR$/RefreshListView_lib/RefreshListView_lib.iml" />
@@ -9,6 +10,9 @@
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_sample/ViewPagerIndicator_sample.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_sample/ViewPagerIndicator_sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullToRefreshListFragment/pullToRefreshListFragment.iml" filepath="$PROJECT_DIR$/pullToRefreshListFragment/pullToRefreshListFragment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pullToRefreshViewPager/pullToRefreshViewPager.iml" filepath="$PROJECT_DIR$/pullToRefreshViewPager/pullToRefreshViewPager.iml" />
       <module fileurl="file://$PROJECT_DIR$/xutils3_library/xutils3_library.iml" filepath="$PROJECT_DIR$/xutils3_library/xutils3_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/xutils3_sample/xutils3_sample.iml" filepath="$PROJECT_DIR$/xutils3_sample/xutils3_sample.iml" />
     </modules>

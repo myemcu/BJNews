@@ -136,7 +136,7 @@ public class NewsCenterPager extends BasePager {
         // 添加“新闻、专题、组图、菜单”这四个ViewPager
         detailBasePagers = new ArrayList<>();
         detailBasePagers.add(new NewsMenuDetailPager(context,leftMenuData.get(0))); // 新闻，NewsMenuDetailPager是一个ViewPager，这里先获取data[0]根数据——”新闻“(而getChildren()是在该类的构造器中)
-        detailBasePagers.add(new TopicMenuDetailPager(context));                    // 专题
+        detailBasePagers.add(new TopicMenuDetailPager(context,leftMenuData.get(0)));                    // 专题
         detailBasePagers.add(new PhotosMenuDetailPager(context));                   // 组图
         detailBasePagers.add(new InteractMenuDetailPager(context));                 // 菜单
 
