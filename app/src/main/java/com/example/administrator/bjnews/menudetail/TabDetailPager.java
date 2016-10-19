@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +47,7 @@ import java.util.List;
 
 public class TabDetailPager extends MenuDetailBasePager {
 
+    public static final String READ_ARRAY_ID = "read_array_id"; // ctrl+Alt+C
     private  String url;
     private int prePosition;                // 上一个红点的高亮位置
 
@@ -99,29 +101,53 @@ public class TabDetailPager extends MenuDetailBasePager {
         lv_tabdetail_pager.addTopNewsView(topnewsview);
 
         // 设置刷新的监听
-        lv_tabdetail_pager.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
-            @Override
-            public void onPullDownRefresh() {
-                Toast.makeText(context,"下拉刷新，被回调",Toast.LENGTH_LONG).show();
-                getDataFromNet();
-            }
+        lv_tabdetail_pager.setOnRefreshListener(new myOnRefreshListener());
 
-            @Override
-            public void onLoadMore() {
-//                Toast.makeText(context,"加载更多，被回调",Toast.LENGTH_LONG).show();
-                if (TextUtils.isEmpty(moreUrl)) {
-                    // 没有更多
-                    Toast.makeText(context,"没有更多数据",Toast.LENGTH_LONG).show();
-                    lv_tabdetail_pager.OnRefreshFinish(false);
-                    isLoadMore=false;
-                }else {
-                    // 加载更多
-                    getMoreDataFromNet();
-                }
-            }
-        });
+        // 设置点击ListView_item的监听
+        lv_tabdetail_pager.setOnItemClickListener(new myOnItemClickListener());
 
         return view;
+    }
+
+    // 点击ListView中某一条的监听
+    private class myOnItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            TabDetailPagerBean.DataBean.NewsBean newsBean = newsList.get(position-1);
+            LogUtil.e("newsBean.title=="+newsBean.getTitle()+" newsBean.id=="+newsBean.getId());
+            String idArry = CacheUtil.getString(context,READ_ARRAY_ID); // ctrl+Alt+C("read_array_id") (35311,35312,...)
+            // 当前这个id没被保存
+            if (! idArry.contains(newsBean.getId()+"")) {
+                // 保存
+                String values = idArry + newsBean.getId()+",";
+                CacheUtil.putString(context,READ_ARRAY_ID,values);
+                // 适配器刷新
+                adapter.notifyDataSetChanged(); // getCount(),getView();
+            }
+        }
+    }
+
+    // 下拉刷新和上拉加载的监听
+    private class myOnRefreshListener implements RefreshListView.OnRefreshListener {
+        @Override
+        public void onPullDownRefresh() {
+            Toast.makeText(context,"下拉刷新，被回调",Toast.LENGTH_LONG).show();
+            getDataFromNet();
+        }
+
+        @Override
+        public void onLoadMore() {
+//                Toast.makeText(context,"加载更多，被回调",Toast.LENGTH_LONG).show();
+            if (TextUtils.isEmpty(moreUrl)) {
+                // 没有更多
+                Toast.makeText(context,"没有更多数据",Toast.LENGTH_LONG).show();
+                lv_tabdetail_pager.OnRefreshFinish(false);
+                isLoadMore=false;
+            }else {
+                // 加载更多
+                getMoreDataFromNet();
+            }
+        }
     }
 
     // 加载更多
@@ -271,6 +297,16 @@ public class TabDetailPager extends MenuDetailBasePager {
             viewHolder.tv_time.setText(newsData.getPubdate());
             x.image().bind(viewHolder.iv_icon,newsData.getListimage());
 
+            String idArry = CacheUtil.getString(context,READ_ARRAY_ID); // ctrl+Alt+C("read_array_id") (35311,35312,...)
+            if (idArry.contains(newsData.getId()+"")) {
+                // 设置成灰色
+                viewHolder.tv_title.setTextColor(Color.GRAY);
+
+            }else {
+                // 设置成黑色(默认)
+                viewHolder.tv_title.setTextColor(Color.BLACK);
+            }
+
             return convertView;
         }
     }
@@ -402,6 +438,5 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
         });
     }
-
 
 }
