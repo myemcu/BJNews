@@ -15,8 +15,10 @@
 
     <com.handmark.pulltorefresh.library.PullToRefreshListView
 
-        android:id="@+id/pullToRefreshListView"
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        ptr:ptrMode="both"
 
+        android:id="@+id/pullToRefreshListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="#00000000"

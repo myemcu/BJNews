@@ -58,8 +58,6 @@ public class NewsDetailActivity extends Activity{
                 pb_footer_status.setVisibility(View.GONE);
             }
         });
-
-
     }
 
     private class MyOnClickListener implements View.OnClickListener {
