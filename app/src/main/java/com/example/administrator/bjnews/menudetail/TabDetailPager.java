@@ -1,6 +1,7 @@
 package com.example.administrator.bjnews.menudetail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.administrator.bjnews.NewsDetailActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.NewsCenterBean_Hand;
@@ -109,7 +111,7 @@ public class TabDetailPager extends MenuDetailBasePager {
         return view;
     }
 
-    // 点击ListView中某一条的监听
+    // 点击ListView中某一条的监听(正式进到新闻详情页面)
     private class myOnItemClickListener implements android.widget.AdapterView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,6 +126,10 @@ public class TabDetailPager extends MenuDetailBasePager {
                 // 适配器刷新
                 adapter.notifyDataSetChanged(); // getCount(),getView();
             }
+
+            Intent intent = new Intent(context,NewsDetailActivity.class);
+            intent.putExtra("url",newsBean.getUrl());
+            context.startActivity(intent);  // 新Activity记得要注册
         }
     }
 
