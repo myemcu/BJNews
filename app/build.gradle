@@ -27,6 +27,6 @@ dependencies {
     compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
     compile project(':ViewPagerIndicator_library')
-    compile project(':RefreshListView_lib')
-    compile project(':library')
+    compile project(':RefreshListView_library')
+    compile project(':PullToRefresh_library')
 }

@@ -1,6 +1,8 @@
 package com.example.administrator.bjnews;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -8,6 +10,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import java.text.Normalizer;
 
 /**
  * Created by Administrator on 2016/10/23 0023.
@@ -19,6 +23,7 @@ public class NewsDetailActivity extends Activity{
     private String url;
 
     private ProgressBar pb_footer_status;
+    private WebSettings webSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,7 @@ public class NewsDetailActivity extends Activity{
         url = getIntent().getStringExtra("url");
 //        url = "http://www.atguigu.com/teacher.shtml";
 //        url = "http://www.baidu.com";
-        WebSettings webSettings = webview.getSettings();
+        webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);         // 支持JS(WebView必备)
         webSettings.setBuiltInZoomControls(true);       // 添加缩放按钮
         webSettings.setUseWideViewPort(true);           // 设置双击变大变小(与页面有关)
@@ -71,6 +76,7 @@ public class NewsDetailActivity extends Activity{
 
                 case R.id.ib_textsize:
                                         Toast.makeText(NewsDetailActivity.this,"文字大小",Toast.LENGTH_SHORT).show();
+                                        showChangeTextSizeDialog();
                                         break;
 
                 case R.id.ib_share:
@@ -78,6 +84,50 @@ public class NewsDetailActivity extends Activity{
                                         break;
                 default:break;
             }
+        }
+    }
+
+    private int tempSize = 2;
+    private int realSize = tempSize;
+
+    private void showChangeTextSizeDialog() {
+        String[] items = {"超大字体","大号字体","正常字体","小字体","超小字体"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);// 从this中new出对话框
+        builder.setTitle("设置文字大小");
+        builder.setSingleChoiceItems(items, realSize, new DialogInterface.OnClickListener() { // 2.正常
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+               tempSize=which;// 当它一点，就改变
+            }
+        });// 设置单选项
+        builder.setNegativeButton("取消",null);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                realSize=tempSize;
+                ChangeTextSize(realSize);
+            }
+        });
+        builder.show();
+    }
+
+    private void ChangeTextSize(int realSize) {
+        switch (realSize) {
+
+            /*case 0: webSettings.setTextSize(WebSettings.TextSize.LARGEST);  break;
+            case 1: webSettings.setTextSize(WebSettings.TextSize.LARGER);   break;
+            case 2: webSettings.setTextSize(WebSettings.TextSize.NORMAL);   break;
+            case 3: webSettings.setTextSize(WebSettings.TextSize.SMALLER);  break;
+            case 4: webSettings.setTextSize(WebSettings.TextSize.SMALLEST); break;*/
+
+            case 0: webSettings.setTextZoom(200);  break;
+            case 1: webSettings.setTextZoom(150);  break;
+            case 2: webSettings.setTextZoom(100);  break;
+            case 3: webSettings.setTextZoom(75);  break;
+            case 4: webSettings.setTextZoom(50);  break;
+
+            default:break;
         }
     }
 }

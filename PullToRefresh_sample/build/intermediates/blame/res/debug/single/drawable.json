@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable\\indicator_bg_bottom.xml",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\exploded-aar\\BJNews\\PullToRefresh_library\\unspecified\\res\\drawable\\indicator_bg_bottom.xml"
+    },
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable\\icon.png",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\src\\main\\res\\drawable\\icon.png"
+    },
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable\\indicator_bg_top.xml",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\exploded-aar\\BJNews\\PullToRefresh_library\\unspecified\\res\\drawable\\indicator_bg_top.xml"
+    }
+]

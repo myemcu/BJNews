@@ -9,14 +9,14 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Android-PullToRefresh_sample" />
+            <option value="$PROJECT_DIR$/PullToRefresh_library" />
+            <option value="$PROJECT_DIR$/PullToRefresh_sample" />
             <option value="$PROJECT_DIR$/RefreshListView_Sample" />
-            <option value="$PROJECT_DIR$/RefreshListView_lib" />
+            <option value="$PROJECT_DIR$/RefreshListView_library" />
             <option value="$PROJECT_DIR$/SlidingMenu_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
             <option value="$PROJECT_DIR$/xutils3_library" />

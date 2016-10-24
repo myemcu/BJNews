@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\default_ptr_rotate.png",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\exploded-aar\\BJNews\\PullToRefresh_library\\unspecified\\res\\drawable-xhdpi-v4\\default_ptr_rotate.png"
+    },
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\indicator_arrow.png",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\exploded-aar\\BJNews\\PullToRefresh_library\\unspecified\\res\\drawable-xhdpi-v4\\indicator_arrow.png"
+    },
+    {
+        "merged": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\default_ptr_flip.png",
+        "source": "D:\\Android\\BJNews\\PullToRefresh_sample\\build\\intermediates\\exploded-aar\\BJNews\\PullToRefresh_library\\unspecified\\res\\drawable-xhdpi-v4\\default_ptr_flip.png"
+    }
+]
