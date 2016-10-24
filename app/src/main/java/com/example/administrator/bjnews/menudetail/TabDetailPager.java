@@ -3,11 +3,14 @@ package com.example.administrator.bjnews.menudetail;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -107,6 +110,8 @@ public class TabDetailPager extends MenuDetailBasePager {
 
         // 设置点击ListView_item的监听
         lv_tabdetail_pager.setOnItemClickListener(new myOnItemClickListener());
+
+        //vp_tabdetail_pager.addOnPageChangeListener();
 
         return view;
     }
@@ -259,7 +264,39 @@ public class TabDetailPager extends MenuDetailBasePager {
             adapter.notifyDataSetChanged();
         }
 
+        // 开始轮播
+        if (internalHandler == null) {
+            internalHandler = new InternalHandler();
+        }
 
+        internalHandler.removeCallbacksAndMessages(null); // 把所有的消息和任务移除(因为执行了两次processData())
+
+        // 重新做任务
+        internalHandler.postDelayed(new MyRunnable(), 4000); // 每2s执行任务MyRunnable()
+    }
+
+
+    private InternalHandler internalHandler;
+    // 循环播放轮播图ViewPager
+    class InternalHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            // 切换到下一个页面
+            int item = (vp_tabdetail_pager.getCurrentItem()+1) % topnews.size();
+            vp_tabdetail_pager.setCurrentItem(item);
+
+            // 重新做任务
+            internalHandler.postDelayed(new MyRunnable(), 4000); // 每2s执行任务MyRunnable()
+        }
+    }
+
+    class MyRunnable implements Runnable {  // 可以在任务里边发消息
+
+        @Override
+        public void run() {
+            internalHandler.sendEmptyMessage(0);
+        }
     }
 
 //==================================================================================================
@@ -367,10 +404,24 @@ public class TabDetailPager extends MenuDetailBasePager {
         }
 
         @Override   // 状态
+        // 解决手动滑动轮播图与自动播放轮播图时的冲突
         public void onPageScrollStateChanged(int state) {
-
+            if (state == ViewPager.SCROLL_STATE_DRAGGING) { // 检测ViewPage拖拽
+                isDragging = true;
+                internalHandler.removeCallbacksAndMessages(null);// 移除消息
+            }else if (state == ViewPager.SCROLL_STATE_IDLE && isDragging) {
+                isDragging = false;
+                internalHandler.removeCallbacksAndMessages(null);// 移除消息
+                internalHandler.postDelayed(new MyRunnable(),4000);
+            }else if (state == ViewPager.SCROLL_STATE_SETTLING && isDragging) {
+                isDragging = false;
+                internalHandler.removeCallbacksAndMessages(null);// 移除消息
+                internalHandler.postDelayed(new MyRunnable(),4000);
+            }
         }
     }
+
+    private boolean isDragging = false; // 是否拖拽
 
     private class MyPagerAdapter extends PagerAdapter {
         @Override
@@ -398,6 +449,25 @@ public class TabDetailPager extends MenuDetailBasePager {
 
             // 联网请求图片
             x.image().bind(imageView,topnewsBean.getTopimage());
+
+            // 设置触摸事件() 与 解决手动滑动轮播图与自动播放轮播图时的冲突 联合使用
+            imageView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                                                    LogUtil.e("ACTION_DOWN==移除消息");
+                                                    internalHandler.removeCallbacksAndMessages(null);       // 把所有的消息和任务移除(因为执行了两次processData())
+                                                    break;
+                        case MotionEvent.ACTION_UP:
+                                                    LogUtil.e("ACTION_UP==发新消息");
+                                                    // 重新做任务
+                                                    internalHandler.postDelayed(new MyRunnable(), 4000);    // 每2s执行任务MyRunnable()
+                                                    break;
+                    }
+                    return true;
+                }
+            });
 
             return imageView;
         }
@@ -444,5 +514,4 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
         });
     }
-
 }

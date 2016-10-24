@@ -1,4 +1,4 @@
-include ':app', ':SlidingMenu_library', ':xutils3_library', ':xutils3_sample', ':RefreshListView_library', ':RefreshListView_Sample'
+include ':app', ':SlidingMenu_library', ':xutils3_library', ':xutils3_sample', ':RefreshListView_library', ':RefreshListView_Sample', 'androidJavaAndJsDemo'
 include ':ViewPagerIndicator_library'
 include ':ViewPagerIndicator_sample'
 include ':PullToRefresh_library'
