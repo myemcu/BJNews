@@ -21,6 +21,8 @@ public class BasePager {
     public ImageButton  ib_menu;
     public FrameLayout  fl_base_content;
 
+    public ImageButton  ib_switch_list_grid_view;
+
     /*代表各个页面*/
     public View rootView;
 
@@ -37,6 +39,8 @@ public class BasePager {
         tv_title = (TextView) view.findViewById(R.id.tv_title);                     // 标题栏文字
         ib_menu = (ImageButton) view.findViewById(R.id.ib_menu);                    // 标题栏图片按钮
         fl_base_content = (FrameLayout) view.findViewById(R.id.fl_base_content);    // 帧布局
+
+        ib_switch_list_grid_view = (ImageButton) view.findViewById(R.id.ib_switch_list_grid_view);
 
         // 图标按钮启动左侧菜单
         ib_menu.setOnClickListener(new View.OnClickListener() {

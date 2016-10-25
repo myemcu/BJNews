@@ -6,7 +6,14 @@ package com.example.administrator.bjnews.utils;
  * 配置联网请求链接
  */
 public class Url {
-    /*新闻中心的联网链接*/
+
+    /*Tomacat基站服务包*/
     public static String BASE_URL= "http://192.168.1.200:8080/zhbj";
+
+    /*新闻路径*/
     public static final String NEWSCENTER_URL = BASE_URL+"/categories.json";
+
+    /*组图路径*/
+    /*http://192.168.1.200:8080/zhbj/photos/photos_1.json*/
+    public static final String PHOTOS_URL = BASE_URL+"/photos/photos_1.json";
 }

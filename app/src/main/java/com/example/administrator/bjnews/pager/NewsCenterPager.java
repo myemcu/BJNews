@@ -2,11 +2,13 @@ package com.example.administrator.bjnews.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -28,6 +30,7 @@ import com.example.administrator.bjnews.menudetail.PhotosMenuDetailPager;
 import com.example.administrator.bjnews.menudetail.TopicMenuDetailPager;
 import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.Url;
+import com.example.administrator.bjnews.volley.VolleyManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
@@ -53,6 +56,9 @@ public class NewsCenterPager extends BasePager {
     private String url;
     private List<NewsCenterBean_Hand.NewsCenterBean_Data>  leftMenuData;        // 左侧菜单的对应数据
     private ArrayList<MenuDetailBasePager> detailBasePagers;    // 左侧菜单的对应页面(视图)
+    private long startTime; // 联网框架测试，开始时间
+    private long endTime;   // 联网框架测试，成功时间
+    private long passTime;  // 联网框架测试，耗费时间
 
     public NewsCenterPager(Context context) {
         super(context);
@@ -86,19 +92,30 @@ public class NewsCenterPager extends BasePager {
             processData(saveJson);
         }
 
-//        GetDataFromNet();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
-        GetDataFromNet_Volley();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
+        startTime = SystemClock.uptimeMillis();
+
+    // 这两种都可以用，但一次只选一种即可(最终看哪个性能高就选哪个)
+    // 通过多次测试，xUtils3相比Volley更快，更稳定(xUtils3完胜)
+        GetDataFromNet();   // 联网请求数据(xUtils3)(联网前开Tomcat服务器，开手机WiFi)
+//        GetDataFromNet_Volley();   // 联网请求数据(Volley)(联网前开Tomcat服务器，开手机WiFi)
     }
 
     private void GetDataFromNet_Volley() {
 
         // 1 定义队列
-        RequestQueue queue =Volley.newRequestQueue(context);
+//        RequestQueue queue =Volley.newRequestQueue(context);
+//        Appilcation中初始化后不需要每次都new了
 
         // 2 队列请求
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String result) {// 联网请求成功
+
+                // 联网性能测试(多测几次看稳定范围)
+                endTime = SystemClock.uptimeMillis();
+                passTime = endTime-startTime;
+                Toast.makeText(context,"联网时间："+passTime,Toast.LENGTH_LONG).show();
+
                 Log.i("Volley","Volley联网请求--成功--"+result);
 
                 // 请求成功后，设置数据缓存
@@ -125,7 +142,8 @@ public class NewsCenterPager extends BasePager {
         };
 
         // 3 向队列添加请求
-        queue.add(request);
+//        queue.add(request);
+        VolleyManager.addRequest(request,"NewsCenterPager");
     }
 
     // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
@@ -134,7 +152,12 @@ public class NewsCenterPager extends BasePager {
         x.http().get(params, new Callback.CommonCallback<String>() {
 
             @Override
-            public void onSuccess(String result) {                      // 请求成功
+            public void onSuccess(String result) { // 请求成功
+
+                // 联网性能测试(多测几次看稳定范围)
+                endTime = SystemClock.uptimeMillis();
+                passTime = endTime-startTime;
+                Toast.makeText(context,"联网时间："+passTime,Toast.LENGTH_LONG).show();
 
                 Log.i(TAG,"联网请求成功=="+result);
 
@@ -258,7 +281,7 @@ public class NewsCenterPager extends BasePager {
         return newscenterbean_hand;
     }
 
-    // 根据位置切换到对应的菜单详情页面(menudetail)
+    // 根据位置，切换到对应的菜单详情页面(menudetail)
     public void switchPager(int selectPosition) {
 
         // 设置标题
@@ -270,5 +293,12 @@ public class NewsCenterPager extends BasePager {
         detailBasePager.initData();
         fl_base_content.removeAllViews();
         fl_base_content.addView(rootView);
+
+        if (selectPosition==2) { // 如果切换到第3个页面——组图页面
+            // 先去BasePager中实例化
+            ib_switch_list_grid_view.setVisibility(View.VISIBLE);   // 显示
+        }else {
+            ib_switch_list_grid_view.setVisibility(View.GONE);      // 隐藏
+        }
     }
 }
