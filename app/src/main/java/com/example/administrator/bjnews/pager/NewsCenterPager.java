@@ -8,6 +8,14 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
@@ -30,6 +38,7 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +86,46 @@ public class NewsCenterPager extends BasePager {
             processData(saveJson);
         }
 
-        GetDataFromNet();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
+//        GetDataFromNet();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
+        GetDataFromNet_Volley();   // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)
+    }
+
+    private void GetDataFromNet_Volley() {
+
+        // 1 定义队列
+        RequestQueue queue =Volley.newRequestQueue(context);
+
+        // 2 队列请求
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String result) {// 联网请求成功
+                Log.i("Volley","Volley联网请求--成功--"+result);
+
+                // 请求成功后，设置数据缓存
+                CacheUtil.putString(context,url,result);
+
+                processData(result); // 解析请求结果json
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {// 联网请求失败
+                Log.i("Volley","Volley联网请求--失败--"+error.getMessage());
+            }
+        }){// 解决乱码
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String parsed = new String(response.data,"UTF-8");
+                    return Response.success(parsed, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                return super.parseNetworkResponse(response);
+            }
+        };
+
+        // 3 向队列添加请求
+        queue.add(request);
     }
 
     // 联网请求数据(联网前开Tomcat服务器，开手机WiFi)

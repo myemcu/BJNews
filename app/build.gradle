@@ -29,4 +29,5 @@ dependencies {
     compile project(':ViewPagerIndicator_library')
     compile project(':RefreshListView_library')
     compile project(':PullToRefresh_library')
+    compile files('libs/volley.jar')
 }

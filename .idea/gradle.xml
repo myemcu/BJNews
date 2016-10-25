@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
+            <option value="$PROJECT_DIR$/testVolley" />
             <option value="$PROJECT_DIR$/xutils3_library" />
             <option value="$PROJECT_DIR$/xutils3_sample" />
           </set>
