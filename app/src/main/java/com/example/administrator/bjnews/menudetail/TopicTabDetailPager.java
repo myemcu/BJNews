@@ -383,6 +383,7 @@ public class TopicTabDetailPager extends MenuDetailBasePager {
 
             ImageView imageView = new ImageView(context);
             imageView.setBackgroundResource(R.drawable.home_scroll_default);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
             container.addView(imageView);   // 放到容器中
 

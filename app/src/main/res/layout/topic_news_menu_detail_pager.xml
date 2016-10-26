@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              xmlns:android.support="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -13,25 +12,29 @@
 
                 <!--这是直接复制过来的，因无自动补全，渲染也会报错(加入依赖后，对应的java中才能自动生成补全)
                     不妨事，不妨事，不妨事(重要的事情说三遍)-->
-        <com.viewpagerindicator.TabPageIndicator
+
+        <!--<com.viewpagerindicator.TabPageIndicator
                 android:id="@+id/tabpage_indicator"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"/>-->
 
-        <!--<android.support.design.TableLayout
+        <!--要对应修改配置文件清单-->
+        <android.support.design.widget.TabLayout
             android:id="@+id/tabpage_indicator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/MyCustomTabLayout"
-            android:layout_weight="1"/>-->
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:ignore="InefficientWeight"/>
 
         <ImageButton
             android:id="@+id/ib_next_tab"
             android:background="@android:color/transparent"
             android:src="@drawable/news_cate_arr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:layout_width="20dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
@@ -42,7 +45,6 @@
                 android:id="@+id/vp_news_menu_detailpager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1"/>
 
 </LinearLayout>

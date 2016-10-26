@@ -2,11 +2,14 @@ package com.example.administrator.bjnews.menudetail;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.administrator.bjnews.MainActivity;
@@ -64,7 +67,8 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
     private ArrayList<MenuDetailBasePager> detailBasePagers;
 
     @ViewInject(R.id.tabpage_indicator)
-    private TabPageIndicator tabpage_indicator;
+//    private TabPageIndicator tabpage_indicator;
+    private TabLayout tabpage_indicator;
 
     // 实例化完成后，ViewPager的布局搞定
     @ViewInject(R.id.vp_news_menu_detailpager)
@@ -72,6 +76,7 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
 
     private TopicTabDetailPager topicTabDetailPager;          // 单页签页面
     private MenuDetailBasePager detailBasePager;
+    private NewsMenuDetailPagerAdapter adapter;
 
     // ViewPager使用:
     //              (1) 加载布局文件(initView())
@@ -89,7 +94,7 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
     @Override
     public View initView() {    // 视图
 
-        View view = View.inflate(context, R.layout.news_menu_detail_pager,null);    // (1) 在专题详情页面中动态加载布局文件
+        View view = View.inflate(context, R.layout.topic_news_menu_detail_pager,null);    // (1) 在专题详情页面中动态加载布局文件
         x.view().inject(this,view);                                                 // (2) 准备用注解的方式对加载页中的ViewPager进行实例化
 
         return view;
@@ -115,14 +120,26 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
             detailBasePagers.add(topicTabDetailPager); // 页签页面集合<--单页签页面
         }
 
+        adapter = new NewsMenuDetailPagerAdapter();
         // (4) 适配：整合(页面、数据)
-        vp_news_menu_detailpager.setAdapter(new NewsMenuDetailPagerAdapter());
+        vp_news_menu_detailpager.setAdapter(adapter);
 
         // 关联ViewPager，使Indicator得以显示
-        tabpage_indicator.setViewPager(vp_news_menu_detailpager);
+//        tabpage_indicator.setViewPager(vp_news_menu_detailpager);
+        tabpage_indicator.setupWithViewPager(vp_news_menu_detailpager);
+
+        // 设为滚动模式
+        tabpage_indicator.setTabMode(TabLayout.MODE_SCROLLABLE);
 
         // 使用TabPageIndicator实现vp页面监听
-        tabpage_indicator.setOnPageChangeListener(new MyOnPageChangeListener());
+//        tabpage_indicator.setOnPageChangeListener(new MyOnPageChangeListener());
+        vp_news_menu_detailpager.setOnPageChangeListener(new MyOnPageChangeListener());
+
+        // 此处注掉后，对TabLayout的效果更好
+        /*for (int i = 0; i < tabpage_indicator.getTabCount(); i++) {
+            TabLayout.Tab tab = tabpage_indicator.getTabAt(i);
+            tab.setCustomView(adapter.getTabView(i));
+        }*/
     }
 
     // 是否显示侧滑菜单
@@ -188,6 +205,16 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
 
             return rootView;
         }
+        //----------------------------------------------------------------------------------
+        public View getTabView(int position){
+            View view = LayoutInflater.from(context).inflate(R.layout.tab_item, null);
+            TextView tv= (TextView) view.findViewById(R.id.textView);
+            tv.setText(childrenDatas.get(position).getTitle());
+            ImageView img = (ImageView) view.findViewById(R.id.imageView);
+            img.setImageResource(R.drawable.dot_focus);
+            return view;
+            }
+
         //-----------------------------------------------------------------------------------
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
