@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
     // private TextView txt;
 
     private ImageLoader imageLoader;
+
+    private boolean isShowList = true;  // true显示列表，隐藏网格(默认)
 
     @ViewInject(R.id.list_view)
     private ListView list_view;
@@ -138,6 +141,28 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         };
 
         VolleyManager.addRequest(request,"PhotosMenuDetailPager");
+    }
+
+    // 完成list(默认)与grid的切换
+    public void switch_list_grid_view(ImageButton iv_switch) {
+        if (isShowList) {
+
+            isShowList=false;
+
+            grid_view.setVisibility(View.VISIBLE);
+            list_view.setVisibility(View.GONE);
+            grid_view.setAdapter(new MyPhotosAdapter());
+            iv_switch.setImageResource(R.drawable.icon_pic_list_type);
+        }
+        else {
+
+            isShowList=true;
+
+            list_view.setVisibility(View.VISIBLE);
+            grid_view.setVisibility(View.GONE);
+            list_view.setAdapter(new MyPhotosAdapter());
+            iv_switch.setImageResource(R.drawable.icon_pic_grid_type);
+        }
     }
 
     private class MyPhotosAdapter extends BaseAdapter {

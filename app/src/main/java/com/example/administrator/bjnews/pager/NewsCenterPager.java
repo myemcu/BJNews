@@ -297,6 +297,14 @@ public class NewsCenterPager extends BasePager {
         if (selectPosition==2) { // 如果切换到第3个页面——组图页面
             // 先去BasePager中实例化
             ib_switch_list_grid_view.setVisibility(View.VISIBLE);   // 显示
+            ib_switch_list_grid_view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PhotosMenuDetailPager pager = (PhotosMenuDetailPager) detailBasePagers.get(2);
+                    pager.switch_list_grid_view(ib_switch_list_grid_view);
+
+                }
+            });
         }else {
             ib_switch_list_grid_view.setVisibility(View.GONE);      // 隐藏
         }
