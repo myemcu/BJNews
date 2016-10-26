@@ -7,8 +7,8 @@
     tools:overrideLibrary="com.handmark.pulltorefresh.library" >
 
     <uses-sdk
-        android:minSdkVersion="4"
-        android:targetSdkVersion="4" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
 
     <application />
 

@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 22
+    buildToolsVersion "22"
 
     defaultConfig {
         applicationId "com.example.administrator.bjnews"
         minSdkVersion 19
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -22,7 +22,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:22.2.0'
     compile project(':SlidingMenu_library')
     compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
@@ -30,5 +30,5 @@ dependencies {
     compile project(':RefreshListView_library')
     compile project(':PullToRefresh_library')
     compile files('libs/volley.jar')
-    compile 'com.android.support:design:23.2.1' // 用于TabLayout
+    compile 'com.android.support:design:22.2.1' // 用于TabLayout
 }

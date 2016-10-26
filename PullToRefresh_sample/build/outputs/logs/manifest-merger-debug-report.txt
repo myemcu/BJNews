@@ -17,9 +17,10 @@ ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:2
 		ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:2:11-69
 uses-sdk
 ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:7:5-9:41
-MERGED from [BJNews:PullToRefresh_library:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\PullToRefresh_library\unspecified\AndroidManifest.xml:9:5-11:40
+MERGED from [BJNews:pullToRefreshListFragment:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshListFragment\unspecified\AndroidManifest.xml:9:5-11:41
+MERGED from [BJNews:PullToRefresh_library:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\PullToRefresh_library\unspecified\AndroidManifest.xml:9:5-11:41
 MERGED from [com.android.support:support-v4:23.4.0] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:20:5-43
-MERGED from [BJNews:pullToRefreshViewPager:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshViewPager\unspecified\AndroidManifest.xml:7:5-9:40
+MERGED from [BJNews:pullToRefreshViewPager:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshViewPager\unspecified\AndroidManifest.xml:7:5-9:41
 	android:targetSdkVersion
 		ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:9:9-38
 		INJECTED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml
@@ -30,7 +31,7 @@ MERGED from [BJNews:pullToRefreshViewPager:unspecified] D:\Android\BJNews\PullTo
 		INJECTED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml
 application
 ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:11:5-64:19
-MERGED from [BJNews:pullToRefreshListFragment:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshListFragment\unspecified\AndroidManifest.xml:9:5-20
+MERGED from [BJNews:pullToRefreshListFragment:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshListFragment\unspecified\AndroidManifest.xml:13:5-20
 MERGED from [BJNews:PullToRefresh_library:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\PullToRefresh_library\unspecified\AndroidManifest.xml:13:5-20
 MERGED from [com.android.support:support-v4:23.4.0] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\AndroidManifest.xml:22:5-20
 MERGED from [BJNews:pullToRefreshViewPager:unspecified] D:\Android\BJNews\PullToRefresh_sample\build\intermediates\exploded-aar\BJNews\pullToRefreshViewPager\unspecified\AndroidManifest.xml:11:5-20
@@ -124,9 +125,3 @@ supports-screens
 ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:69:5-51
 	android:anyDensity
 		ADDED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:69:23-48
-android:uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-IMPLIED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:2:1-71:12 reason: com.handmark.pulltorefresh.extras.listfragment has a targetSdkVersion < 4
-android:uses-permission#android.permission.READ_PHONE_STATE
-IMPLIED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:2:1-71:12 reason: com.handmark.pulltorefresh.extras.listfragment has a targetSdkVersion < 4
-android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
-IMPLIED from D:\Android\BJNews\PullToRefresh_sample\src\main\AndroidManifest.xml:2:1-71:12 reason: com.handmark.pulltorefresh.extras.listfragment requested WRITE_EXTERNAL_STORAGE

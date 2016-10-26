@@ -24,7 +24,7 @@
 
         <!--采用开源项目的主题-->
         <activity android:name=".MainActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+                  android:theme="@style/Theme.PageIndicatorDefaults"/>
 
         <activity android:name=".NewsDetailActivity"/>
 
@@ -33,6 +33,7 @@
     <!--重大说明：
         要使用TabLayout，则必须将之前的.MainActivity中的主题由原来的"Theme.PageIndicatorDefaults"
         改为："Theme.AppCompat.Light.NoActionBar"，否则在点"新闻中心"直接崩溃。
+        说明：此Bug已解决，使用相关Gradle文件使用22包。
     -->
 
     <!--android:theme="@style/Theme.AppCompat.Light.NoActionBar"-->

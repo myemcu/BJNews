@@ -6,6 +6,10 @@
     android:versionName="2.1.1"
     tools:overrideLibrary="com.handmark.pulltorefresh.library" >
 
+    <uses-sdk
+        android:minSdkVersion="19"
+        android:targetSdkVersion="19" />
+
     <application />
 
 </manifest>
