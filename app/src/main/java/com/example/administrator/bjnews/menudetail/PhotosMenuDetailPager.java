@@ -1,6 +1,9 @@
 package com.example.administrator.bjnews.menudetail;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +24,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.PhotosMenuDetailPagerBean;
+import com.example.administrator.bjnews.utils.BitmapUtils;
 import com.example.administrator.bjnews.utils.CacheUtil;
+import com.example.administrator.bjnews.utils.LogUtil;
+import com.example.administrator.bjnews.utils.NetCacheUtils;
 import com.example.administrator.bjnews.utils.Url;
 import com.example.administrator.bjnews.volley.VolleyManager;
 import com.google.gson.Gson;
@@ -39,7 +45,94 @@ import java.util.List;
 
 public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
-    private String url;
+    private Handler handler = new Handler() {   // 注意里面的findViewWithTag()，而不是findViewById()
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            switch (msg.what) {
+                case NetCacheUtils.SUCESS:
+                                            //Toast.makeText(context,"图片联网请求成功",Toast.LENGTH_SHORT).show();
+                                            Bitmap bitmap = (Bitmap) msg.obj;                                       // obj就是Bitmap
+                                            int position = msg.arg1;                                                // arg1就是位置
+                                            LogUtil.e("图片联网请求成功"+position);
+
+                                            // 失败
+                                            if (list_view != null  && list_view.isShown()) {
+                                                ImageView imageView  = (ImageView) list_view.findViewWithTag(position); // position就是Tag
+                                                if (imageView!=null && bitmap!=null) {
+                                                    imageView.setImageBitmap(bitmap);    // 显示从联网请求到的图片
+
+                                                }
+
+                                            }
+
+                                            if (grid_view != null  && grid_view.isShown()) {
+                                                ImageView imageView  = (ImageView) grid_view.findViewWithTag(position); // position就是Tag
+                                                if (imageView!=null && bitmap!=null) {
+                                                    imageView.setImageBitmap(bitmap);    // 显示从联网请求到的图片
+
+                                                }
+
+                                            }
+                                            break;
+
+                case NetCacheUtils.FAILED:
+                                            position = msg.arg1;                                                // arg1就是位置
+                                            LogUtil.e("图片联网请求失败"+position);
+                                            break;
+
+                 default:break;
+            }
+        }
+    };
+
+    /*private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case NetCacheUtils.SUCESS://请求成功
+
+                    Bitmap bitmap = (Bitmap) msg.obj;
+                    int position = msg.arg1;
+                    LogUtil.e("图片请求联网成功=="+position);
+
+                    if (list_view != null && list_view.isShown()) {
+
+                        ImageView imageView = (ImageView) list_view.findViewWithTag(position);
+
+                        if (imageView != null && bitmap != null) {
+                            imageView.setImageBitmap(bitmap);
+                        }
+
+                    }
+
+                    if (grid_view != null && grid_view.isShown()) {
+
+                        ImageView imageView = (ImageView) grid_view.findViewWithTag(position);
+
+                        if (imageView != null && bitmap != null) {
+                            imageView.setImageBitmap(bitmap);
+                        }
+
+                    }
+
+                    break;
+
+                case NetCacheUtils.FAILED://请求失败
+                    position = msg.arg1;
+                    LogUtil.e("图片请求联网失败=="+position);
+
+                    break;
+
+                default:break;
+            }
+        }
+    };*/
+
+    private final BitmapUtils bitmapUtils;  // 三级缓存，工具类
+    private String url=Url.PHOTOS_URL;
 
     // private TextView txt;
 
@@ -56,6 +149,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
     public PhotosMenuDetailPager(Context context) {
         super(context);
         imageLoader = VolleyManager.getImageLoader();
+        bitmapUtils = new BitmapUtils(handler);
     }
 
     @Override
@@ -199,7 +293,15 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
             viewHolder.tv_photos_title.setText(newsBean.getTitle());
 
             // 请求图片
-            loaderImager(viewHolder,newsBean.getListimage());
+
+//            loaderImager(viewHolder,newsBean.getListimage());    // Volley方式请求
+
+            String imageUrl = newsBean.getListimage();
+            viewHolder.iv_photos_icon.setTag(position);             // 因为列表中的图片id都一样，要区分不同的加载位置，就只能设置Tag
+            Bitmap bitmap = bitmapUtils.getBitmapFromUrl(imageUrl,position);
+            if (bitmap!=null) {                                     // 内存和本地
+                viewHolder.iv_photos_icon.setImageBitmap(bitmap);
+            }
 
             return convertView;
         }
