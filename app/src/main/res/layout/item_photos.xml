@@ -23,9 +23,9 @@
 
         <TextView
             android:id="@+id/tv_photos_title"
-            android:maxLines="2"
-            android:textSize="16sp"
-            android:textColor="#ffffff"
+            android:lines="2"
+            android:textSize="14sp"
+            android:textColor="#99000000"
             android:paddingTop="10dp"
             android:text="这是哥做的《北京新闻客户端》，哥是福粉。"
             android:gravity="center"
