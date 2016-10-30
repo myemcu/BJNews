@@ -14,6 +14,13 @@ import java.io.FileOutputStream;
  */
 
 public class LocalCacheUtils {
+    private final MemoryCacheUtils memorycacheutils;
+
+    public LocalCacheUtils(MemoryCacheUtils memorycacheutils) {
+        this.memorycacheutils=memorycacheutils;
+
+    }
+
     // 根据imageUrl保存图片到SD卡上
     public void putBitmap(String imageUrl, Bitmap bitmap) {
         // 判断SD卡是否存在
@@ -55,6 +62,7 @@ public class LocalCacheUtils {
                 if (file.exists()) {
                     FileInputStream fileInputStream = new FileInputStream(file);
                     Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                    memorycacheutils.putBitmap(imageUrl, bitmap);                   // 保存到内存中
                     fileInputStream.close();
                     return bitmap;
                 }

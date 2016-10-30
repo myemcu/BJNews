@@ -19,15 +19,16 @@ public class NetCacheUtils {
     // 用于构造器
     private final Handler handler;
     private final LocalCacheUtils localCacheUtils;
+    private final MemoryCacheUtils memorycacheutils;
 
     // 网络请求标志位
     public  static final  int SUCESS = 1;   // 请求图片成功
     public  static final  int FAILED = 2;   // 请求图片失败
 
-
-    public NetCacheUtils(Handler handler, LocalCacheUtils localCacheUtils) {
+    public NetCacheUtils(Handler handler, LocalCacheUtils localCacheUtils, MemoryCacheUtils memorycacheutils) {
         this.handler=handler;
         this.localCacheUtils=localCacheUtils;
+        this.memorycacheutils=memorycacheutils;
     }
 
     // 网络请求图片
@@ -70,8 +71,9 @@ public class NetCacheUtils {
                     is.close();
 
                     // 备份到内存
+                    memorycacheutils.putBitmap(imageUrl,bitmap);
                     // 备份到本地
-                    localCacheUtils.putBitmap(imageUrl,bitmap);// 注意这个imageUrl
+                    localCacheUtils.putBitmap(imageUrl,bitmap);
                 }
 
             } catch (IOException e) {   // 联网失败
