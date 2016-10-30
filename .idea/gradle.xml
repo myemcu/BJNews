@@ -9,7 +9,9 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/BaiduLocationDemo" />
             <option value="$PROJECT_DIR$/BaiduMap" />
+            <option value="$PROJECT_DIR$/Get_SD_TF_Demo" />
             <option value="$PROJECT_DIR$/PullToRefresh_library" />
             <option value="$PROJECT_DIR$/PullToRefresh_sample" />
             <option value="$PROJECT_DIR$/RefreshListView_Sample" />
@@ -19,6 +21,8 @@
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
             <option value="$PROJECT_DIR$/androidJavaAndJsDemo" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/baiduMapsApiDemo" />
+            <option value="$PROJECT_DIR$/baiduNaviSDK_3_1_1_SimpleDemo" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
             <option value="$PROJECT_DIR$/testVolley" />

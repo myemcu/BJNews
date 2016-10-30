@@ -16,13 +16,18 @@ import java.net.URL;
  */
 public class NetCacheUtils {
 
+    // 用于构造器
     private final Handler handler;
+    private final LocalCacheUtils localCacheUtils;
 
+    // 网络请求标志位
     public  static final  int SUCESS = 1;   // 请求图片成功
     public  static final  int FAILED = 2;   // 请求图片失败
 
-    public NetCacheUtils(Handler handler) {
+
+    public NetCacheUtils(Handler handler, LocalCacheUtils localCacheUtils) {
         this.handler=handler;
+        this.localCacheUtils=localCacheUtils;
     }
 
     // 网络请求图片
@@ -66,6 +71,7 @@ public class NetCacheUtils {
 
                     // 备份到内存
                     // 备份到本地
+                    localCacheUtils.putBitmap(imageUrl,bitmap);// 注意这个imageUrl
                 }
 
             } catch (IOException e) {   // 联网失败

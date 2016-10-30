@@ -3,6 +3,7 @@ package com.myemcu.baidumap;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -16,6 +17,8 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
+    private TextView tv_map_result;
+
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
 
@@ -23,6 +26,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        tv_map_result = (TextView) findViewById(R.id.tv_map_result);
 
         mLocationClient = new LocationClient(getApplicationContext());  // 声明LocationClient类
         mLocationClient.registerLocationListener( myListener );         // 注册监听函数(一旦位置发生变化，便回调于此)
@@ -57,17 +62,32 @@ public class MainActivity extends Activity {
 
             // 返回的状态码(参照文档添加上的)
             sb.append("getLocType : ");
-            sb.append(location.getLocType());
+            sb.append(location.getLocType()+"\n");
 
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
+            sb.append("城市 : ");
+            sb.append(location.getCity()+"\n");
+
+            sb.append("街道 : ");
+            sb.append(location.getStreet()+"\n");
+
+            sb.append("地址 : ");
+            sb.append(location.getLocationDescribe()+"\n");
+
+            sb.append("维度 : ");
+            sb.append(location.getLatitude()+"\n");
+
+            sb.append("经度 : ");
+            sb.append(location.getLongitude()+"\n");
+
+            sb.append("时间 : ");
+            sb.append(location.getTime()+"\n");
+
+            tv_map_result.setText(sb.toString());
+
+          /*  sb.append("\nerror code : ");
+            sb.append(location.getLocType());*/
+
+            /*sb.append("\nradius : ");
             sb.append(location.getRadius());
             if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
                 sb.append("\nspeed : ");
@@ -115,7 +135,7 @@ public class MainActivity extends Activity {
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
-            Log.i("BaiduLocationApiDem", sb.toString());
+            Log.i("BaiduLocationApiDem", sb.toString());*/
         }
     }
 }

@@ -87,50 +87,6 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
         }
     };
 
-    /*private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case NetCacheUtils.SUCESS://请求成功
-
-                    Bitmap bitmap = (Bitmap) msg.obj;
-                    int position = msg.arg1;
-                    LogUtil.e("图片请求联网成功=="+position);
-
-                    if (list_view != null && list_view.isShown()) {
-
-                        ImageView imageView = (ImageView) list_view.findViewWithTag(position);
-
-                        if (imageView != null && bitmap != null) {
-                            imageView.setImageBitmap(bitmap);
-                        }
-
-                    }
-
-                    if (grid_view != null && grid_view.isShown()) {
-
-                        ImageView imageView = (ImageView) grid_view.findViewWithTag(position);
-
-                        if (imageView != null && bitmap != null) {
-                            imageView.setImageBitmap(bitmap);
-                        }
-
-                    }
-
-                    break;
-
-                case NetCacheUtils.FAILED://请求失败
-                    position = msg.arg1;
-                    LogUtil.e("图片请求联网失败=="+position);
-
-                    break;
-
-                default:break;
-            }
-        }
-    };*/
-
     private final BitmapUtils bitmapUtils;  // 三级缓存，工具类
     private String url=Url.PHOTOS_URL;
 
