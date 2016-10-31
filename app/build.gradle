@@ -30,5 +30,7 @@ dependencies {
     compile project(':RefreshListView_library')
     compile project(':PullToRefresh_library')
     compile files('libs/volley.jar')
-    compile 'com.android.support:design:22.2.1' // 用于TabLayout
+    compile 'com.android.support:design:22.2.1'
+    // 用于TabLayout
+    compile files('libs/jpush-android-2.2.0.jar')
 }
