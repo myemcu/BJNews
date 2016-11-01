@@ -1,4 +1,4 @@
-include ':app', ':SlidingMenu_library', ':xutils3_library', ':xutils3_sample', ':RefreshListView_library', ':RefreshListView_Sample', ':BaiduMap', ':Get_SD_TF_Demo', 'androidJavaAndJsDemo', 'testVolley', ':BaiduLocationDemo', ':JPushDemo'
+include ':app', ':SlidingMenu_library', ':xutils3_library', ':xutils3_sample', ':RefreshListView_library', ':RefreshListView_Sample', ':BaiduMap', ':Get_SD_TF_Demo', 'androidJavaAndJsDemo', 'testVolley', ':BaiduLocationDemo', ':JPushDemo', ':iamger_loader_sample'
 include ':ViewPagerIndicator_library'
 include ':ViewPagerIndicator_sample'
 include ':PullToRefresh_library'

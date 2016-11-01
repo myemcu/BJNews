@@ -33,4 +33,6 @@ dependencies {
     compile 'com.android.support:design:22.2.1'
     // 用于TabLayout
     compile files('libs/jpush-android-2.2.0.jar')
+    compile files('libs/universal-image-loader-1.9.5.jar')
+//    compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
 }
