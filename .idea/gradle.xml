@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$/BaiduMap" />
             <option value="$PROJECT_DIR$/Get_SD_TF_Demo" />
             <option value="$PROJECT_DIR$/JPushDemo" />
+            <option value="$PROJECT_DIR$/PhotoView_library" />
+            <option value="$PROJECT_DIR$/PhotoView_sample" />
             <option value="$PROJECT_DIR$/PullToRefresh_library" />
             <option value="$PROJECT_DIR$/PullToRefresh_sample" />
             <option value="$PROJECT_DIR$/RefreshListView_Sample" />
@@ -20,7 +22,9 @@
             <option value="$PROJECT_DIR$/SlidingMenu_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
+            <option value="$PROJECT_DIR$/android-gif-drawable-library" />
             <option value="$PROJECT_DIR$/androidJavaAndJsDemo" />
+            <option value="$PROJECT_DIR$/android_gif_drawable_demo" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/baiduMapsApiDemo" />
             <option value="$PROJECT_DIR$/baiduNaviSDK_3_1_1_SimpleDemo" />
