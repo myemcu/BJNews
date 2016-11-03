@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -196,9 +199,56 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
             processData(saveJson); // 解析数据
         }
 
-        // 1 Volley请求文本
-        getDataFromNet_Volley();
+        // 1 Volley请求内容
+        // VgetDataFromNet_olley();
 
+        // 2 OKhttp请求内容
+        VgetDataFromNet_OKhttp();
+    }
+
+    private void VgetDataFromNet_OKhttp() {
+        // OKhttp联网请求(从其Sample中拷入并修改)
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onBefore(okhttp3.Request request)
+                    {
+                        super.onBefore(request);
+                        LogUtil.e("onBefore--"+request);
+                    }
+
+                    @Override
+                    public void onAfter()
+                    {
+                        super.onAfter();
+                        LogUtil.e("onAfter--");
+                    }
+
+                    @Override
+                    public void onError(okhttp3.Request request, Exception e)
+                    {
+                        LogUtil.e("onError--");
+                    }
+
+                    @Override
+                    public void onResponse(String response)
+                    {
+                        LogUtil.e("onResponse成功--"+response);
+                        // 2 解析数据
+                        processData(response);
+                        // 3 缓存数据(文本)
+                        CacheUtil.putString(context,url,response);
+                    }
+
+                    @Override
+                    public void inProgress(float progress)
+                    {
+                        LogUtil.e("inProgress进度--"+progress);
+                    }
+                });
     }
 
     private void processData(String json) {

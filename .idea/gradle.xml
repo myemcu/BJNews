@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/RefreshListView_Sample" />
             <option value="$PROJECT_DIR$/RefreshListView_library" />
             <option value="$PROJECT_DIR$/SlidingMenu_library" />
+            <option value="$PROJECT_DIR$/VariousShapeImageView" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_library" />
             <option value="$PROJECT_DIR$/ViewPagerIndicator_sample" />
             <option value="$PROJECT_DIR$/android-gif-drawable-library" />
@@ -29,9 +30,12 @@
             <option value="$PROJECT_DIR$/baiduMapsApiDemo" />
             <option value="$PROJECT_DIR$/baiduNaviSDK_3_1_1_SimpleDemo" />
             <option value="$PROJECT_DIR$/iamger_loader_sample" />
+            <option value="$PROJECT_DIR$/okhttp_sample" />
+            <option value="$PROJECT_DIR$/okhttputils" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
             <option value="$PROJECT_DIR$/testVolley" />
+            <option value="$PROJECT_DIR$/upload_file_android" />
             <option value="$PROJECT_DIR$/xutils3_library" />
             <option value="$PROJECT_DIR$/xutils3_sample" />
           </set>

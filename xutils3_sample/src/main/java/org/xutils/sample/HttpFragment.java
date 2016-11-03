@@ -131,10 +131,11 @@ public class HttpFragment extends BaseFragment {
         // cancelable.cancel(); // 取消请求
     }
 
-    // 上传多文件示例
+    // 上传多文件示例(说明：图片必须放到手机的机身内存，即通过手机端WiFiFTP软件在联网状态下，在我的电脑中打开其FTP生成地址即可操作)
+    // btn_test2为UPLOAD TEST键
     @Event(value = R.id.btn_test2)
     private void onTest2Click(View view) {
-        RequestParams params = new RequestParams("http://192.168.0.13:8080/upload");
+        RequestParams params = new RequestParams("http://192.168.1.200:8080/FileUpload/FileUploadServlet");
         // 加到url里的参数, http://xxxx/s?wd=xUtils
         params.addQueryStringParameter("wd", "xUtils");
         // 添加到请求body体的参数, 只有POST, PUT, PATCH, DELETE请求支持.
@@ -142,11 +143,23 @@ public class HttpFragment extends BaseFragment {
 
         // 使用multipart表单上传文件
         params.setMultipart(true);
+
         params.addBodyParameter(
                 "file",
-                new File("/sdcard/test.jpg"),
+                new File("/sdcard/1.jpg"),
                 null); // 如果文件没有扩展名, 最好设置contentType参数.
-        try {
+
+        params.addBodyParameter(
+                "file",
+                new File("/sdcard/2.jpg"),
+                null); // 如果文件没有扩展名, 最好设置contentType参数.
+
+        params.addBodyParameter(
+                "file",
+                new File("/sdcard/3.jpg"),
+                null); // 如果文件没有扩展名, 最好设置contentType参数.
+
+        /*try {
             params.addBodyParameter(
                     "file2",
                     new FileInputStream(new File("/sdcard/test2.jpg")),
@@ -155,7 +168,8 @@ public class HttpFragment extends BaseFragment {
                     "你+& \" 好.jpg"); // InputStream参数获取不到文件名, 最好设置, 除非服务端不关心这个参数.
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        }
+        }*/
+
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -174,7 +188,7 @@ public class HttpFragment extends BaseFragment {
 
             @Override
             public void onFinished() {
-
+                Toast.makeText(x.app(), "上传完成，哈哈。", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -182,15 +196,17 @@ public class HttpFragment extends BaseFragment {
     @ViewInject(R.id.et_url)
     private EditText et_url;
 
-    // 添加到下载列表
+    // 添加到下载列表(服务器地址：http://192.168.1.200:8080/oppo.mp4)(D:\Tomcat\apache-tomcat-7.0.70\webapps\ROOT\oppo.mp4)
+    // 下载时，可打开下载列表查看下载进度，下载完成后可在文件管理器的机身内存中的xUtils3查找
+    // xUtils支持如音视频之类的大文件下载(含下载列表)并支持断点续传(已通过测试)
     @Event(value = R.id.btn_test3)
     private void onTest3Click(View view) throws DbException {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {   // 下载一次
             String url = et_url.getText().toString();
-            String label = i + "xUtils_" + System.nanoTime();
+            String label = i + "xUtils3视频_" + System.nanoTime();   // 下载后的文件名(前缀)
             DownloadManager.getInstance().startDownload(
                     url, label,
-                    "/sdcard/xUtils/" + label + ".aar", true, false, null);
+                    "/sdcard/xUtils3/" + label + ".mp4", true, false, null);
         }
     }
 
