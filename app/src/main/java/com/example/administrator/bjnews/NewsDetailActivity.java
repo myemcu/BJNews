@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import java.text.Normalizer;
 
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+
 /**
  * Created by Administrator on 2016/10/23 0023.
  * 新闻浏览页面
@@ -81,10 +84,44 @@ public class NewsDetailActivity extends Activity{
 
                 case R.id.ib_share:
                                         Toast.makeText(NewsDetailActivity.this,"内容分享",Toast.LENGTH_SHORT).show();
+                                        showShare();
                                         break;
                 default:break;
             }
         }
+    }
+
+    private void showShare() {
+
+        ShareSDK.initSDK(this);
+        OnekeyShare oks = new OnekeyShare();
+
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // 分享时Notification的图标和文字  2.5.9以后的版本不调用此方法
+        //oks.setNotification(R.drawable.ic_launcher, getString(R.string.app_name));
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间使用
+        oks.setTitle("SharkSDK分享测试");
+        // titleUrl是标题的网络链接，仅在人人网和QQ空间使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        //分享网络图片，新浪微博分享网络图片需要通过审核后申请高级写入接口，否则请注释掉测试新浪微博
+        oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://image.baidu.com/search/detail?z=0&ipn=d&word=火影&step_word=&hs=0&pn=3&spn=0&di=73630928800&pi=&tn=baiduimagedetail&istype=0&ie=utf-8&oe=utf-8&cs=3811705734%2C4142223178&os=307029396%2C1034527739&simid=0%2C0&adpicid=0&fm=&sme=&cg=&bdtype=0&simics=1466803426%2C2815678637&oriquery=&objurl=http%3A%2F%2Fwww.52tian.net%2Ffile%2Fimage%2F20150610%2F20150610101993489348.png&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bcdptwg_z%26e3BgjpAzdH3FozAzdH3Fd9lAzdH3F&gsm=0&cardserver=1");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite("http://image.baidu.com/search/detail?z=0&ipn=d&word=火影&step_word=&hs=0&pn=3&spn=0&di=73630928800&pi=&tn=baiduimagedetail&istype=0&ie=utf-8&oe=utf-8&cs=3811705734%2C4142223178&os=307029396%2C1034527739&simid=0%2C0&adpicid=0&fm=&sme=&cg=&bdtype=0&simics=1466803426%2C2815678637&oriquery=&objurl=http%3A%2F%2Fwww.52tian.net%2Ffile%2Fimage%2F20150610%2F20150610101993489348.png&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bcdptwg_z%26e3BgjpAzdH3FozAzdH3Fd9lAzdH3F&gsm=0&cardserver=1");
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://image.baidu.com/search/detail?z=0&ipn=d&word=火影&step_word=&hs=0&pn=3&spn=0&di=73630928800&pi=&tn=baiduimagedetail&istype=0&ie=utf-8&oe=utf-8&cs=3811705734%2C4142223178&os=307029396%2C1034527739&simid=0%2C0&adpicid=0&fm=&sme=&cg=&bdtype=0&simics=1466803426%2C2815678637&oriquery=&objurl=http%3A%2F%2Fwww.52tian.net%2Ffile%2Fimage%2F20150610%2F20150610101993489348.png&fromurl=ippr_z2C%24qAzdH3FAzdH3Fooo_z%26e3Bcdptwg_z%26e3BgjpAzdH3FozAzdH3Fd9lAzdH3F&gsm=0&cardserver=1");
+
+        // 启动分享GUI
+        oks.show(this);
     }
 
     private int tempSize = 2;

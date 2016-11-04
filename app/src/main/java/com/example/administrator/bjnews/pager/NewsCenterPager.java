@@ -88,6 +88,7 @@ public class NewsCenterPager extends BasePager {
 
         /*优先显示本地缓存信息*/
         String saveJson = CacheUtil.getString(context,url); // 获取数据缓存
+
         if (!TextUtils.isEmpty(saveJson)) { // 如果非空才解析
             processData(saveJson);
         }

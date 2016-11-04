@@ -7,12 +7,15 @@ package com.example.administrator.bjnews.utils;
  */
 public class Url {
 
-    /*Tomacat基站服务包*/
-    public static String BASE_URL= "http://192.168.1.200:8080/zhbj";
-
-
-    /*新闻路径*/
+    // Tomacat基站服务包(OLD)
+    public static final String BASE_URL= "http://192.168.1.200:8080/zhbj";
+    // 新闻路径(OLD)
     public static final String NEWSCENTER_URL = BASE_URL+"/categories.json";
+
+    /*Tomacat基站服务包(New)*//*
+    public static final String BASE_URL = "http://192.168.1.200:8080/web_home";
+    *//*新闻路径(New)*//*
+    public static final String NEWSCENTER_URL = BASE_URL+"/static/api/news/categories.json";*/
 
 
     /*组图路径验证*/
