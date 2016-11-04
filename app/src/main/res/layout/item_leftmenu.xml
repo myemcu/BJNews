@@ -9,5 +9,4 @@
           android:drawablePadding="20dp"
           android:drawableLeft="@drawable/item_leftmenu_image"
           android:textColor="@drawable/item_leftmenu_textcolor">
-
 </TextView>

@@ -7,19 +7,19 @@ package com.example.administrator.bjnews.utils;
  */
 public class Url {
 
-    // Tomacat基站服务包(OLD)
+    /*// Tomacat基站服务包(OLD)
     public static final String BASE_URL= "http://192.168.1.200:8080/zhbj";
     // 新闻路径(OLD)
     public static final String NEWSCENTER_URL = BASE_URL+"/categories.json";
 
-    /*Tomacat基站服务包(New)*//*
+    *//*组图路径验证(OLD)*//*
+    *//*http://192.168.1.200:8080/zhbj/photos/photos_1.json*//*
+    public static final String PHOTOS_URL = BASE_URL+"/photos/photos_1.json";*/
+
+    // Tomacat基站服务包(New)
     public static final String BASE_URL = "http://192.168.1.200:8080/web_home";
-    *//*新闻路径(New)*//*
-    public static final String NEWSCENTER_URL = BASE_URL+"/static/api/news/categories.json";*/
-
-
-    /*组图路径验证*/
-    /*http://192.168.1.200:8080/zhbj/photos/photos_1.json*/
-    public static final String PHOTOS_URL = BASE_URL+"/photos/photos_1.json";
-
+    // 新闻路径(New)
+    public static final String NEWSCENTER_URL = BASE_URL+"/static/api/news/categories.json";
+    // 组图路径验证
+    public static final String PHOTOS_URL = BASE_URL+"/static/api/news/10003/list_1.json";
 }

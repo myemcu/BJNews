@@ -376,7 +376,7 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
             /*loaderImager(viewHolder,newsBean.getListimage());    // Volley方式请求图片*/
 
             // 自定义三级缓存请求图片
-            String imageUrl = newsBean.getListimage();
+            String imageUrl = Url.BASE_URL+newsBean.getListimage();
             /*viewHolder.iv_photos_icon.setTag(position);             // 因为列表中的图片id都一样，要区分不同的加载位置，就只能设置Tag
             Bitmap bitmap = bitmapUtils.getBitmapFromUrl(imageUrl,position);
             if (bitmap!=null) {                                     // 内存和本地
@@ -385,15 +385,15 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
 
             // 集成ImageLoader开源项目请求图片(传说具有图片加载了百分之多少的功能)
             /* 第一个参数是：图片的地址，第二个参数是要绑定的图片，第三个参数处理图片的配置，第四个参数*/
-            // imageLoader.displayImage(imageUrl, viewHolder.iv_photos_icon, options, animateFirstListener);
+            imageLoader.displayImage(imageUrl, viewHolder.iv_photos_icon, options, animateFirstListener);
 
             // 使用Picasso(自带三级缓存)
             /*Picasso.with(context).load(imageUrl).placeholder(R.drawable.pic_item_list_default)
                     .error(R.drawable.pic_item_list_default).into(viewHolder.iv_photos_icon);*/
 
             // 使用Glide(自带三级缓存)
-            Glide.with(context).load(imageUrl).placeholder(R.drawable.pic_item_list_default)
-                    .error(R.drawable.pic_item_list_default).into(viewHolder.iv_photos_icon);
+            /*Glide.with(context).load(imageUrl).placeholder(R.drawable.pic_item_list_default)
+                    .error(R.drawable.pic_item_list_default).into(viewHolder.iv_photos_icon);*/
 
             return convertView;
         }

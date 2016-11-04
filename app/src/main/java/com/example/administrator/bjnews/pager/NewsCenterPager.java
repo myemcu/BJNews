@@ -208,7 +208,7 @@ public class NewsCenterPager extends BasePager {
         // 添加“新闻、专题、组图、菜单”这四个ViewPager
         detailBasePagers = new ArrayList<>();
         detailBasePagers.add(new NewsMenuDetailPager(context,leftMenuData.get(0))); // 新闻，NewsMenuDetailPager是一个ViewPager，这里先获取data[0]根数据——”新闻“(而getChildren()是在该类的构造器中)
-        detailBasePagers.add(new TopicMenuDetailPager(context,leftMenuData.get(0)));                    // 专题
+        detailBasePagers.add(new TopicMenuDetailPager(context,leftMenuData.get(0)));// 专题
         detailBasePagers.add(new PhotosMenuDetailPager(context));                   // 组图
         detailBasePagers.add(new InteractMenuDetailPager(context));                 // 菜单
 
@@ -285,29 +285,34 @@ public class NewsCenterPager extends BasePager {
     // 根据位置，切换到对应的菜单详情页面(menudetail)
     public void switchPager(int selectPosition) {
 
-        // 设置标题
-        tv_title.setText(leftMenuData.get(selectPosition).getTitle());
+        if (selectPosition<detailBasePagers.size()) {
+            // 设置标题
+            tv_title.setText(leftMenuData.get(selectPosition).getTitle());
 
-        MenuDetailBasePager detailBasePager = detailBasePagers.get(selectPosition);
-        View rootView = detailBasePager.rootView;
-        // 初始化数据
-        detailBasePager.initData();
-        fl_base_content.removeAllViews();
-        fl_base_content.addView(rootView);
+            MenuDetailBasePager detailBasePager = detailBasePagers.get(selectPosition);
+            View rootView = detailBasePager.rootView;
+            // 初始化数据
+            detailBasePager.initData();
+            fl_base_content.removeAllViews();
+            fl_base_content.addView(rootView);
 
-        if (selectPosition==2) { // 如果切换到第3个页面——组图页面
-            // 先去BasePager中实例化
-            ib_switch_list_grid_view.setVisibility(View.VISIBLE);   // 显示
-            ib_switch_list_grid_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PhotosMenuDetailPager pager = (PhotosMenuDetailPager) detailBasePagers.get(2);
-                    pager.switch_list_grid_view(ib_switch_list_grid_view);
+            if (selectPosition==2) { // 如果切换到第3个页面——组图页面
+                // 先去BasePager中实例化
+                ib_switch_list_grid_view.setVisibility(View.VISIBLE);   // 显示
+                ib_switch_list_grid_view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        PhotosMenuDetailPager pager = (PhotosMenuDetailPager) detailBasePagers.get(2);
+                        pager.switch_list_grid_view(ib_switch_list_grid_view);
 
-                }
-            });
-        }else {
-            ib_switch_list_grid_view.setVisibility(View.GONE);      // 隐藏
+                    }
+                });
+            }else {
+                ib_switch_list_grid_view.setVisibility(View.GONE);      // 隐藏
+            }
+        }
+        else {
+            Toast.makeText(context, "该页面还没有启用", Toast.LENGTH_SHORT).show();
         }
     }
 }

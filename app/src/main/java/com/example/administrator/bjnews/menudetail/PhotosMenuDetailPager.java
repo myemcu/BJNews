@@ -252,7 +252,7 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
 //            loaderImager(viewHolder,newsBean.getListimage());    // Volley方式请求
 
-            String imageUrl = newsBean.getListimage();
+            String imageUrl = Url.BASE_URL+newsBean.getListimage();
             viewHolder.iv_photos_icon.setTag(position);             // 因为列表中的图片id都一样，要区分不同的加载位置，就只能设置Tag
             Bitmap bitmap = bitmapUtils.getBitmapFromUrl(imageUrl,position);
             if (bitmap!=null) {                                     // 内存和本地

@@ -1,5 +1,6 @@
 package com.example.administrator.bjnews.fragment;
 
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.Gravity;

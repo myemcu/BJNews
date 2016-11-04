@@ -304,7 +304,7 @@ public class TopicTabDetailPager extends MenuDetailBasePager {
             newsData = newsList.get(position);
             viewHolder.tv_title.setText(newsData.getTitle());
             viewHolder.tv_time.setText(newsData.getPubdate());
-            x.image().bind(viewHolder.iv_icon,newsData.getListimage());
+            x.image().bind(viewHolder.iv_icon,Url.BASE_URL+newsData.getListimage());
 
             return convertView;
         }
@@ -391,7 +391,7 @@ public class TopicTabDetailPager extends MenuDetailBasePager {
             TabDetailPagerBean.DataBean.TopnewsBean topnewsBean = topnews.get(position);
 
             // 联网请求图片
-            x.image().bind(imageView,topnewsBean.getTopimage());
+            x.image().bind(imageView,Url.BASE_URL+topnewsBean.getTopimage());
 
             return imageView;
         }

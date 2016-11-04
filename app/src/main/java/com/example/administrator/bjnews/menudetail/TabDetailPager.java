@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.administrator.bjnews.NewsDetailActivity;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
@@ -133,7 +134,7 @@ public class TabDetailPager extends MenuDetailBasePager {
             }
 
             Intent intent = new Intent(context,NewsDetailActivity.class);
-            intent.putExtra("url",newsBean.getUrl());
+            intent.putExtra("url",Url.BASE_URL+newsBean.getUrl());
             context.startActivity(intent);  // 新Activity记得要注册
         }
     }
@@ -338,7 +339,11 @@ public class TabDetailPager extends MenuDetailBasePager {
             newsData = newsList.get(position);
             viewHolder.tv_title.setText(newsData.getTitle());
             viewHolder.tv_time.setText(newsData.getPubdate());
-            x.image().bind(viewHolder.iv_icon,newsData.getListimage());
+
+            //x.image().bind(viewHolder.iv_icon,newsData.getListimage());
+
+            String imageUrl = Url.BASE_URL + newsData.getListimage();
+            Glide.with(context).load(imageUrl).into(viewHolder.iv_icon);
 
             String idArry = CacheUtil.getString(context,READ_ARRAY_ID); // ctrl+Alt+C("read_array_id") (35311,35312,...)
             if (idArry.contains(newsData.getId()+"")) {
@@ -448,7 +453,10 @@ public class TabDetailPager extends MenuDetailBasePager {
             TabDetailPagerBean.DataBean.TopnewsBean topnewsBean = topnews.get(position);
 
             // 联网请求图片
-            x.image().bind(imageView,topnewsBean.getTopimage());
+            //x.image().bind(imageView,topnewsBean.getTopimage());
+
+            String imageUrl = Url.BASE_URL+topnewsBean.getTopimage();
+            Glide.with(context).load(imageUrl).into(imageView);
 
             // 设置触摸事件() 与 解决手动滑动轮播图与自动播放轮播图时的冲突 联合使用
             imageView.setOnTouchListener(new View.OnTouchListener() {
