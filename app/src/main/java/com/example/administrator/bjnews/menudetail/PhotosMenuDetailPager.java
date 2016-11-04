@@ -1,12 +1,14 @@
 package com.example.administrator.bjnews.menudetail;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.example.administrator.bjnews.R;
+import com.example.administrator.bjnews.ShowImageActivity;
 import com.example.administrator.bjnews.base.MenuDetailBasePager;
 import com.example.administrator.bjnews.bean.PhotosMenuDetailPagerBean;
 import com.example.administrator.bjnews.utils.BitmapUtils;
@@ -121,6 +124,10 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
 
         View view = View.inflate(context, R.layout.photos_menu_detail_pager,null);     // 加载布局
         x.view().inject(this,view);                             // 使用xUtils3，对刚加载的布局进行注解
+
+        // 设置点击某条的item
+        list_view.setOnItemClickListener(new myOnItemClickListener());
+        grid_view.setOnItemClickListener(new myOnItemClickListener());
 
         return view;
     }
@@ -294,5 +301,17 @@ public class PhotosMenuDetailPager extends MenuDetailBasePager {
     static class ViewHolder {
         ImageView iv_photos_icon;
         TextView  tv_photos_title;
+    }
+
+    private class myOnItemClickListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // 根据位置取数据
+            PhotosMenuDetailPagerBean.DataBean.NewsBean newsBean = news.get(position);  // getView()中不要抽取变量
+            String imageUrl = Url.BASE_URL+newsBean.getLargeimage();
+            Intent intent = new Intent(context, ShowImageActivity.class);
+            intent.putExtra("url",imageUrl);
+            context.startActivity(intent);
+        }
     }
 }

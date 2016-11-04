@@ -47,4 +47,5 @@ dependencies {
     compile files('libs/ShareSDK-ShortMessage-2.7.9.jar')
     compile files('libs/ShareSDK-QZone-2.7.9.jar')
     compile files('libs/ShareSDK-QQ-2.7.9.jar')
+    compile project(':PhotoView_library')
 }
