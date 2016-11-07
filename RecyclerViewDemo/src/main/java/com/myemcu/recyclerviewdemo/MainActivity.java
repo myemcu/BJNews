@@ -37,9 +37,12 @@ public class MainActivity extends AppCompatActivity {
         rcyview.setAdapter(adapter);
 
         // 设置布局管理器
-        // rcyview.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));  // 最后一项为是否倒序，中间为垂直方向滑动
+        rcyview.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));  // 最后一项为是否倒序，中间为垂直方向滑动
         //rcyview.setLayoutManager(new GridLayoutManager(MainActivity.this,2,LinearLayoutManager.VERTICAL,false)); //  网格布局，2列，垂直，正序
         //rcyview.scrollToPosition(6);   // 首项显示定位到item_6
-        rcyview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));    // 瀑布流
+        //rcyview.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));    // 瀑布流
+
+        // 设置分隔线
+        rcyview.addItemDecoration(new MyItemDecoration(this,MyItemDecoration.VERTICAL_LIST));
     }
 }
