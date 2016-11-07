@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.myemcu.recyclerviewdemo.R;
 
@@ -36,7 +37,28 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
             iv_icon = (ImageView) itemView.findViewById(R.id.iv_icon);
             tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+
+            // 设置点击事件
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(v,getLayoutPosition(),datas.get(getLayoutPosition()));
+                    }
+                }
+            });
         }
+    }
+
+    public interface OnItemClickListener {
+        // RecyclerView点击事件方法(当点击某Item的时候，回调该方法)
+        void onItemClick(View view,int position,String data);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener l) { // 设置Item的点击监听
+        this.onItemClickListener=l;
     }
 
     @Override

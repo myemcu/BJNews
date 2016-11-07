@@ -6,6 +6,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.Toast;
 
 import com.myemcu.recyclerviewdemo.adapter.RecyclerViewAdapter;
 
@@ -44,5 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         // 设置分隔线
         rcyview.addItemDecoration(new MyItemDecoration(this,MyItemDecoration.VERTICAL_LIST));
+
+        // 设置item的点击事件(适配器中)
+        adapter.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, String data) {
+                Toast.makeText(MainActivity.this,"你点击的是："+data+"，position"+position,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
