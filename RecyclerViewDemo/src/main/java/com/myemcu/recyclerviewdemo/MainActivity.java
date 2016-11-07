@@ -1,0 +1,41 @@
+package com.myemcu.recyclerviewdemo;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import com.myemcu.recyclerviewdemo.adapter.RecyclerViewAdapter;
+
+import java.util.ArrayList;
+
+// 须在工程管理器中添加Recycler库"recyclerview-v7:25.0.0"
+
+public class MainActivity extends AppCompatActivity {
+
+    private RecyclerView rcyview;
+    private ArrayList<String> datas;
+    private RecyclerViewAdapter adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        rcyview = (RecyclerView) findViewById(R.id.rcyview);
+
+        // 准备数据源(集合)
+        datas=new ArrayList<>();    // new出集合
+        for (int i=0;i<50;i++) {    // 50条数据(50条String)
+            datas.add("Data_"+i);
+        }
+
+        // 设置适配器
+        adapter=new RecyclerViewAdapter(this,datas);// this:上下文，Datas数据源
+        rcyview.setAdapter(adapter);
+
+        // 设置布局管理器
+        rcyview.setLayoutManager(new LinearLayoutManager(MainActivity.this, LinearLayoutManager.VERTICAL, false));  // 最后一项为是否倒序，中间为垂直方向滑动
+        rcyview.scrollToPosition(6);   // 首项显示定位到item_6
+    }
+}
