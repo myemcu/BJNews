@@ -140,6 +140,7 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
             TabLayout.Tab tab = tabpage_indicator.getTabAt(i);
             tab.setCustomView(adapter.getTabView(i));
         }*/
+        vp_news_menu_detailpager.setCurrentItem(tempPosition);
     }
 
     // 是否显示侧滑菜单
@@ -156,6 +157,8 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
         }
     }
 
+    private int tempPosition=0;
+
     private class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
 
         @Override
@@ -170,6 +173,8 @@ public class TopicMenuDetailPager extends MenuDetailBasePager{
             }else {             // 关闭侧滑
                 isEnableSlidingMenu(false);
             }
+
+            tempPosition=position;
         }
 
         @Override

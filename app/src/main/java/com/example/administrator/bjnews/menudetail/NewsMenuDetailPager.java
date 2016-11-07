@@ -76,6 +76,8 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
         vp_news_menu_detailpager.setCurrentItem(vp_news_menu_detailpager.getCurrentItem()+1);
     }
 
+    private int tempPosition;
+
     @Override
     public void initData() {    // 数据
         super.initData();
@@ -97,6 +99,8 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
 
         // 使用TabPageIndicator实现vp页面监听
         tabpage_indicator.setOnPageChangeListener(new MyOnPageChangeListener());
+
+        vp_news_menu_detailpager.setCurrentItem(tempPosition);
     }
 
     // 是否显示侧滑菜单
@@ -127,6 +131,8 @@ public class NewsMenuDetailPager extends MenuDetailBasePager{
             }else {             // 关闭侧滑
                 isEnableSlidingMenu(false);
             }
+
+            tempPosition=position;
         }
 
         @Override
