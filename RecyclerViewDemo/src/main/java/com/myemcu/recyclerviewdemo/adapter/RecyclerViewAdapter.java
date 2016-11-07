@@ -37,6 +37,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         notifyItemRemoved(position);    // 移除数据的刷新
     }
 
+    public void delAllData() {
+        datas.clear();
+        notifyItemRangeChanged(0,datas.size());
+    }
+
+    public void addAllData(ArrayList<String> data) {
+        datas.addAll(data);
+        notifyItemRangeChanged(0,datas.size());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {   // 必须为public，要么不写
 
         private ImageView iv_icon;
