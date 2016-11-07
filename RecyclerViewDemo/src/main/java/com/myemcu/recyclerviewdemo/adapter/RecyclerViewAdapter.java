@@ -27,6 +27,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.datas=datas;
     }
 
+    public void addData(int position, String data) {
+        datas.add(position,data);       // 添加到集合中的第0个位置
+        notifyItemInserted(position);   // 插入一条数据的更新
+    }
+
+    public void delData(int position) {
+        datas.remove(position);
+        notifyItemRemoved(position);    // 移除数据的刷新
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {   // 必须为public，要么不写
 
         private ImageView iv_icon;
