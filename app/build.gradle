@@ -1,8 +1,16 @@
 apply plugin: 'com.android.application'
 
+/***************************************************************************************************
+*  说明：
+*       在加入新的第三方开源项目的时候，如果编译或运行有错，则一定是修改新项目里面的Gradle中的各个版本与老版本匹配，
+*       如：compile project(':MaterialRefreshLayout_library')中的为23，则要改成app_Gradle中的22
+*       而不是让老的迎合新的，从而去修改老的Gradle中的各项配置，切记。
+*
+***************************************************************************************************/
+
 android {
     compileSdkVersion 22
-    buildToolsVersion "22"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "com.example.administrator.bjnews"
@@ -22,7 +30,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:appcompat-v7:22.1.0'       // TabLayout必须用22.x版本的，不然程序要崩。
     compile project(':SlidingMenu_library')
     compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
@@ -30,11 +38,9 @@ dependencies {
     compile project(':RefreshListView_library')
     compile project(':PullToRefresh_library')
     compile files('libs/volley.jar')
-    compile 'com.android.support:design:22.2.1'
-    // 用于TabLayout
+    compile 'com.android.support:design:22.2.1'             // TabLayout必须用22.x版本的，不然程序要崩。
     compile files('libs/jpush-android-2.2.0.jar')
     compile files('libs/universal-image-loader-1.9.5.jar')
-    //    compile files('libs/universal-image-loader-1.9.2-SNAPSHOT-with-sources.jar')
     compile files('libs/picasso-2.5.2.jar')
     compile files('libs/glide-3.7.0.jar')
     compile project(':okhttputils')
@@ -48,4 +54,6 @@ dependencies {
     compile files('libs/ShareSDK-QZone-2.7.9.jar')
     compile files('libs/ShareSDK-QQ-2.7.9.jar')
     compile project(':PhotoView_library')
+    compile project(':MaterialRefreshLayout_library')
+    compile 'com.android.support:recyclerview-v7:22.0.0'    // 原为25，修改为22与本app_Gradle各项匹配
 }

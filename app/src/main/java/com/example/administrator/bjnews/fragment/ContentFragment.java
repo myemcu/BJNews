@@ -5,7 +5,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.example.administrator.bjnews.MainActivity;
@@ -16,7 +15,7 @@ import com.example.administrator.bjnews.pager.GovaffairPager;
 import com.example.administrator.bjnews.pager.HomePager;
 import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.pager.SettingPager;
-import com.example.administrator.bjnews.pager.SmartServicePager;
+import com.example.administrator.bjnews.pager.ShopPager;
 import com.example.administrator.bjnews.view.NoScrollViewPager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
@@ -69,7 +68,7 @@ public class ContentFragment extends BaseFragment{
         basePagers = new ArrayList<>();                         // 创建集合对象
         basePagers.add(new HomePager(context));                 // 首页
         basePagers.add(new NewsCenterPager(context));           // 新闻中心
-        basePagers.add(new SmartServicePager(context));         // 智慧服务
+        basePagers.add(new ShopPager(context));                 // 商城热卖
         basePagers.add(new GovaffairPager(context));            // 政要指南
         basePagers.add(new SettingPager(context));              // 设置
 

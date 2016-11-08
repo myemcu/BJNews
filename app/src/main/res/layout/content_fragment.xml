@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -16,42 +16,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/bottom_tab_bg">
+        android:background="#bb000000">
 
         <RadioButton
             android:id="@+id/rb_home"
             android:text="首页"
             android:drawableTop="@drawable/rb_home_selector"
             style="@style/bottom_tag_style"
-            />
+            tools:ignore="HardcodedText"/>
 
         <RadioButton
             android:id="@+id/rb_newscenter"
-            android:text="新闻中心"
+            android:text="新闻"
             android:drawableTop="@drawable/rb_newscenter_selector"
             style="@style/bottom_tag_style"
-            />
+            tools:ignore="HardcodedText"/>
 
         <RadioButton
             android:id="@+id/rb_smartservices"
-            android:text="智慧服务"
+            android:text="商城"
             android:drawableTop="@drawable/rb_smartservices_selector"
             style="@style/bottom_tag_style"
-            />
+            tools:ignore="HardcodedText"/>
 
         <RadioButton
             android:id="@+id/rb_govaffair"
-            android:text="政要指南"
+            android:text="购物"
             android:drawableTop="@drawable/rb_govaffair_selector"
             style="@style/bottom_tag_style"
-            />
+            tools:ignore="HardcodedText"/>
 
         <RadioButton
             android:id="@+id/rb_setting"
             android:text="设置"
             android:drawableTop="@drawable/rb_setting_selector"
             style="@style/bottom_tag_style"
-            />
+            tools:ignore="HardcodedText"/>
 
     </RadioGroup>
 
