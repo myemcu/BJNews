@@ -1,16 +1,27 @@
 package com.example.administrator.bjnews.pager;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.base.BasePager;
+import com.example.administrator.bjnews.utils.CacheUtil;
+import com.example.administrator.bjnews.utils.LogUtil;
+import com.example.administrator.bjnews.utils.Url;
+
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
+
+//import com.zhy.http.okhttp.OkHttpUtils;
+
+//  http://112.124.22.238:8081/course_api/wares/hot?pageSize=7&curPage=0 // 每页7条，当前页为0
 
 /**
  * Created by Administrator on 2016/9/12 0012.
@@ -18,11 +29,16 @@ import com.example.administrator.bjnews.base.BasePager;
  */
 public class ShopPager extends BasePager {
 
+    private String url;
+
     /*private TextView txt;*/
 
     private MaterialRefreshLayout refresh_layout; // 下拉刷新布局
     private RecyclerView recycler_view;
     private ProgressBar pb_loading;
+    private int pageSize = 7;   // 每页7个(共4页)
+    private int curPage  = 1;   // 当前页为1(首页为0)
+    private int totalPage= 4;   // 总页数
 
 
     public ShopPager(Context context) {
@@ -46,11 +62,71 @@ public class ShopPager extends BasePager {
         tv_title.setText("商城热卖");
         // 2 创建视图
         View view = View.inflate(context, R.layout.shop_hot_sell,null);
+        // 3 实例化
         refresh_layout  = (MaterialRefreshLayout)   view.findViewById(R.id.refresh_layout);
         recycler_view   = (RecyclerView)            view.findViewById(R.id.recycler_view);
         pb_loading      = (ProgressBar)             view.findViewById(R.id.pb_loading);
-
-        // 3 添加view到FrameLayout中
+        // 4 添加view到FrameLayout中
         fl_base_content.addView(view);
+        // 5 设置网址
+        setRequestParams();
+        // 联网请求
+        getDataFromNet_OkHttpUtils();
+    }
+
+    private void getDataFromNet_OkHttpUtils() {
+
+        String json =  CacheUtil.getString(context, Url.SHOP_URL);
+
+        if (!TextUtils.isEmpty(json)) {
+            processData(json);
+        }
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .id(100)
+                .build()
+                .execute(new MyStringCallback());
+    }
+
+    public class MyStringCallback extends StringCallback
+    {
+        @Override   // 联网请求成功
+        public void onResponse(String response, int id)
+        {
+            LogUtil.e("使用okhttp联网请求成功==" + response);
+
+            //缓存数据
+            CacheUtil.putString(context, url, response);
+
+            processData(response);
+
+            switch (id)
+            {
+                case 100:
+                    Toast.makeText(context, "http", Toast.LENGTH_SHORT).show();
+                    break;
+                case 101:
+                    Toast.makeText(context, "https", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+
+        @Override   //  联网失败
+        public void onError(Call call, Exception e, int id)
+        {
+            e.printStackTrace();
+            LogUtil.e("使用okhttp联网请求失败==" + e.getMessage());
+        }
+
+    }
+
+    private void setRequestParams() {
+        url= Url.SHOP_URL+pageSize+"&curPage="+curPage;
+    }
+
+    private void processData(String response) {
+
     }
 }

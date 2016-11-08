@@ -36,6 +36,7 @@
             <option value="$PROJECT_DIR$/iamger_loader_sample" />
             <option value="$PROJECT_DIR$/okhttp_sample" />
             <option value="$PROJECT_DIR$/okhttputils" />
+            <option value="$PROJECT_DIR$/okhttputils_library" />
             <option value="$PROJECT_DIR$/pullToRefreshListFragment" />
             <option value="$PROJECT_DIR$/pullToRefreshViewPager" />
             <option value="$PROJECT_DIR$/testVolley" />

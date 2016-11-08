@@ -36,14 +36,21 @@ import com.example.administrator.bjnews.utils.NetCacheUtils;
 import com.example.administrator.bjnews.utils.Url;
 import com.example.administrator.bjnews.volley.VolleyManager;
 import com.google.gson.Gson;
+/*import com.lzy.okhttputils.OkHttpUtils;
+import com.lzy.okhttputils.callback.StringCallback;*/
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.squareup.picasso.Picasso;
+/*import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;*/
+
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import okhttp3.Call;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -67,7 +74,7 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
 
     // private TextView txt;
 
-//    private ImageLoader imageLoader;// 这个是volley中的imageLoader
+    //    private ImageLoader imageLoader;// 这个是volley中的imageLoader
     protected com.nostra13.universalimageloader.core.ImageLoader imageLoader = com.nostra13.universalimageloader.core.ImageLoader.getInstance();
 
     private boolean isShowList = true;  // true显示列表，隐藏网格(默认)
@@ -213,29 +220,15 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
                 .url(url)
                 .build()
                 .execute(new StringCallback() {
-                    @Override
-                    public void onBefore(okhttp3.Request request)
-                    {
-                        super.onBefore(request);
-                        LogUtil.e("onBefore--"+request);
-                    }
+
 
                     @Override
-                    public void onAfter()
-                    {
-                        super.onAfter();
-                        LogUtil.e("onAfter--");
-                    }
-
-                    @Override
-                    public void onError(okhttp3.Request request, Exception e)
-                    {
+                    public void onError(Call call, Exception e, int id) {
                         LogUtil.e("onError--");
                     }
 
                     @Override
-                    public void onResponse(String response)
-                    {
+                    public void onResponse(String response, int id) {
                         LogUtil.e("onResponse成功--"+response);
                         // 2 解析数据
                         processData(response);
@@ -243,11 +236,6 @@ public class InteractMenuDetailPager extends MenuDetailBasePager{
                         CacheUtil.putString(context,url,response);
                     }
 
-                    @Override
-                    public void inProgress(float progress)
-                    {
-                        LogUtil.e("inProgress进度--"+progress);
-                    }
                 });
     }
 

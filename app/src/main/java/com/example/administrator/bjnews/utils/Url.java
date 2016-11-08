@@ -18,6 +18,8 @@ public class Url {
 
     // Tomacat基站服务包(New)
     public static final String BASE_URL = "http://192.168.1.200:8080/web_home";
+    // 商城热卖
+    public static final String SHOP_URL = "http://112.124.22.238:8081/course_api/wares/hot?pageSize=";
     // 新闻路径(New)
     public static final String NEWSCENTER_URL = BASE_URL+"/static/api/news/categories.json";
     // 组图路径验证
