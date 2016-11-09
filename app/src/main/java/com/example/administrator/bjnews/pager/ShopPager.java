@@ -9,6 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.adapter.ShopPagerRecyclerViewAdapter;
 import com.example.administrator.bjnews.base.BasePager;
@@ -37,6 +38,12 @@ public class ShopPager extends BasePager {
 
     private String url;
 
+    private static final int STATE_NORMAL   =   1;      // 默认状态
+    private static final int STATE_REFRESH  =   2;      // 下拉刷新
+    private static final int STATE_LOADMORE =   3;      // 加载更多
+
+    private int state = STATE_NORMAL;
+
     /*private TextView txt;*/
 
     private MaterialRefreshLayout refresh_layout; // 下拉刷新布局
@@ -46,7 +53,8 @@ public class ShopPager extends BasePager {
     private int curPage  = 1;   // 当前页为1(首页为0)
     private int totalPage= 4;   // 总页数
 
-    private List<ShopPagerBean.Wares> datas; // 商品列表数据
+    private List<ShopPagerBean.Wares>    datas;     // 商品列表数据
+    private ShopPagerRecyclerViewAdapter adapter;   // Recyv适配器
 
     public ShopPager(Context context) {
         super(context);
@@ -78,10 +86,45 @@ public class ShopPager extends BasePager {
             fl_base_content.removeAllViews();   // 消除由addView()导致的重影
         }
         fl_base_content.addView(view);
+
+
+        initRefreshLayout();
+
         // 5 设置网址
         setRequestParams();
         // 联网请求与解析数据
         getDataFromNet_OkHttpUtils();
+    }
+
+    private void initRefreshLayout() {
+        // 设置下拉和上拉刷新
+        refresh_layout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            //下拉刷新
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+                state=STATE_REFRESH;
+                curPage=1;  // 下拉刷新请求的是第1页
+                url= Url.SHOP_URL+pageSize+"&curPage="+curPage;
+                getDataFromNet_OkHttpUtils();
+            }
+
+            @Override
+            //加载更多(Ctrl+O)
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                super.onRefreshLoadMore(materialRefreshLayout);
+
+                if (curPage < totalPage) {
+                    state=STATE_LOADMORE;
+                    curPage+=1;  // 下拉刷新请求的是第1页
+                    url= Url.SHOP_URL+pageSize+"&curPage="+curPage;
+                    getDataFromNet_OkHttpUtils();
+                }
+                else {
+                    Toast.makeText(context,"没有更多数据了...",Toast.LENGTH_SHORT).show();
+                    refresh_layout.finishRefreshLoadMore(); // 加载更多的UI还原
+                }
+            }
+        });
     }
 
     private void getDataFromNet_OkHttpUtils() {
@@ -134,6 +177,8 @@ public class ShopPager extends BasePager {
     }
 
     private void setRequestParams() {
+        state=STATE_NORMAL;
+        curPage=1;  // (1~4)
         url= Url.SHOP_URL+pageSize+"&curPage="+curPage;
     }
 
@@ -147,10 +192,36 @@ public class ShopPager extends BasePager {
         LogUtil.e("totalPage"+totalPage);
         LogUtil.e("datas(1)"+datas.get(1).getName());
 
-        // 显示数据(设置RecyclerView适配器)
-        ShopPagerRecyclerViewAdapter adapter = new ShopPagerRecyclerViewAdapter(context,datas);
-        recycler_view.setAdapter(adapter);
-        recycler_view.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+        showData(); // 数据显示
+    }
+
+    private void showData() {
+
+        switch (state) {
+            case STATE_NORMAL:  // 正常显示
+                                adapter = new ShopPagerRecyclerViewAdapter(context,datas);
+                                recycler_view.setAdapter(adapter);
+                                recycler_view.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+                                break;
+
+            case STATE_REFRESH: // 下拉刷新
+                                // 1 清空之前数据
+                                adapter.clearData();
+                                // 2 添加新数据(刷新)
+                                adapter.addData(0,datas);
+                                // 3 状态还原
+                                refresh_layout.finishRefresh();
+                                break;
+
+            case STATE_LOADMORE:// 加载更多
+                                // 1 把新的数据添加到原来数据的末尾(刷新)
+                                adapter.addData(adapter.getDataCount(),datas);
+                                // 2 状态还原
+                                refresh_layout.finishRefreshLoadMore();
+                                break;
+
+            default:break;
+        }
 
         pb_loading.setVisibility(View.GONE);
     }

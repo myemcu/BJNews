@@ -32,6 +32,25 @@ public class ShopPagerRecyclerViewAdapter extends RecyclerView.Adapter<ShopPager
        this.datas=datas;
     }
 
+    // 清除数据
+    public void clearData() {
+        datas.clear();
+        notifyItemRangeChanged(0,datas.size());
+    }
+
+    // 根据指定位置添加数据
+    public void addData(int position, List<ShopPagerBean.Wares> data) {
+        if (data != null && data.size()>0) {
+            datas.addAll(position,data);
+            notifyItemRangeChanged(position,datas.size());
+        }
+    }
+
+    // 得到总条数
+    public int getDataCount() {
+        return datas.size();
+    }
+
     // 创建适配器自身的ViewHolder方法
     public class ViewHolder extends RecyclerView.ViewHolder {
 
