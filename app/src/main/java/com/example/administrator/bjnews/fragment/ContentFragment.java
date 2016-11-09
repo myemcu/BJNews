@@ -1,14 +1,13 @@
 package com.example.administrator.bjnews.fragment;
 
-import android.support.v4.view.PagerAdapter;
+
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RadioGroup;
-
 import com.example.administrator.bjnews.MainActivity;
 import com.example.administrator.bjnews.R;
+import com.example.administrator.bjnews.adapter.ContentFragmentAdapter;
 import com.example.administrator.bjnews.base.BaseFragment;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.pager.GovaffairPager;
@@ -72,7 +71,8 @@ public class ContentFragment extends BaseFragment{
         basePagers.add(new GovaffairPager(context));            // 政要指南
         basePagers.add(new SettingPager(context));              // 设置
 
-        vp_content.setAdapter(new ContentFragmentAdapter());    // 设置ViewPager适配器
+        ContentFragmentAdapter contentFragmentAdapter = new ContentFragmentAdapter(basePagers);
+        vp_content.setAdapter(contentFragmentAdapter);    // 设置ViewPager适配器
 
         // 默认选中首页
         rg_bottom_tag.check(R.id.rb_home);
@@ -163,46 +163,4 @@ public class ContentFragment extends BaseFragment{
             slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
         }
     }
-
-    class ContentFragmentAdapter extends PagerAdapter {
-
-        // 必须实现
-
-        @Override
-        public int getCount() {
-            return basePagers.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view==object;
-        }
-
-        // 还需实现
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-
-
-            BasePager basePager = basePagers.get(position);
-            View rootView = basePager.rootView;
-
-            // 注释掉这个是为了处理错误的数据预加载(e.g:选择某RadioButton，出现下一个页面数据)
-            // 带来的新问题是ViewPager切换不动了。
-            // basePager.initData();   // 调各个页面的initData();
-            // 解决之道：监听页面的改变
-
-            container.addView(rootView);
-
-            return rootView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-
-            container.removeView((View) object);
-        }
-    }
-
-
 }

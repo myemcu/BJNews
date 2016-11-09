@@ -1,6 +1,7 @@
 package com.example.administrator.bjnews.pager;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,13 +10,18 @@ import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.example.administrator.bjnews.R;
+import com.example.administrator.bjnews.adapter.ShopPagerRecyclerViewAdapter;
 import com.example.administrator.bjnews.base.BasePager;
+import com.example.administrator.bjnews.bean.ShopPagerBean;
 import com.example.administrator.bjnews.utils.CacheUtil;
 import com.example.administrator.bjnews.utils.LogUtil;
 import com.example.administrator.bjnews.utils.Url;
 
+import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
 
 import okhttp3.Call;
 
@@ -40,6 +46,7 @@ public class ShopPager extends BasePager {
     private int curPage  = 1;   // 当前页为1(首页为0)
     private int totalPage= 4;   // 总页数
 
+    private List<ShopPagerBean.Wares> datas; // 商品列表数据
 
     public ShopPager(Context context) {
         super(context);
@@ -67,10 +74,13 @@ public class ShopPager extends BasePager {
         recycler_view   = (RecyclerView)            view.findViewById(R.id.recycler_view);
         pb_loading      = (ProgressBar)             view.findViewById(R.id.pb_loading);
         // 4 添加view到FrameLayout中
+        if (fl_base_content != null) {
+            fl_base_content.removeAllViews();   // 消除由addView()导致的重影
+        }
         fl_base_content.addView(view);
         // 5 设置网址
         setRequestParams();
-        // 联网请求
+        // 联网请求与解析数据
         getDataFromNet_OkHttpUtils();
     }
 
@@ -95,21 +105,22 @@ public class ShopPager extends BasePager {
         @Override   // 联网请求成功
         public void onResponse(String response, int id)
         {
-            LogUtil.e("使用okhttp联网请求成功==" + response);
+            LogUtil.e("使用okhttp联网请求成功==" + response);   // 观察时，输入Info，ShopPager即可(==后面的全部信息)
 
             //缓存数据
             CacheUtil.putString(context, url, response);
 
-            processData(response);
+            processData(response);  // 对请求到的数据进行解析
 
             switch (id)
             {
                 case 100:
-                    Toast.makeText(context, "http", Toast.LENGTH_SHORT).show();
-                    break;
+                        Toast.makeText(context, "http", Toast.LENGTH_SHORT).show();
+                        break;
+
                 case 101:
-                    Toast.makeText(context, "https", Toast.LENGTH_SHORT).show();
-                    break;
+                        Toast.makeText(context, "https", Toast.LENGTH_SHORT).show();
+                        break;
             }
         }
 
@@ -126,7 +137,25 @@ public class ShopPager extends BasePager {
         url= Url.SHOP_URL+pageSize+"&curPage="+curPage;
     }
 
-    private void processData(String response) {
+    private void processData(String response) {         // 数据解析(Alt+S)，先建一个Bean类,再Gson成Bean代码
+        ShopPagerBean bean = parsedJson(response);      // 根据response解析Json
+        datas = bean.getList();                         // 得到列表
+        curPage=bean.getCurrentPage();                  // 得到当前页
+        totalPage=bean.getTotalPage();                  // 得到总页数
 
+        LogUtil.e("curPage=="+curPage);
+        LogUtil.e("totalPage"+totalPage);
+        LogUtil.e("datas(1)"+datas.get(1).getName());
+
+        // 显示数据(设置RecyclerView适配器)
+        ShopPagerRecyclerViewAdapter adapter = new ShopPagerRecyclerViewAdapter(context,datas);
+        recycler_view.setAdapter(adapter);
+        recycler_view.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+
+        pb_loading.setVisibility(View.GONE);
+    }
+
+    private ShopPagerBean parsedJson(String response) { // 商城热卖数据的解析实现
+        return new Gson().fromJson(response,ShopPagerBean.class);
     }
 }
