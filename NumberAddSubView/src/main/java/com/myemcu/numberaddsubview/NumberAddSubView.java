@@ -1,12 +1,16 @@
 package com.myemcu.numberaddsubview;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v7.widget.TintTypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+//import android.support.v7.widget;
 
 /**
  * Created by Administrator on 2016/11/10 0010.
@@ -71,6 +75,47 @@ public class NumberAddSubView extends LinearLayout implements View.OnClickListen
         getValue(); // 取值
         btn_sub.setOnClickListener(this);
         btn_add.setOnClickListener(this);
+
+        if (attrs != null) {    // attrs:基于反射机制的属性传递，将xml中的控件属性传递过来(传递到对应类中)，简单说来就是在xml中设置控件属性的方法
+            // 这个是v7包方法，如果没有，则：compile 'com.android.support:appcompat-v7:25.0.0'
+            TintTypedArray typedArray = TintTypedArray.obtainStyledAttributes(context,attrs,R.styleable.NumberAddSubView);
+
+            // 默认值
+            int value = typedArray.getInt(R.styleable.NumberAddSubView_value,0);        // 如果取不到，则传默认值0
+            if (value > 0) {
+                setValue(value);
+            }
+
+            // 最小值
+            int minValue = typedArray.getInt(R.styleable.NumberAddSubView_minValue,0);  // 如果取不到，则传默认值0
+            if (minValue > 0) {
+                setMinValue(minValue);
+            }
+
+            // 最大值
+            int maxValue = typedArray.getInt(R.styleable.NumberAddSubView_maxValue,0);  // 如果取不到，则传默认值0
+            if (maxValue > 0) {
+                setMaxValue(maxValue);
+            }
+
+            // 加减键总背景
+            Drawable numberAddSubBackground = typedArray.getDrawable(R.styleable.NumberAddSubView_numberAddSubBackground);
+            if (numberAddSubBackground != null) {
+                setBackground(numberAddSubBackground);
+            }
+
+            // "-"键背景
+            Drawable numberSubBackground = typedArray.getDrawable(R.styleable.NumberAddSubView_numberSubBackground);
+            if (numberSubBackground != null) {
+                btn_sub.setBackground(numberSubBackground);
+            }
+
+            // "+"键背景
+            Drawable numberAddBackground = typedArray.getDrawable(R.styleable.NumberAddSubView_numberAddBackground);
+            if (numberAddBackground != null) {
+                btn_add.setBackground(numberAddBackground);
+            }
+        }
     }
 
     @Override
@@ -107,8 +152,8 @@ public class NumberAddSubView extends LinearLayout implements View.OnClickListen
 
     // 定义：数字键点击监听接口(因为要随时回传数据，故用接口)(回调——在主MainActivity中设置接口监听时调)
     public interface OnNumClickListener {
-        public void onButtonSub(View view, int value);  // 接口中需要声明方法("-"键点击时的回调方法)
-        public void onButtonAdd(View view, int value);  // 接口中需要声明方法("+"键点击时的回调方法)
+        void onButtonSub(View view, int value);  // 接口中需要声明方法("-"键点击时的回调方法)
+        void onButtonAdd(View view, int value);  // 接口中需要声明方法("+"键点击时的回调方法)
     }
 
     // 定义接口对象

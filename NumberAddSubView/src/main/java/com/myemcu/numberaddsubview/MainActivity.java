@@ -26,5 +26,10 @@ public class MainActivity extends Activity {
                 Toast.makeText(MainActivity.this,"当前值："+value,Toast.LENGTH_SHORT).show();
             }
         });
+
+        // 代码方式设置控件属性
+        /*number_add_sub_view.setValue(6);
+        number_add_sub_view.setMinValue(2);
+        number_add_sub_view.setMaxValue(16);*/
     }
 }
