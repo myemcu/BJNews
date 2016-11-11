@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.bean.ShopPagerBean;
+import com.example.administrator.bjnews.bean.ShoppingCart;
+import com.example.administrator.bjnews.utils.CartProvider;
 
 import java.util.List;
 
@@ -26,10 +28,14 @@ public class ShopPagerRecyclerViewAdapter extends RecyclerView.Adapter<ShopPager
     private final Context context;
     private final List<ShopPagerBean.Wares> datas;
 
+    private CartProvider cartProvider;  // 购物车缓存工具对象
+
+
     // 创建用于接收上下文与商品数据的构造器
     public ShopPagerRecyclerViewAdapter(Context context, List<ShopPagerBean.Wares> datas) {
        this.context=context;
        this.datas=datas;
+       cartProvider = new CartProvider(context);   // new出购物车缓存类
     }
 
     // 清除数据
@@ -93,6 +99,10 @@ public class ShopPagerRecyclerViewAdapter extends RecyclerView.Adapter<ShopPager
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "价格："+wares.getPrice(), Toast.LENGTH_SHORT).show();
+                // 把商品Wares转换成ShoppingCart
+                ShoppingCart cart = cartProvider.conversion(wares);
+                cartProvider.addData(cart);
+                Toast.makeText(context,"购买成功",Toast.LENGTH_SHORT).show();
             }
         });
     }

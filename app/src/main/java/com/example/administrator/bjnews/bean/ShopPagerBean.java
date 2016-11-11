@@ -126,6 +126,18 @@ public class ShopPagerBean  {   // Alt+S生成Json
         public void setSale(int sale) {
             this.sale = sale;
         }
+
+        @Override
+        public String toString() {
+            return "Wares{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    ", imgUrl='" + imgUrl + '\'' +
+                    ", description=" + description +
+                    ", price=" + price +
+                    ", sale=" + sale +
+                    '}';
+        }
     }
 
 }

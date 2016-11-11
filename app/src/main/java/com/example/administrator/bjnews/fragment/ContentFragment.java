@@ -10,7 +10,7 @@ import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.adapter.ContentFragmentAdapter;
 import com.example.administrator.bjnews.base.BaseFragment;
 import com.example.administrator.bjnews.base.BasePager;
-import com.example.administrator.bjnews.pager.GovaffairPager;
+import com.example.administrator.bjnews.pager.ShoppingCartPager;
 import com.example.administrator.bjnews.pager.HomePager;
 import com.example.administrator.bjnews.pager.NewsCenterPager;
 import com.example.administrator.bjnews.pager.SettingPager;
@@ -68,7 +68,7 @@ public class ContentFragment extends BaseFragment{
         basePagers.add(new HomePager(context));                 // 首页
         basePagers.add(new NewsCenterPager(context));           // 新闻中心
         basePagers.add(new ShopPager(context));                 // 商城热卖
-        basePagers.add(new GovaffairPager(context));            // 政要指南
+        basePagers.add(new ShoppingCartPager(context));            // 政要指南
         basePagers.add(new SettingPager(context));              // 设置
 
         ContentFragmentAdapter contentFragmentAdapter = new ContentFragmentAdapter(basePagers);

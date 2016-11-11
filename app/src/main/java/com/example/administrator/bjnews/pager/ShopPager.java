@@ -15,6 +15,7 @@ import com.example.administrator.bjnews.adapter.ShopPagerRecyclerViewAdapter;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.bean.ShopPagerBean;
 import com.example.administrator.bjnews.utils.CacheUtil;
+import com.example.administrator.bjnews.utils.CartProvider;
 import com.example.administrator.bjnews.utils.LogUtil;
 import com.example.administrator.bjnews.utils.Url;
 
@@ -56,6 +57,7 @@ public class ShopPager extends BasePager {
     private List<ShopPagerBean.Wares>    datas;     // 商品列表数据
     private ShopPagerRecyclerViewAdapter adapter;   // Recyv适配器
 
+    // 构造器
     public ShopPager(Context context) {
         super(context);
     }
