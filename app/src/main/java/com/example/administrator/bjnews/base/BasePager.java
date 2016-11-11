@@ -2,6 +2,7 @@ package com.example.administrator.bjnews.base;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class BasePager {
     public FrameLayout  fl_base_content;
 
     public ImageButton  ib_switch_list_grid_view;
+    public Button btn_cart_edit;
 
     /*代表各个页面*/
     public View rootView;
@@ -41,6 +43,7 @@ public class BasePager {
         fl_base_content = (FrameLayout) view.findViewById(R.id.fl_base_content);    // 帧布局
 
         ib_switch_list_grid_view = (ImageButton) view.findViewById(R.id.ib_switch_list_grid_view);
+        btn_cart_edit = (Button) view.findViewById(R.id.btn_cart_edit);
 
         // 图标按钮启动左侧菜单
         ib_menu.setOnClickListener(new View.OnClickListener() {
