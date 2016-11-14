@@ -31,13 +31,51 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     
     private CartProvider cartProvider;
 
-    public ShoppingPagerAdapter(Context context, List<ShoppingCart> datas, CheckBox check_all, TextView tv_totalPrice) {    // 上下文，购物车数据
+    public ShoppingPagerAdapter(Context context, final List<ShoppingCart> datas, CheckBox check_all, TextView tv_totalPrice) {    // 上下文，购物车数据
         this.context=context;
         this.datas=datas;
         this.check_all=check_all;
         this.tv_totalPrice=tv_totalPrice;
         cartProvider=new CartProvider(context);
         showTotalPrice();
+        // 设置Item监听
+        setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                // 1 得到对应位置的对象
+                ShoppingCart cart = datas.get(position);
+                // 2 勾选状态取反
+                cart.setChecked(!cart.isChecked());
+                // 3 状态刷新
+                notifyItemChanged(position);
+                // 4 校验全选和非全选
+                checkAll();
+                // 5 显示总价
+                showTotalPrice();
+            }
+        });
+        // 校验全选
+        checkAll();
+    }
+
+    // 校验全选和非全选
+    private void checkAll() {
+        int number=0;
+
+        if (datas != null && datas.size()>0) {
+            for (int i=0;i<datas.size();i++) {
+                ShoppingCart cart = datas.get(i);
+                if (!cart.isChecked()) {        // 只要有一个没被选，非全选
+                    check_all.setChecked(false);// 非勾选
+                }else {
+                    // 选中
+                    number++;
+                }
+            }
+            if (number==datas.size()) {     // 选中的个数和集合总数相同
+                check_all.setChecked(true); // 勾选
+            }
+        }
     }
 
     // 显示总价
@@ -93,16 +131,15 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
         holder.numberAddSubView.setOnNumClickListener(new NumberAddSubView.OnNumClickListener() {
             @Override
             public void onButtonSub(View view, int value) {
-                // 1 更新数据
-                cart.setCount(value);
-                // 2 保存数据
-                cartProvider.updateData(cart);
-                // 3 重新显示价格
-                showTotalPrice();
+                addSubTotalPrice(value);
             }
 
             @Override
             public void onButtonAdd(View view, int value) {
+                addSubTotalPrice(value);
+            }
+
+            private void addSubTotalPrice(int value) {
                 // 1 更新数据
                 cart.setCount(value);
                 // 2 保存数据
@@ -133,6 +170,27 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
             tv_name = (TextView) itemView.findViewById(R.id.tv_name);
             tv_price = (TextView) itemView.findViewById(R.id.tv_price);
             numberAddSubView = (NumberAddSubView) itemView.findViewById(R.id.numberAddSubView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener!=null) {
+                        onItemClickListener.onItemClick(v,getLayoutPosition());
+                    }
+                }
+            });
         }
+    }
+
+    // RecyclerView的点击某条时的监听，被点击时回调
+    public interface OnItemClickListener {          // 点击接口
+        void onItemClick(View view,int position);   // 点击回调
+    }
+
+    private OnItemClickListener onItemClickListener;// Alt+Insert-->Setter
+
+    // 设置某条的监听
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener; // 注意：一定要写这个This
     }
 }
