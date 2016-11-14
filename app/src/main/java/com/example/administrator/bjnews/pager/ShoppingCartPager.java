@@ -2,6 +2,7 @@ package com.example.administrator.bjnews.pager;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
@@ -10,10 +11,12 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.administrator.bjnews.R;
+import com.example.administrator.bjnews.adapter.ShoppingPagerAdapter;
 import com.example.administrator.bjnews.base.BasePager;
 import com.example.administrator.bjnews.bean.ShoppingCart;
 import com.example.administrator.bjnews.utils.CartProvider;
 import com.example.administrator.bjnews.utils.LogUtil;
+import com.example.administrator.bjnews.view.NumberAddSubView;
 
 import java.util.List;
 
@@ -31,6 +34,13 @@ public class ShoppingCartPager extends BasePager {
     private CheckBox check_all;
     private TextView tv_total;
     private Button btn_order,btn_delete;
+    private TextView tv_result;
+
+    private List<ShoppingCart> datas;   // 购物车数据
+
+    private ShoppingPagerAdapter adapter;
+
+    //private NumberAddSubView number_add_sub_view;
 
     public ShoppingCartPager(Context context) {
         super(context);
@@ -55,11 +65,13 @@ public class ShoppingCartPager extends BasePager {
         txt.setTextColor(Color.RED);*/
 
         View view = View.inflate(context, R.layout.shoppingcart_pager,null);
+
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         check_all = (CheckBox) view.findViewById(R.id.check_all);
         tv_total = (TextView) view.findViewById(R.id.tv_total);
         btn_order = (Button) view.findViewById(R.id.btn_order);
         btn_delete = (Button) view.findViewById(R.id.btn_delete);
+        tv_result = (TextView) view.findViewById(R.id.tv_result);
 
         if (fl_base_content != null) {
             fl_base_content.removeAllViews();   // 这个很重要(避免页面重影)
@@ -69,8 +81,31 @@ public class ShoppingCartPager extends BasePager {
         showData(); // 显示来自商城热卖中的点击购买的数据
     }
 
-    private void showData() {// LogCat：Shopping
-        List<ShoppingCart> carts = cartProvider.getAllData();
+    private void showData() {               // LogCat：Shopping
+        datas = cartProvider.getAllData();  // 获取购物车数据
+        showCartDatas(datas);               // 打印购物车数据
+        if (datas!=null && datas.size()>0) {// 确保非空
+            // 有数据
+            tv_result.setVisibility(View.GONE);
+
+            // 代码方式设置控件属性
+            /*number_add_sub_view.setValue(6);
+            number_add_sub_view.setMinValue(2);
+            number_add_sub_view.setMaxValue(16);*/
+
+            // 设置适配器
+            adapter=new ShoppingPagerAdapter(context,datas);
+            recycler_view.setAdapter(adapter);
+            recycler_view.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+
+        }else {
+            // 无数据
+            tv_result.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // 打印购物车数据
+    private void showCartDatas(List<ShoppingCart> carts) {
         for (int i=0;i<carts.size();i++) {
             ShoppingCart cart = carts.get(i);
             LogUtil.e(cart.getId()+"");

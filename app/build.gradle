@@ -30,7 +30,9 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
+
     compile 'com.android.support:appcompat-v7:22.1.0'
+
     // TabLayout必须用22.x版本的，不然程序要崩。
     compile project(':SlidingMenu_library')
     compile project(':xutils3_library')
