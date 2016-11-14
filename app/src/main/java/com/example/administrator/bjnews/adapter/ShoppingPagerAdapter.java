@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.bean.ShoppingCart;
+import com.example.administrator.bjnews.utils.CartProvider;
 import com.example.administrator.bjnews.view.NumberAddSubView;
 
 import java.util.List;
@@ -26,20 +27,22 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     private final Context context;
     private final List<ShoppingCart> datas;
     private final CheckBox check_all;
-    private final TextView tv_total;
+    private final TextView tv_totalPrice;
+    
+    private CartProvider cartProvider;
 
-    public ShoppingPagerAdapter(Context context, List<ShoppingCart> datas, CheckBox check_all, TextView tv_total) {    // 上下文，购物车数据
+    public ShoppingPagerAdapter(Context context, List<ShoppingCart> datas, CheckBox check_all, TextView tv_totalPrice) {    // 上下文，购物车数据
         this.context=context;
         this.datas=datas;
         this.check_all=check_all;
-        this.tv_total=tv_total;
-
+        this.tv_totalPrice=tv_totalPrice;
+        cartProvider=new CartProvider(context);
         showTotalPrice();
     }
 
     // 显示总价
     private void showTotalPrice() {
-        tv_total.setText("合计￥"+getTotalPrice());
+        tv_totalPrice.setText("合计￥"+getTotalPrice());
     }
 
     // 得到购物车选中商品好的总价格
@@ -67,7 +70,8 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     // 绑定数据
     public void onBindViewHolder(ViewHolder holder, int position) {
         // 1 根据位置得到对应数据
-        ShoppingCart cart = datas.get(position);
+        final ShoppingCart cart = datas.get(position);
+        
         // 2 绑定数据
         // 2.1 图片数据
         Glide.with(context)
@@ -84,6 +88,29 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
         holder.numberAddSubView.setValue(cart.getCount());
         // 2.5 CheckBox是否为选中状态
         holder.checkbox.setChecked(cart.isChecked());
+        
+        // 3 设置增加及减少按钮的点击监听
+        holder.numberAddSubView.setOnNumClickListener(new NumberAddSubView.OnNumClickListener() {
+            @Override
+            public void onButtonSub(View view, int value) {
+                // 1 更新数据
+                cart.setCount(value);
+                // 2 保存数据
+                cartProvider.updateData(cart);
+                // 3 重新显示价格
+                showTotalPrice();
+            }
+
+            @Override
+            public void onButtonAdd(View view, int value) {
+                // 1 更新数据
+                cart.setCount(value);
+                // 2 保存数据
+                cartProvider.updateData(cart);
+                // 3 重新显示价格
+                showTotalPrice();
+            }
+        });
     }
 
     @Override
