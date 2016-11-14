@@ -25,12 +25,36 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
 
     private final Context context;
     private final List<ShoppingCart> datas;
+    private final CheckBox check_all;
+    private final TextView tv_total;
 
-    public ShoppingPagerAdapter(Context context, List<ShoppingCart> datas) {    // 上下文，购物车数据
+    public ShoppingPagerAdapter(Context context, List<ShoppingCart> datas, CheckBox check_all, TextView tv_total) {    // 上下文，购物车数据
         this.context=context;
         this.datas=datas;
+        this.check_all=check_all;
+        this.tv_total=tv_total;
+
+        showTotalPrice();
     }
 
+    // 显示总价
+    private void showTotalPrice() {
+        tv_total.setText("合计￥"+getTotalPrice());
+    }
+
+    // 得到购物车选中商品好的总价格
+    private double getTotalPrice() {
+        double totalPrice=0;
+        if (datas!=null && datas.size()>0) {
+            for (int i=0;i<datas.size();i++) {
+                ShoppingCart cart = datas.get(i);
+                if (cart.isChecked()) {                             // 只有选中才计算总价
+                    totalPrice+=cart.getCount()*cart.getPrice();    // 物品数量*单价
+                }
+            }
+        }
+        return totalPrice;
+    }
 
     @Override
     // 创建视图并通过ViewHolder返回

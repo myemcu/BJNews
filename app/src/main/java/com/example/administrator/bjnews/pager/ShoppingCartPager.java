@@ -94,7 +94,7 @@ public class ShoppingCartPager extends BasePager {
             number_add_sub_view.setMaxValue(16);*/
 
             // 设置适配器
-            adapter=new ShoppingPagerAdapter(context,datas);
+            adapter=new ShoppingPagerAdapter(context,datas,check_all,tv_total);
             recycler_view.setAdapter(adapter);
             recycler_view.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
 
