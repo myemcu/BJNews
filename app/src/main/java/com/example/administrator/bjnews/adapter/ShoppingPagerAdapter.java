@@ -31,7 +31,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     
     private CartProvider cartProvider;
 
-    public ShoppingPagerAdapter(Context context, final List<ShoppingCart> datas, CheckBox check_all, TextView tv_totalPrice) {    // 上下文，购物车数据
+    public ShoppingPagerAdapter(Context context, final List<ShoppingCart> datas, final CheckBox check_all, TextView tv_totalPrice) {    // 上下文，购物车数据
         this.context=context;
         this.datas=datas;
         this.check_all=check_all;
@@ -56,6 +56,32 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
         });
         // 校验全选
         checkAll();
+        // 设置点击事件
+        check_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 1 得到它是否选中的状态
+                boolean isCheck = check_all.isChecked();
+                // 2 设置全选或非全选
+                checkAllNone(isCheck);
+                // 3 重算总价
+                showTotalPrice();
+            }
+        });
+    }
+
+    // 设置全选和非全选
+    private void checkAllNone(boolean isCheck) {
+        int number=0;
+
+        if (datas != null && datas.size()>0) {
+
+            for (int i=0;i<datas.size();i++) {
+                ShoppingCart cart = datas.get(i);
+                cart.setChecked(isCheck);
+                notifyItemChanged(i);
+            }
+        }
     }
 
     // 校验全选和非全选
@@ -63,6 +89,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
         int number=0;
 
         if (datas != null && datas.size()>0) {
+
             for (int i=0;i<datas.size();i++) {
                 ShoppingCart cart = datas.get(i);
                 if (!cart.isChecked()) {        // 只要有一个没被选，非全选
@@ -72,6 +99,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
                     number++;
                 }
             }
+
             if (number==datas.size()) {     // 选中的个数和集合总数相同
                 check_all.setChecked(true); // 勾选
             }
