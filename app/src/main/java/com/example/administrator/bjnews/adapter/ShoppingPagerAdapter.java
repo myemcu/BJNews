@@ -71,7 +71,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     }
 
     // 设置全选和非全选
-    private void checkAllNone(boolean isCheck) {
+    public void checkAllNone(boolean isCheck) {
         int number=0;
 
         if (datas != null && datas.size()>0) {
@@ -85,7 +85,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     }
 
     // 校验全选和非全选
-    private void checkAll() {
+    public void checkAll() {
         int number=0;
 
         if (datas != null && datas.size()>0) {
@@ -107,7 +107,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     }
 
     // 显示总价
-    private void showTotalPrice() {
+    public void showTotalPrice() {
         tv_totalPrice.setText("合计￥"+getTotalPrice());
     }
 

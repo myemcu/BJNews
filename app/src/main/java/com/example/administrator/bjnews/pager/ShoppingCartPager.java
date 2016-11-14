@@ -40,7 +40,8 @@ public class ShoppingCartPager extends BasePager {
 
     private ShoppingPagerAdapter adapter;
 
-    //private NumberAddSubView number_add_sub_view;
+    private static final int ATION_EDIT  = 0;    // 编辑按钮的编辑状态
+    private static final int ATION_FINSH = 1;    // 编辑按钮的完成状态
 
     public ShoppingCartPager(Context context) {
         super(context);
@@ -66,19 +67,78 @@ public class ShoppingCartPager extends BasePager {
 
         View view = View.inflate(context, R.layout.shoppingcart_pager,null);
 
+        findViews(view);
+
+        if (fl_base_content != null) {
+            fl_base_content.removeAllViews();   // 这个很重要(避免页面重影)
+        }
+
+        fl_base_content.addView(view);   // 把子视图添加到FrameLayout中
+
+        showData(); // 显示来自商城热卖中的点击购买的数据
+
+        // 设置编辑按钮的点击事件
+        btn_cart_edit.setTag(ATION_EDIT);
+        btn_cart_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int action = (int) btn_cart_edit.getTag();
+                switch (action) {
+                    case ATION_EDIT:
+                        // 变成完成状态
+                        showDeleteButton(); // 全选失效，按钮显示为“删除”
+                        break;
+
+                    case ATION_FINSH:       // 全选使能，按钮显示为“去结算”
+                        // 变成编辑状态
+                        hideDeleteButton();
+                        break;
+
+                    default:break;
+                }
+            }
+        });
+    }
+
+    // 显示“删除”按钮
+    private void showDeleteButton() {
+        // 1 文本设置为完成
+        btn_cart_edit.setText("完成");
+        // 2 状态设置为完成
+        btn_cart_edit.setTag(ATION_FINSH);
+        // 3 数据设置非全选
+        adapter.checkAllNone(false);    // 设置
+        adapter.checkAll();             // 校验
+        // 4 删除按钮显示，结算按钮隐藏
+        btn_delete.setVisibility(View.VISIBLE);
+        btn_order.setVisibility(View.GONE);
+        // 5 重新算价
+        adapter.showTotalPrice();
+    }
+
+    // 隐藏“删除”按钮
+    private void hideDeleteButton() {
+        // 1 文本设置为完成
+        btn_cart_edit.setText("编辑");
+        // 2 状态设置为编辑
+        btn_cart_edit.setTag(ATION_EDIT);
+        // 3 数据设置非全选
+        adapter.checkAllNone(true);     // 设置
+        adapter.checkAll();             // 校验
+        // 4 删除按钮隐藏，结算按钮显示
+        btn_delete.setVisibility(View.GONE);
+        btn_order.setVisibility(View.VISIBLE);
+        // 5 重新算价
+        adapter.showTotalPrice();
+    }
+
+    private void findViews(View view) {
         recycler_view = (RecyclerView) view.findViewById(R.id.recycler_view);
         check_all = (CheckBox) view.findViewById(R.id.check_all);
         tv_total = (TextView) view.findViewById(R.id.tv_total);
         btn_order = (Button) view.findViewById(R.id.btn_order);
         btn_delete = (Button) view.findViewById(R.id.btn_delete);
         tv_result = (TextView) view.findViewById(R.id.tv_result);
-
-        if (fl_base_content != null) {
-            fl_base_content.removeAllViews();   // 这个很重要(避免页面重影)
-        }
-        fl_base_content.addView(view);   // 把子视图添加到FrameLayout中
-
-        showData(); // 显示来自商城热卖中的点击购买的数据
     }
 
     private void showData() {               // LogCat：Shopping
@@ -87,11 +147,6 @@ public class ShoppingCartPager extends BasePager {
         if (datas!=null && datas.size()>0) {// 确保非空
             // 有数据
             tv_result.setVisibility(View.GONE);
-
-            // 代码方式设置控件属性
-            /*number_add_sub_view.setValue(6);
-            number_add_sub_view.setMinValue(2);
-            number_add_sub_view.setMaxValue(16);*/
 
             // 设置适配器
             adapter=new ShoppingPagerAdapter(context,datas,check_all,tv_total);
