@@ -172,9 +172,9 @@ public class ShopPager extends BasePager {
         public void onError(Call call, Exception e, int id)
         {
             e.printStackTrace();
+            Toast.makeText(context,"联网失败，请开WiFi",Toast.LENGTH_LONG).show();
             LogUtil.e("使用okhttp联网请求失败==" + e.getMessage());
         }
-
     }
 
     private void setRequestParams() {
