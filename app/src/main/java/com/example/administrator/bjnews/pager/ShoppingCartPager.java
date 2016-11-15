@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.administrator.bjnews.R;
 import com.example.administrator.bjnews.adapter.ShoppingPagerAdapter;
@@ -80,6 +81,7 @@ public class ShoppingCartPager extends BasePager {
         btn_cart_edit.setText("编辑");           // 每次切到该页面时，显示编辑
 
         // 设置编辑按钮的点击事件
+
         btn_cart_edit.setTag(ATION_EDIT);
         btn_cart_edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +90,11 @@ public class ShoppingCartPager extends BasePager {
                 switch (action) {
                     case ATION_EDIT:
                         // 变成完成状态
-                        showDeleteButton(); // 勾选全消，按钮显示为“删除”
+                        if (datas != null && datas.size()>0) { // 确保购物车有东东，编辑按钮才有效，没有这个判断，初次进页面点编辑时，App要崩
+                            showDeleteButton(); // 勾选全消，按钮显示为“删除”
+                        }else {
+                            Toast.makeText(context,"亲，购物车还是空的",Toast.LENGTH_SHORT).show();
+                        }
                         break;
 
                     case ATION_FINSH:       // 全选使能，按钮显示为“去结算”

@@ -152,7 +152,7 @@ public class ShopPager extends BasePager {
             LogUtil.e("使用okhttp联网请求成功==" + response);   // 观察时，输入Info，ShopPager即可(==后面的全部信息)
 
             //缓存数据
-            CacheUtil.putString(context, url, response);
+            CacheUtil.putString(context, Url.SHOP_URL, response);
 
             processData(response);  // 对请求到的数据进行解析
 
