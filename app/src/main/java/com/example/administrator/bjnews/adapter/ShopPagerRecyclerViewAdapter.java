@@ -98,11 +98,11 @@ public class ShopPagerRecyclerViewAdapter extends RecyclerView.Adapter<ShopPager
         holder.btn_buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "价格："+wares.getPrice(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context, "价格："+wares.getPrice(), Toast.LENGTH_SHORT).show();
                 // 把商品Wares转换成ShoppingCart
                 ShoppingCart cart = cartProvider.conversion(wares);
                 cartProvider.addData(cart);
-                Toast.makeText(context,"购买成功",Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context,"购买成功",Toast.LENGTH_SHORT).show();
             }
         });
     }

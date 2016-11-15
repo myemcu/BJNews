@@ -73,9 +73,13 @@ public class ShoppingCartPager extends BasePager {
             fl_base_content.removeAllViews();   // 这个很重要(避免页面重影)
         }
 
-        fl_base_content.addView(view);   // 把子视图添加到FrameLayout中
+        fl_base_content.addView(view);          // 把子视图添加到FrameLayout中
 
-        showData(); // 显示来自商城热卖中的点击购买的数据
+        tv_total.setText("");                   // 空购物时无价格
+
+        btn_cart_edit.setText("编辑");           // 每次切到该页面时，显示编辑
+
+        showData();                             // 显示来自商城热卖中的点击购买的数据
 
         // 设置编辑按钮的点击事件
         btn_cart_edit.setTag(ATION_EDIT);
@@ -86,7 +90,7 @@ public class ShoppingCartPager extends BasePager {
                 switch (action) {
                     case ATION_EDIT:
                         // 变成完成状态
-                        showDeleteButton(); // 全选失效，按钮显示为“删除”
+                        showDeleteButton(); // 勾选全消，按钮显示为“删除”
                         break;
 
                     case ATION_FINSH:       // 全选使能，按钮显示为“去结算”
@@ -98,6 +102,26 @@ public class ShoppingCartPager extends BasePager {
                 }
             }
         });
+
+        // 监听“删除”按钮事件
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.deleteData();
+                adapter.showTotalPrice();
+                checkData();        // 校验数据
+                adapter.checkAll(); // 校验全选
+            }
+        });
+    }
+
+    private void checkData() {
+        // 没有这一坨的话，购物车清空的时候会Crash
+        if (adapter != null && adapter.getItemCount()>0) {
+            tv_result.setVisibility(View.GONE);
+        }else {
+            tv_result.setVisibility(View.VISIBLE);
+        }
     }
 
     // 显示“删除”按钮

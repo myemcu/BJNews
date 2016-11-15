@@ -15,6 +15,7 @@ import com.example.administrator.bjnews.bean.ShoppingCart;
 import com.example.administrator.bjnews.utils.CartProvider;
 import com.example.administrator.bjnews.view.NumberAddSubView;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -103,6 +104,8 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
             if (number==datas.size()) {     // 选中的个数和集合总数相同
                 check_all.setChecked(true); // 勾选
             }
+        }else {
+            check_all.setChecked(false);// 非勾选
         }
     }
 
@@ -181,6 +184,48 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     @Override
     public int getItemCount() {
         return datas.size();
+    }
+
+    // 删除键删除被选中的数据
+    public void deleteData() {
+
+        // 法1
+        /*if (datas != null && datas.size()>0) {
+            for (int i=0;i<datas.size();i++) {      // datas集合变小了(删除原因导致)
+                ShoppingCart cart = datas.get(i);   // i又变大了，会导致(每次只能删一个Item的Bug和删除多个Item的越界Crash)，从4开始解决
+                if (cart.isChecked()) {
+                    //  1 删除本地缓存的
+                    cartProvider.delData(cart);
+                    //  2 输出本地内存的(就在集合中)
+                    datas.remove(cart);
+                    //  3 刷新
+                    notifyItemRemoved(i);   // 注意，是这个方法，而不是notifyItemChanged(i);
+                    //  4 每删一个减一次
+                    i--;
+                }
+            }
+        }*/
+
+        // 法2(迭代器)
+        if (datas != null && datas.size()>0) {
+
+            for (Iterator iterator = datas.iterator();iterator.hasNext();) {
+
+                ShoppingCart cart = (ShoppingCart) iterator.next();
+
+                if (cart.isChecked()) {
+
+                    int position = datas.indexOf(cart); // 在集合中找这个对象的位置(必须放到前面)
+
+                    //  1 删除本地缓存的
+                    cartProvider.delData(cart);
+                    //  2 输出本地内存的(就在集合中)
+                    iterator.remove();
+                    //  3 刷新
+                    notifyItemRemoved(position);        // 注意，是这个方法，而不是notifyItemChanged(i);
+                }
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
