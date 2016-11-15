@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/BJNews.iml" filepath="$PROJECT_DIR$/BJNews.iml" />
       <module fileurl="file://$PROJECT_DIR$/BaiduLocationDemo/BaiduLocationDemo.iml" filepath="$PROJECT_DIR$/BaiduLocationDemo/BaiduLocationDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/BaiduMap/BaiduMap.iml" filepath="$PROJECT_DIR$/BaiduMap/BaiduMap.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EmptyRecyclerView/EmptyRecyclerView.iml" filepath="$PROJECT_DIR$/EmptyRecyclerView/EmptyRecyclerView.iml" />
       <module fileurl="file://$PROJECT_DIR$/Get_SD_TF_Demo/Get_SD_TF_Demo.iml" filepath="$PROJECT_DIR$/Get_SD_TF_Demo/Get_SD_TF_Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/JPushDemo/JPushDemo.iml" filepath="$PROJECT_DIR$/JPushDemo/JPushDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/MaterialRefreshLayout_library/MaterialRefreshLayout_library.iml" filepath="$PROJECT_DIR$/MaterialRefreshLayout_library/MaterialRefreshLayout_library.iml" />

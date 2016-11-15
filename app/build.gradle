@@ -6,6 +6,16 @@ apply plugin: 'com.android.application'
 *       如：compile project(':MaterialRefreshLayout_library')中的为23，则要改成app_Gradle中的22
 *       而不是让老的迎合新的，从而去修改老的Gradle中的各项配置，切记。
 *
+*       TabLayout必须使用22的SDK，不然要崩，故最稳定组合如下：
+*       compileSdkVersion 22
+*       buildToolsVersion "22.0.1"
+*       minSdkVersion 19
+*       targetSdkVersion 22
+
+*       recyclerview不崩组合(注意：这三个都是22.2.1，即：要相同)：
+*       compile 'com.android.support:appcompat-v7:22.2.1'
+*       compile 'com.android.support:design:22.2.1'
+*       compile 'com.android.support:recyclerview-v7:22.2.1'
 ***************************************************************************************************/
 
 android {
@@ -28,12 +38,11 @@ android {
 }
 
 dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
 
-    compile 'com.android.support:appcompat-v7:22.1.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
 
-    // TabLayout必须用22.x版本的，不然程序要崩。
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':SlidingMenu_library')
     compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
@@ -58,7 +67,7 @@ dependencies {
     compile files('libs/ShareSDK-QQ-2.7.9.jar')
     compile project(':PhotoView_library')
     compile project(':MaterialRefreshLayout_library')
-    compile 'com.android.support:recyclerview-v7:22.0.0'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
     // 原为25，修改为22与本app_Gradle各项匹配
     compile project(':okhttputils_library')
     //compile project(path: ':okhttputils')

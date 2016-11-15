@@ -89,7 +89,6 @@ public class ShopPager extends BasePager {
         }
         fl_base_content.addView(view);
 
-
         initRefreshLayout();
 
         // 5 设置网址

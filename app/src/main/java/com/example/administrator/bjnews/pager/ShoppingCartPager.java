@@ -79,8 +79,6 @@ public class ShoppingCartPager extends BasePager {
 
         btn_cart_edit.setText("编辑");           // 每次切到该页面时，显示编辑
 
-        showData();                             // 显示来自商城热卖中的点击购买的数据
-
         // 设置编辑按钮的点击事件
         btn_cart_edit.setTag(ATION_EDIT);
         btn_cart_edit.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +111,8 @@ public class ShoppingCartPager extends BasePager {
                 adapter.checkAll(); // 校验全选
             }
         });
+
+        showData();                     // 显示来自商城热卖中的点击购买的数据
     }
 
     private void checkData() {
