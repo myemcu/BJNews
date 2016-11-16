@@ -18,8 +18,10 @@
       <module fileurl="file://$PROJECT_DIR$/RecyclerViewDemo/RecyclerViewDemo.iml" filepath="$PROJECT_DIR$/RecyclerViewDemo/RecyclerViewDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/RefreshListView_Sample/RefreshListView_Sample.iml" filepath="$PROJECT_DIR$/RefreshListView_Sample/RefreshListView_Sample.iml" />
       <module fileurl="file://$PROJECT_DIR$/RefreshListView_library/RefreshListView_library.iml" filepath="$PROJECT_DIR$/RefreshListView_library/RefreshListView_library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RxJava/RxJava.iml" filepath="$PROJECT_DIR$/RxJava/RxJava.iml" />
       <module fileurl="file://$PROJECT_DIR$/SlidingMenu_library/SlidingMenu_library.iml" filepath="$PROJECT_DIR$/SlidingMenu_library/SlidingMenu_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpannableStringBuilderDemo/SpannableStringBuilderDemo.iml" filepath="$PROJECT_DIR$/SpannableStringBuilderDemo/SpannableStringBuilderDemo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Taobao_Alipay_Demo/Taobao_Alipay_Demo.iml" filepath="$PROJECT_DIR$/Taobao_Alipay_Demo/Taobao_Alipay_Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/VariousShapeImageView/VariousShapeImageView.iml" filepath="$PROJECT_DIR$/VariousShapeImageView/VariousShapeImageView.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_library/ViewPagerIndicator_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViewPagerIndicator_sample/ViewPagerIndicator_sample.iml" filepath="$PROJECT_DIR$/ViewPagerIndicator_sample/ViewPagerIndicator_sample.iml" />

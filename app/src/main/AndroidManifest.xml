@@ -10,6 +10,21 @@
         android:name="com.example.administrator.bjnews.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
 
+    <!--Alipay支付宝权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!--Alipay的屏幕适配-->
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+
     <!--ShaerSDK权限-->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -242,6 +257,14 @@
             android:exported="true"/>-->
 
     <activity android:name=".ShowImageActivity"/>
+
+    <!--支付宝H5，适合没有装支付宝客户端的用户使用，这个已集成在了对应的jar包中-->
+    <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
     </application>
 

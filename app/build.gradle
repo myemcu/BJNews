@@ -40,9 +40,7 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-
     compile 'com.android.support:appcompat-v7:22.2.1'
-
     compile project(':SlidingMenu_library')
     compile project(':xutils3_library')
     compile files('libs/gson-2.2.1.jar')
@@ -71,4 +69,5 @@ dependencies {
     // 原为25，修改为22与本app_Gradle各项匹配
     compile project(':okhttputils_library')
     //compile project(path: ':okhttputils')
+    compile files('libs/alipaySdk-20160809.jar')
 }

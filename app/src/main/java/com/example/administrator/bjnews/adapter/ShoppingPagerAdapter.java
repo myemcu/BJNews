@@ -115,7 +115,7 @@ public class ShoppingPagerAdapter extends RecyclerView.Adapter<ShoppingPagerAdap
     }
 
     // 得到购物车选中商品好的总价格
-    private double getTotalPrice() {
+    public double getTotalPrice() {
         double totalPrice=0;
         if (datas!=null && datas.size()>0) {
             for (int i=0;i<datas.size();i++) {
