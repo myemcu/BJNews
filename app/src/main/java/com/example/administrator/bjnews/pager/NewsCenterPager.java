@@ -285,9 +285,9 @@ public class NewsCenterPager extends BasePager {
     // 根据位置，切换到对应的菜单详情页面(menudetail)
     public void switchPager(int selectPosition) {
 
-        // 注释掉是为了看Crash日志，只能在模拟器中看。
+        // 如果注释掉外层的这个if-else，就可以查看Crash日志，只能在模拟器中看。
 
-        //if (selectPosition<detailBasePagers.size()) {
+        if (selectPosition<detailBasePagers.size()) {
             // 设置标题
             tv_title.setText(leftMenuData.get(selectPosition).getTitle());
 
@@ -312,9 +312,9 @@ public class NewsCenterPager extends BasePager {
             }else {
                 ib_switch_list_grid_view.setVisibility(View.GONE);      // 隐藏
             }
-        //}
-        /*else {
+        }
+        else {
             Toast.makeText(context, "该页面还没有启用", Toast.LENGTH_SHORT).show();
-        }*/
+        }
     }
 }
