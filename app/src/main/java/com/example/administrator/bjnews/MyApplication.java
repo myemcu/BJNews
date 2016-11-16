@@ -3,6 +3,7 @@ package com.example.administrator.bjnews;
 import android.app.Application;
 import android.content.Context;
 
+import com.example.administrator.bjnews.CrashHandler.CrashHandler;
 import com.example.administrator.bjnews.volley.VolleyManager;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +31,9 @@ public class MyApplication extends Application{
         JPushInterface.init(this);     		// 初始化 JPush
 
         initImageLoader(this);              // ImageLoader开源项目初始化(用于互动中的图片请求)
+
+        CrashHandler catchHandler = CrashHandler.getInstance(); // 监听程序异常
+        catchHandler.init(getApplicationContext());
     }
 
     // ImageLoader开源项目初始化
